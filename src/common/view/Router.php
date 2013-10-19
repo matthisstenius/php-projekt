@@ -1,8 +1,9 @@
 <?php
 
-namespace common\view\Router;
+namespace common\view;
+
 /**
- * Inspiered by: https://bitbucket.org/JREAM/route/overview
+ * Inspired by: https://bitbucket.org/JREAM/route/overview
  */
 class Router {
 	/**
@@ -95,6 +96,8 @@ class Router {
 	public function match() {
 		$incomingUri = isset($_GET[self::$uriIndex]) ? $_GET[self::$uriIndex] : "/";;
 		$incomingUri = htmlentities($incomingUri);
+		$incomingUri = trim($incomingUri, '/\//');
+		
 		$routesByMethod = $this->routes[$this->requestMethod];
 		$requestParams = array();
 
