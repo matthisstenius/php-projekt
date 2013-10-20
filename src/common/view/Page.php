@@ -35,7 +35,7 @@ class Page {
 	 * @return string HTML
 	 */
 	private function getStylesheet() {
-		return "<link href='../public/style.css' rel='stylesheet' type='text/css'>";
+		return "<link href='src/public/main.css' rel='stylesheet' type='text/css'>";
 	}
 
 	/**
