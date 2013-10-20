@@ -116,12 +116,12 @@ class Router {
 					}
 				}
 
-				exit(call_user_func_array($this->callbacks[$this->requestMethod][$routeKey], $requestParams));
+				return call_user_func_array($this->callbacks[$this->requestMethod][$routeKey], $requestParams);
 			}
 		}
 
 		// If no match is found call 404 callback
-		call_user_func_array($this->callbacks["401"], array());
+		return call_user_func_array($this->callbacks["401"], array());
 	}
 
 }
