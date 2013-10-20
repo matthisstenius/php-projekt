@@ -7,25 +7,25 @@ require_once("src/post/model/Post.php");
 
 class PostDAL extends \common\model\DALBase {
 	/**
-	 * @return array of post\model\Post
+	 * @return array
 	 */
 	public function getPosts() {
-		$posts = array();
+		$result = array();
 
 		$stm = self::getDBConnection()->prepare("SELECT * FROM Post");
 
 		$stm->execute();
 
 		while ($row = $stm->fetch(\PDO::FETCH_ASSOC)) {
-			$posts[] = new Post(+$row['idPost'], $row['title'], $row['content'], Date($row['added']));
+			$result[] = $row;
 		}
 
-		return $posts;
+		return $result;
 	}
 
 	/**
 	 * @param  int $id
-	 * @return post\model\Post
+	 * @return array 
 	 */
 	public function getPost($id) {
 		$stm = self::getDBConnection()->prepare("SELECT idPost, title, content, added FROM Post WHERE idPost=:id");
@@ -36,7 +36,7 @@ class PostDAL extends \common\model\DALBase {
 
 		$row = $stm->fetch(\PDO::FETCH_ASSOC);
 
-		return new Post(+$row['idPost'], $row['title'], $row['content'], Date($row['added']));
+		return $row;
 	}
 
 	/**

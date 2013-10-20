@@ -80,4 +80,23 @@ class Post {
 	public function getDateAdded() {
 		return $this->added;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getCleaTitle() {
+		return $this->generateCleanTitle($this->title);
+	}
+
+	/**
+	 * Makes URI friendly title
+	 * @param  string $title
+	 * @return string
+	 */
+	private function generateCleanTitle($title) {
+		$cleanTitle = str_replace(' ', '-', $title);
+		$cleanTitle = strtolower($cleanTitle);
+
+		return $cleanTitle;
+	}
 }

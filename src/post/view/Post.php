@@ -6,20 +6,30 @@ class Post {
 	/**
 	 * @var post\model\Posts
 	 */
-	private $posts;
+	private $postsModel;
 
 	/**
-	 * @param post\model\Posts $posts
+	 * @param post\model\Posts $postsModel
 	 */
-	public function __construct(\post\model\Posts $posts) {
-		$this->posts = $posts;
+	public function __construct(\post\model\Posts $postsModel) {
+		$this->postsModel = $postsModel;
 	}
 
-	public function getHTML() {
-		$html = "";
+	/**
+	 * @param  int $id 
+	 * @return string     HTML
+	 */
+	public function getPostHTML($id) {
+		try {
+			$post = $this->postsModel->getPost($id);
 
-		foreach ($this->posts->getPosts() as $post) {
-			$html .= "<p>" . $post->getTitle() . "</p>";
+			$html = "<h2>" . $post->getTitle() . "</h2>";
+			$html .= "<p>" . $post->getContent() . "</p>";
+			$html .= "<p>" . $post->getDateAdded() . "</p>";	
+		}
+		
+		catch (\Exception $e) {
+			$html = "<p>No post found</p>";
 		}
 
 		return $html;

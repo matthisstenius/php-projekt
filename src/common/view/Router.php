@@ -105,13 +105,13 @@ class Router {
 			$choppedRoute = explode("/", $route);
 			$choppedIncomingUri = explode("/", $incomingUri);
 			
-			$choppedChangedParamsUri = preg_replace('/:{1}.+/', '\w+', $choppedRoute);
+			$choppedChangedParamsUri = preg_replace('/:{1}.+/', '[\w-]+', $choppedRoute);
 			$changedParamsUri = implode("/", $choppedChangedParamsUri);
 
 			if (preg_match("#^$changedParamsUri$#", $incomingUri)) {
 
 				foreach ($choppedChangedParamsUri as $key => $value) {
-					if ($value == "\w+") {
+					if ($value == "[\w-]+") {
 						$requestParams[] = $choppedIncomingUri[$key];
 					}
 				}

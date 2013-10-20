@@ -2,28 +2,27 @@
 
 namespace post\controller;
 
-require_once("src/post/model/Posts.php");
+require_once('src/post/view/Post.php');
 
 class Post {
 	/**
-	 * @var post\modelPosts
+	 * @var post\model
 	 */
-	private $posts;
+	private $postsModel;
 
 	/**
-	 * @var post\view\Post
+	 * @param post\model\Posts $postsModel
 	 */
-	private $postView;
-
-	public function __construct() {
-		$this->posts = new \post\model\Posts();
-		$this->postView = new \post\view\Post($this->posts);
+	public function __construct(\post\model\Posts $postsModel) {
+		$this->postsModel = $postsModel;
+		$this->postView = new \post\view\Post($this->postsModel);
 	}
 
 	/**
-	 * @return string HTML
+	 * @param  int $id
+	 * @return string HTMLzx
 	 */
-	public function showPosts() {
-		return $this->postView->getHTML();
+	public function showPost($id) {
+		return $this->postView->getPostHTML($id);
 	}
 }

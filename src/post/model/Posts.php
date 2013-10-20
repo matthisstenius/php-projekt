@@ -18,15 +18,26 @@ class Posts {
 	 * @return array array of posts
 	 */
 	public function getPosts() {
-		return $this->postDAL->getPosts();
+		$posts = array();
+
+		foreach ($this->postDAL->getPosts() as $row) {
+			$posts[] = new Post(+$row['idPost'], $row['title'], $row['content'], Date($row['added']));
+		}
+
+		return $posts;
 	}
 
 	/**
-	 * @param  post\model\Post $post
+	 * @param  int $post
 	 * @return post\model\Post
+	 * @throws Exception If no post is found
 	 */
-	public function getPost(\post\model\Post $post) {
-		return $this->postDAL->getPost($post->getPostID());
+	public function getPost($id) {
+		if ($row = $this->postDAL->getPost($id)) {
+			return new Post(+$row['idPost'], $row['title'], $row['content'], Date($row['added']));
+		}
+		
+		throw new \Exception("No post found");
 	}
 
 	/**
