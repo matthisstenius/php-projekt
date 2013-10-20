@@ -94,7 +94,8 @@ class Post {
 	 * @return string
 	 */
 	private function generateCleanTitle($title) {
-		$cleanTitle = str_replace(' ', '-', $title);
+		$cleanTitle = preg_replace('/\s+/', ' ', $title);
+		$cleanTitle = str_replace(' ', '-', $cleanTitle);
 		$cleanTitle = strtolower($cleanTitle);
 
 		return $cleanTitle;

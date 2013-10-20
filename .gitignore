@@ -2,4 +2,4 @@ dest/
 .DS_Store
 node_modules/
 .sass-cache/
-src/public/main.css
+css/
