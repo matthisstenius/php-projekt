@@ -47,10 +47,10 @@ class Post {
 			throw new \Exception("invalid date");
 		}
 
-		$this->postID = $postID;
-		$this->title = $title;
+		$this->postID  = $postID;
+		$this->title   = $title;
 		$this->content = $content;
-		$this->added = $added;
+		$this->added   = $added;
 	}
 
 	/**
