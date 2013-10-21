@@ -39,7 +39,10 @@ module.exports = function(grunt) {
 		watch: {
 			stylesheets: {
 				files: 'src/public/sass/main.scss',
-				tasks: ['compileSass']
+				tasks: ['compileSass'],
+				options: {
+					livereload: true
+				}
 			}
 		}
 	});

@@ -1,6 +1,97 @@
 @import "bourbon/bourbon";
 @import "neat/neat";
+@import "fonts";
 
-html {
-	font-size: 16px;
+/*
+----------------------------------------
+ * Color
+----------------------------------------
+*/
+	$blue: #238DB7;
+	$grey: #EDEDED;
+/*
+----------------------------------------
+ * General
+----------------------------------------
+*/
+	html {
+		font-size: 16px;
+		position: relative;
+		height: 100%;
+		background-color: $grey;
+		font-family: $body;
+	}
+
+	body {
+		margin: 0;
+		min-height: 100%;
+		@include shift(3);
+	}
+
+	.wrapper {
+		@include clearfix();
+	}
+
+	ul {
+		list-style: none;
+		padding-left: 0;
+	}
+
+	.pad {
+		padding: 10px;
+	}
+
+/*
+----------------------------------------
+ * Typo
+----------------------------------------
+*/
+	h1, h2, h3 {
+		font-family: $headings;
+	}
+	
+	h1 {
+		font-size: 2em;
+	}
+
+	h2 {
+		font-size: 1.5em;
+	}
+
+	h3 {
+		font-size: 1.2em;
+	}
+
+	a {
+		color: $blue;
+		text-decoration: none;
+	}
+
+/*
+----------------------------------------
+ * Header
+----------------------------------------
+*/
+	.header {
+		background-color: #575D63;
+		position: fixed;
+		height: 100%;
+		box-shadow: inset -3px 0 10px #383E44;
+		@include span-columns(3);
+		@include shift(-3);
+	}
+
+	.logo {
+		font-size: 2em;
+		color: white;
+	}
+
+/*
+----------------------------------------
+ * Posts
+----------------------------------------
+*/
+.main {
+	@include span-columns(9);
+	@include omega();
 }
