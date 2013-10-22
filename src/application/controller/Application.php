@@ -15,14 +15,13 @@ class Application {
 
 	/**
 	 * @var \common\view\Page
-	 * @todo  stinks.. Should be private
 	 */
-	public $page;
+	private $page;
 
 	/**
 	 * @var post\model
 	 */
-	public $postsModel;
+	private $postsModel;
 
 	public function __construct() {
 		$this->router = new \common\view\Router();
@@ -33,17 +32,17 @@ class Application {
 	public function init() {
 		$self = $this;
 		
-		$this->router->get('/', function() use($self) {
-			$posts = new \post\controller\Posts($self->postsModel);
-			echo $self->page->getPage("Hello Blog!", $posts->showPosts());
+		$this->router->get('/', function() {
+			$posts = new \post\controller\Posts($this->postsModel);
+			echo $this->page->getPage("Hello Blog!", $posts->showPosts());
 		});
 
-		$this->router->get('/post/:id/:title', function($id, $title) use($self) {
-			$post = new \post\controller\Post($self->postsModel);
-			echo $self->page->getPage("Post tile", $post->showPost(+$id));
+		$this->router->get('/post/:id/:title', function($id, $title) {
+			$post = new \post\controller\Post($this->postsModel);
+			echo $this->page->getPage("Post tile", $post->showPost(+$id));
 		});
 
-		$this->router->notFound("/404", function() use($self) {
+		$this->router->notFound("/404", function() {
 			echo  "404";
 		});
 

@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 			build: {
 				cwd: 'src',
 				src: ['application/**', 'common/**', 'post/**', 'login/**', 'register/**'],
-				dest: 'build',
+				dest: 'build/src',
 				expand: true	
 			}
 		},
