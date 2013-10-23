@@ -9,10 +9,16 @@ class Post {
 	private $postHandeler;
 
 	/**
+	 * @var common\view\Navigation
+	 */
+	private $navigationView;
+
+	/**
 	 * @param post\model\Posts $postsModel
 	 */
 	public function __construct(\post\model\PostHandeler $postHandeler) {
 		$this->postHandeler = $postHandeler;
+		$this->navigationView = new \common\view\Navigation();
 	}
 
 	/**
@@ -27,7 +33,7 @@ class Post {
 			$post = $this->postHandeler->getPost($id);
 
 			if ($post->getCleanTitle() != $title) {
-				header("Location: /php-projekt/post/". $id . '/' . $post->getCleanTitle());
+				$this->navigationView->goToPost($id, $post->getCleanTitle());
 			}
 
 			$html .= "<h1 class='post-title'>" . $post->getTitle() . "</h1>";
@@ -42,6 +48,7 @@ class Post {
 
 		$html .= "</article>
 				</div>";
+				
 		return $html;
 	}
 }

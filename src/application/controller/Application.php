@@ -3,6 +3,7 @@
 namespace application\controller;
 
 require_once("src/common/view/Router.php");
+require_once("src/common/view/Navigation.php");
 require_once("src/post/model/PostHandeler.php");
 require_once("src/post/controller/Post.php");
 require_once("src/post/controller/Posts.php");
