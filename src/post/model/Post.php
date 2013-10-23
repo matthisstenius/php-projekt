@@ -24,13 +24,19 @@ class Post {
 	private $added;
 
 	/**
+	 * @var string
+	 */
+	private $username;
+
+	/**
 	 * @param int $postID
 	 * @param string $title
 	 * @param string $content
 	 * @param date $added
+	 * @param string $username
 	 * @throws Exception If validation failes
 	 */
-	public function __construct($postID, $title, $content, $added) {
+	public function __construct($postID, $title, $content, $added, $username) {
 		if (!is_int($postID)) {
 			throw new \Exception("invalid postID");
 		}
@@ -47,10 +53,15 @@ class Post {
 			throw new \Exception("invalid date");
 		}
 
+		if (!is_string($username) || $username == "") {
+			throw new \Exception("invalid user");
+		}
+
 		$this->postID  = $postID;
 		$this->title   = $title;
 		$this->content = $content;
 		$this->added   = $added;
+		$this->username    = $username;
 	}
 
 	/**
@@ -79,6 +90,13 @@ class Post {
 	 */
 	public function getDateAdded() {
 		return $this->added;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getUsername() {
+		return $this->username;
 	}
 
 	/**

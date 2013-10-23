@@ -12,7 +12,8 @@ class PostDAL extends \common\model\DALBase {
 	public function getPosts() {
 		$result = array();
 
-		$stm = self::getDBConnection()->prepare("SELECT * FROM Post");
+		$stm = self::getDBConnection()->prepare("SELECT idPost, title, content, added, User.username FROM Post
+												 INNER JOIN User ON User.idUser = User_idUser");
 
 		$stm->execute();
 
@@ -28,7 +29,9 @@ class PostDAL extends \common\model\DALBase {
 	 * @return array 
 	 */
 	public function getPost($id) {
-		$stm = self::getDBConnection()->prepare("SELECT idPost, title, content, added FROM Post WHERE idPost=:id");
+		$stm = self::getDBConnection()->prepare("SELECT idPost, title, content, added, User.username FROM Post
+												 INNER JOIN User ON User.idUser = User_idUser
+												 WHERE idPost=:id");
 
 		$stm->bindParam(':id', $id, \PDO::PARAM_INT);
 
@@ -48,7 +51,7 @@ class PostDAL extends \common\model\DALBase {
 
 		$stm->bindParam(':title', $post->getTitle(), \PDO::PARAM_STRING);
 		$stm->bindParam(':content', $post->getContent(), \PDO::PARAM_STRING);
-		$stm->bindParam(':added', $post->getDateAdded(), \PDO::PARAM_DATETIME);
+		$stm->bindParam(':added', $post->getDateAdded(), \PDO::PARAM_DATE);
 
 		$stm->execute();
 	}

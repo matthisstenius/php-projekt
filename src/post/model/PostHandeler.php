@@ -21,7 +21,7 @@ class PostHandeler {
 		$posts = array();
 
 		foreach ($this->postDAL->getPosts() as $row) {
-			$posts[] = new Post(+$row['idPost'], $row['title'], $row['content'], Date($row['added']));
+			$posts[] = new Post(+$row['idPost'], $row['title'], $row['content'], Date($row['added']), $row['username']);
 		}
 
 		return $posts;
@@ -34,7 +34,7 @@ class PostHandeler {
 	 */
 	public function getPost($id) {
 		if ($row = $this->postDAL->getPost($id)) {
-			return new Post(+$row['idPost'], $row['title'], $row['content'], Date($row['added']));
+			return new Post(+$row['idPost'], $row['title'], $row['content'], Date($row['added']), $row['username']);
 		}
 		
 		throw new \Exception("No post found");

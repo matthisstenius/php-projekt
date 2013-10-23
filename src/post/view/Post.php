@@ -31,6 +31,7 @@ class Post {
 			}
 
 			$html .= "<h1 class='post-title'>" . $post->getTitle() . "</h1>";
+			$html .= "<p class='post-username'>By: " . $post->getUsername() . "</p>";
 			$html .= "<p class='post-content'>" . $post->getContent() . "</p>";
 			$html .= "<span class='date'>" . $post->getDateAdded() . "</span>";	
 		}
