@@ -12,3 +12,13 @@
 	@include span-columns(11);
 	@include omega();
 }
+
+.test {
+	background-color: red;
+}
+
+.post-thumb {
+	@include span-columns(6);
+	@include omega(2n);
+	margin-bottom: 20px;
+}

@@ -16,11 +16,13 @@ class Posts {
 	}
 
 	public function getHTML() {
-		$html = "";
+		$html = "<div class='post-thumbs'>";
 
 		foreach ($this->postHandeler->getPosts() as $post) {
-			$html .= "<h1>" . $post->getTitle() . "</h1>";
+			$html .= "<div class='post-thumb box pad'>";
+			$html .= "<h1 class='post-title'>" . $post->getTitle() . "</h1>";
 			$html .= "<a href='post/" . $post->getPostID() . "/" . $post->getCleanTitle() . "'>Läs mer</a>";
+			$html .= "</div>";
 		}
 
 		return $html;
