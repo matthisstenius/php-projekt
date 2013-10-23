@@ -16,12 +16,17 @@ class Post {
 	}
 
 	/**
-	 * @param  int $id 
+	 * @param  int $id
+	 * @param string $title
 	 * @return string     HTML
 	 */
-	public function getPostHTML($id) {
+	public function getPostHTML($id, $title) {
 		try {
 			$post = $this->postsModel->getPost($id);
+
+			if ($post->getCleanTitle() != $title) {
+				header("Location: /php-projekt/post/". $id . '/' . $post->getCleanTitle());
+			}
 
 			$html = "<h2>" . $post->getTitle() . "</h2>";
 			$html .= "<p>" . $post->getContent() . "</p>";

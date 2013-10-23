@@ -84,7 +84,7 @@ class Post {
 	/**
 	 * @return string
 	 */
-	public function getCleaTitle() {
+	public function getCleanTitle() {
 		return $this->generateCleanTitle($this->title);
 	}
 

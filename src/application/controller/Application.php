@@ -39,7 +39,7 @@ class Application {
 
 		$this->router->get('/post/:id/:title', function($id, $title) {
 			$post = new \post\controller\Post($this->postsModel);
-			echo $this->page->getPage("Post tile", $post->showPost(+$id));
+			echo $this->page->getPage("Post tile", $post->showPost(+$id, $title));
 		});
 
 		$this->router->notFound("/404", function() {

@@ -22,7 +22,8 @@ class Post {
 	 * @param  int $id
 	 * @return string HTMLzx
 	 */
-	public function showPost($id) {
-		return $this->postView->getPostHTML($id);
+	public function showPost($id, $title) {
+		return $this->postView->getPostHTML($id, $title);
+
 	}
 }
