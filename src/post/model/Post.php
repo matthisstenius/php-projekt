@@ -106,6 +106,17 @@ class Post {
 		return $this->generateCleanTitle($this->title);
 	}
 
+	public function getExcerpt() {
+		$content = $this->getContent();
+
+		if (count($content > 140)) {
+			return substr($content, -140);
+		}
+
+		else {
+			return $this->getContent();
+		}
+	}
 	/**
 	 * Makes URI friendly title
 	 * @param  string $title

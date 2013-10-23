@@ -21,6 +21,7 @@ class Posts {
 		foreach ($this->postHandeler->getPosts() as $post) {
 			$html .= "<div class='post-thumb box pad'>";
 			$html .= "<h1 class='post-title'>" . $post->getTitle() . "</h1>";
+			$html .= "<p class='post-excerpt'>" . $post->getExcerpt() . "...</p>";
 			$html .= "<a href='post/" . $post->getPostID() . "/" . $post->getCleanTitle() . "'>Läs mer</a>";
 			$html .= "</div>";
 		}
