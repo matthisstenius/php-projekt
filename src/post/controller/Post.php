@@ -6,16 +6,16 @@ require_once('src/post/view/Post.php');
 
 class Post {
 	/**
-	 * @var post\model
+	 * @var post\model\PostHandeler
 	 */
-	private $postsModel;
+	private $postHandeler;
 
 	/**
-	 * @param post\model\Posts $postsModel
+	 * @param post\model\PostsHandeler $postHandeler
 	 */
-	public function __construct(\post\model\Posts $postsModel) {
-		$this->postsModel = $postsModel;
-		$this->postView = new \post\view\Post($this->postsModel);
+	public function __construct(\post\model\PostHandeler $postHandeler) {
+		$this->postHandeler = $postHandeler;
+		$this->postView = new \post\view\Post($this->postHandeler);
 	}
 
 	/**

@@ -4,23 +4,23 @@ namespace post\view;
 
 class Posts {
 	/**
-	 * @var post\model\Posts
+	 * @var post\model\PostHandeler
 	 */
-	private $posts;
+	private $postHandeler;
 
 	/**
-	 * @param post\model\Posts $posts
+	 * @param post\model\PostHandeler $postHandeler
 	 */
-	public function __construct(\post\model\Posts $posts) {
-		$this->posts = $posts;
+	public function __construct(\post\model\PostHandeler $postHandeler) {
+		$this->postHandeler = $postHandeler;
 	}
 
 	public function getHTML() {
 		$html = "";
 
-		foreach ($this->posts->getPosts() as $post) {
+		foreach ($this->postHandeler->getPosts() as $post) {
 			$html .= "<h1>" . $post->getTitle() . "</h1>";
-			$html .= "<a href='post/" . $post->getPostID() . "/" . $post->getCleaTitle() . "'>Läs mer</a>";
+			$html .= "<a href='post/" . $post->getPostID() . "/" . $post->getCleanTitle() . "'>Läs mer</a>";
 		}
 
 		return $html;

@@ -2,14 +2,14 @@
 
 namespace post\controller;
 
-require_once("src/post/model/Posts.php");
+require_once("src/post/model/PostHandeler.php");
 require_once("src/post/view/Posts.php");
 
 class Posts {
 	/**
-	 * @var post\modelPosts
+	 * @var post\model\PostHandeler
 	 */
-	private $postsModel;
+	private $postHandeler;
 
 	/**
 	 * @var post\view\Post
@@ -18,11 +18,11 @@ class Posts {
 
 	/**
 	 * @param post\view\Post   $postView
-	 * @param post\model\Posts $postsModel
+	 * @param post\model\PostHandeler $postHandeler
 	 */
-	public function __construct(\post\model\Posts $postsModel) {
-		$this->postsModel = $postsModel;
-		$this->postView = new \post\view\Posts($this->postsModel);
+	public function __construct(\post\model\PostHandeler $postHandeler) {
+		$this->postHandeler = $postHandeler;
+		$this->postView = new \post\view\Posts($this->postHandeler);
 	}
 
 	/**

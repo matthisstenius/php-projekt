@@ -76,7 +76,7 @@
 		background-color: #575D63;
 		position: fixed;
 		height: 100%;
-		box-shadow: inset -3px 0 10px #383E44;
+		box-shadow: inset -9px 0 20px #383E44;
 		@include span-columns(3);
 		@include shift(-3);
 	}

@@ -4,25 +4,25 @@ namespace post\view;
 
 class Post {
 	/**
-	 * @var post\model\Posts
+	 * @var post\model\PostHandeler
 	 */
-	private $postsModel;
+	private $postHandeler;
 
 	/**
 	 * @param post\model\Posts $postsModel
 	 */
-	public function __construct(\post\model\Posts $postsModel) {
-		$this->postsModel = $postsModel;
+	public function __construct(\post\model\PostHandeler $postHandeler) {
+		$this->postHandeler = $postHandeler;
 	}
 
 	/**
 	 * @param  int $id
-	 * @param string $title
+	 * @param  string $title
 	 * @return string     HTML
 	 */
 	public function getPostHTML($id, $title) {
 		try {
-			$post = $this->postsModel->getPost($id);
+			$post = $this->postHandeler->getPost($id);
 
 			if ($post->getCleanTitle() != $title) {
 				header("Location: /php-projekt/post/". $id . '/' . $post->getCleanTitle());

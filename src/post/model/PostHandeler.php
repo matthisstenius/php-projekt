@@ -4,7 +4,7 @@ namespace post\model;
 
 require_once("src/post/model/PostDAL.php");
 
-class Posts {
+class PostHandeler {
 	/**
 	 * @var post\model\PostDAL
 	 */
