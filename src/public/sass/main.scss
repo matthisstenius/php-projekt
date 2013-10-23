@@ -1,6 +1,8 @@
 @import "bourbon/bourbon";
 @import "neat/neat";
+@import "layout";
 @import "fonts";
+
 
 /*
 ----------------------------------------
@@ -28,10 +30,6 @@
 		@include shift(3);
 	}
 
-	.wrapper {
-		@include clearfix();
-	}
-
 	ul {
 		list-style: none;
 		padding-left: 0;
@@ -40,7 +38,12 @@
 	.pad {
 		padding: 10px;
 	}
-
+	
+	.box {
+		background-color: white;
+		border-radius: 3px;
+		border: 1px solid #ccc;
+	}
 /*
 ----------------------------------------
  * Typo
@@ -77,8 +80,6 @@
 		position: fixed;
 		height: 100%;
 		box-shadow: inset -9px 0 20px #383E44;
-		@include span-columns(3);
-		@include shift(-3);
 	}
 
 	.logo {
@@ -91,7 +92,6 @@
  * Posts
 ----------------------------------------
 */
-.main {
-	@include span-columns(9);
-	@include omega();
-}
+	.post-title {
+		margin-top: 0;
+	}

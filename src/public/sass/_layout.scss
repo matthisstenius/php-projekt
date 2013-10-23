@@ -1,0 +1,14 @@
+.wrapper {
+	@include outer-container();
+	@include clearfix();
+}
+
+.header {
+	@include span-columns(3);
+	@include shift(-3);
+}
+
+.main {
+	@include span-columns(11);
+	@include omega();
+}

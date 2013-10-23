@@ -21,6 +21,8 @@ class Post {
 	 * @return string     HTML
 	 */
 	public function getPostHTML($id, $title) {
+		$html = "<div class='box pad'>
+					<article>";
 		try {
 			$post = $this->postHandeler->getPost($id);
 
@@ -28,15 +30,17 @@ class Post {
 				header("Location: /php-projekt/post/". $id . '/' . $post->getCleanTitle());
 			}
 
-			$html = "<h2>" . $post->getTitle() . "</h2>";
-			$html .= "<p>" . $post->getContent() . "</p>";
-			$html .= "<p>" . $post->getDateAdded() . "</p>";	
+			$html .= "<h1 class='post-title'>" . $post->getTitle() . "</h1>";
+			$html .= "<p class='post-content'>" . $post->getContent() . "</p>";
+			$html .= "<span class='date'>" . $post->getDateAdded() . "</span>";	
 		}
 		
 		catch (\Exception $e) {
 			$html = "<p>No post found</p>";
 		}
 
+		$html .= "</article>
+				</div>";
 		return $html;
 	}
 }
