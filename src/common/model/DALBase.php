@@ -6,9 +6,14 @@ class DALBase {
 	private static $dbName = "Blog";
 	private static $host = "127.0.0.1";
 	private static $username = "root";
-	private static $password = "7scTt8MB";
+	private static $password = "";
 	private static $charset = "utf8";
 
+	public function __construct() {
+		if ($_SERVER['SERVER_NAME'] == 'localhost') {
+			self::$password = '7scTt8MB';
+		}
+	}
 	/**
 	 * @return PDO
 	 */
