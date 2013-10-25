@@ -29,7 +29,7 @@ class ProjectDAL extends \common\model\DALBase {
 	 */
 	public function getProject($id) {
 		$stm = self::getDBConnection()->prepare("SELECT idProject, name, description, created, User.username FROM Project
-												 INNER JOIN User ON User.idUser = User_idUser
+												 INNER JOIN User ON User.idUser = idUser_User
 												 WHERE idProject=:id");
 
 		$stm->bindParam(':id', $id, \PDO::PARAM_INT);

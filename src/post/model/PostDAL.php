@@ -9,12 +9,14 @@ class PostDAL extends \common\model\DALBase {
 	/**
 	 * @return array
 	 */
-	public function getPosts() {
+	public function getPosts($id) {
 		$result = array();
 
 		$stm = self::getDBConnection()->prepare("SELECT idPost, title, content, added, User.username FROM Post
-												 INNER JOIN User ON User.idUser = User_idUser");
+												 INNER JOIN User ON User.idUser = User_idUser
+												 WHERE projectID_Project=:projectID");
 
+		$stm->bindParam(':projectID', $id, \PDO::PARAM_INT);
 		$stm->execute();
 
 		while ($row = $stm->fetch(\PDO::FETCH_ASSOC)) {

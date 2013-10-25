@@ -28,7 +28,7 @@ class Posts {
 	/**
 	 * @return string HTML
 	 */
-	public function showPosts() {
-		return $this->postView->getHTML();
+	public function showPosts($id) {
+		return $this->postView->getHTML($id);
 	}
 }

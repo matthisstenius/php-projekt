@@ -17,10 +17,10 @@ class PostHandeler {
 	/**
 	 * @return array array of posts
 	 */
-	public function getPosts() {
+	public function getPosts($id) {
 		$posts = array();
 
-		foreach ($this->postDAL->getPosts() as $row) {
+		foreach ($this->postDAL->getPosts($id) as $row) {
 			$posts[] = new Post(+$row['idPost'], $row['title'], $row['content'], Date($row['added']), $row['username']);
 		}
 

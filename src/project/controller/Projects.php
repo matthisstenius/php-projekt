@@ -12,9 +12,9 @@ class Projects {
 	private $projectHandeler;
 
 	/**
-	 * @var project\view\projects
+	 * @var project\view\Projects
 	 */
-	private $projectView;
+	private $projectsView;
 
 	/**
 	 * @param project\model\ProjectHandeler $projectHandeler
