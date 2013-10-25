@@ -5,7 +5,7 @@ namespace common\view;
 class Page {
 	private $headerContent;
 
-	public function getPage($title, $body) {
+	public function getPage($title, $projects, $body = null) {
 		$html = "<!DOCTYPE html>
 		<html lang='sv'>
 		<head>
@@ -16,7 +16,7 @@ class Page {
 		<body>
 			<div class='wrapper'>"
 				
-				. $this->getHeader() .
+				. $this->getHeader($projects) .
 
 				"<section class='main pad'>
 					$body
@@ -45,7 +45,7 @@ class Page {
 	/**
 	 * @return string HTML
 	 */
-	private function getHeader() {
+	private function getHeader($projects) {
 		return "<header class='header pad'>
 					<a href='/php-projekt' class='logo'>Bloggen</a>
 					<p>Denna blogg är representerar projektet i kursen Webbutveckling med PHP</p>
@@ -55,6 +55,8 @@ class Page {
 							<li><a href='posts'>Inlägg</a></li>
 							<li><a href='add'>Skapa nytt inlägg</a></li>
 						</ul>
+
+						$projects
 					</nav>
 				</header>";
 	}

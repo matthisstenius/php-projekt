@@ -4,8 +4,8 @@ namespace application\controller;
 
 require_once("src/common/view/Router.php");
 require_once("src/common/view/Navigation.php");
-require_once("src/post/model/PostHandeler.php");
-require_once("src/post/controller/Post.php");
+require_once("src/project/model/ProjectHandeler.php");
+require_once("src/project/controller/Projects.php");
 require_once("src/post/controller/Posts.php");
 
 class Application {
@@ -20,22 +20,20 @@ class Application {
 	private $page;
 
 	/**
-	 * @var post\model\PostHandeler
+	 * @var project\model\ProjectHandeler
 	 */
-	private $postHandeler;
+	private $projectHandeler;
 
 	public function __construct() {
 		$this->router = new \common\view\Router();
 		$this->page = new \common\view\Page();
-		$this->postHandeler = new \post\model\PostHandeler();
+		$this->projectHandeler = new \project\model\ProjectHandeler();
 	}
 
-	public function init() {
-		$self = $this;
-		
+	public function init() {		
 		$this->router->get('/', function() {
-			$posts = new \post\controller\Posts($this->postHandeler);
-			echo $this->page->getPage("Hello Blog!", $posts->showPosts());
+			$projects = new \project\controller\Projects($this->projectHandeler);
+			echo $this->page->getPage("Hello Blog!", $projects->showProjects());
 		});
 
 		$this->router->get('/post/:id/:title', function($id, $title) {
