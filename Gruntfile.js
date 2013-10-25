@@ -2,10 +2,10 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		copy: {
 			build: {
+				expand: true,
 				cwd: 'src',
-				src: ['application/**', 'common/**', 'post/**', 'login/**', 'register/**'],
-				dest: 'build/src',
-				expand: true	
+				src: ['application/**', 'common/**', 'post/**', 'login/**', 'register/**', '../index.php'],
+				dest: 'build/php-projekt/src'
 			}
 		},
 
@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 		cssmin: {
 			minifyCSS: {
 				files: {
-					'build/public/css/main.css': 'src/public/css/*.css'
+					'build/php-projekt/src/public/css/main.css': 'src/public/css/*.css'
 				}
 			}
 		},
@@ -31,7 +31,7 @@ module.exports = function(grunt) {
 					expand: true,
 					cwd: 'src',
 					src: ['public/img/*.{png,jpg,gif}'],
-					dest: 'build/public/img'
+					dest: 'build/php-projekt/src/public/img'
 				}]
 			}
 		},
