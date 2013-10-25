@@ -26,14 +26,14 @@ class Post {
 	 * @param  string $title
 	 * @return string     HTML
 	 */
-	public function getPostHTML($id, $title) {
+	public function getPostHTML($projectID, $id, $title) {
 		$html = "<div class='box pad'>
 					<article>";
 		try {
 			$post = $this->postHandeler->getPost($id);
 
 			if ($post->getCleanTitle() != $title) {
-				$this->navigationView->goToPost($id, $post->getCleanTitle());
+				$this->navigationView->goToPost($projectID, $id, $post->getCleanTitle());
 			}
 
 			$html .= "<h1 class='post-title'>" . $post->getTitle() . "</h1>";

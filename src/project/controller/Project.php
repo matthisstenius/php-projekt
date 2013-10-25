@@ -43,7 +43,7 @@ class Project {
 		return $this->projectView->getProjectHTML($projectID, $name) . $this->posts->showPosts($projectID);
 	}
 
-	public function showProjectPost($id, $title) {
-		return $this->post->showPost($id, $title);
+	public function showProjectPost($projectID, $id, $title) {
+		return $this->post->showPost($projectID, $id, $title);
 	}
 }

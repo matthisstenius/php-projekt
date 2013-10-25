@@ -54,7 +54,7 @@ class Application {
 		$this->router->get('/project/:projectID/post/:postID/:title', function($projectID, $postID, $title) {
 			echo $this->page->getPage("Post tile", 
 										$this->projectsController->showProjects(), 
-										$this->projectController->showProjectPost(+$postID, $title));
+										$this->projectController->showProjectPost(+$projectID, +$postID, $title));
 		});
 
 		$this->router->notFound("/404", function() {
