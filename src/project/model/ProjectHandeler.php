@@ -22,7 +22,8 @@ class ProjectHandeler {
 		$projects = array();
 
 		foreach ($this->projectDAL->getProjects() as $row) {
-			$projects[] = new Project(+$row['idProject'], $row['name'], $row['description'], Date($row['created']), $row['username']);
+			$projects[] = new Project(+$row['idProject'], $row['name'], $row['description'], 
+										Date($row['created']), $row['username'], +$row['userID']);
 		}
 		
 		return $projects;
@@ -35,7 +36,8 @@ class ProjectHandeler {
 	 */
 	public function getProject($id) {
 		if ($row = $this->projectDAL->getProject($id)) {
-			return new Project(+$row['idProject'], $row['name'], $row['description'], Date($row['created']), $row['username']);
+			return new Project(+$row['idProject'], $row['name'], $row['description'], 
+								Date($row['created']), $row['username'], +$row['userID']);
 		}
 		
 		throw new \Exception("No project found");

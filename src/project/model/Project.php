@@ -29,32 +29,42 @@ class Project {
 	private $username;
 
 	/**
+	 * @var int
+	 */
+	private $userID;
+
+	/**
 	 * @param int $projectID
 	 * @param string $name
 	 * @param string $description
 	 * @param date $created
 	 * @param string $username
+	 * @param int $userID
 	 * @throws Exception If validation failes
 	 */
-	public function __construct($projectID, $name, $description, $created, $username) {
+	public function __construct($projectID, $name, $description, $created, $username, $userID) {
 		if (!is_int($projectID)) {
-			throw new \Exception("invalid postID");
+			throw new \Exception("invalid projectID");
 		}
 
 		if (!is_string($name) || $name == "") {
-			throw new \Exception("invalid title");
+			throw new \Exception("invalid name");
 		}
 
 		if (!is_string($description) || $description == "") {
-			throw new \Exception("invalid content");
+			throw new \Exception("invalid description");
 		}
 
 		if (!is_string($created) || $created == "") {
-			throw new \Exception("invalid date");
+			throw new \Exception("invalid created date");
 		}
 
 		if (!is_string($username) || $username == "") {
-			throw new \Exception("invalid user");
+			throw new \Exception("invalid username");
+		}
+
+		if (!is_int($projectID)) {
+			throw new \Exception("invalid userID");
 		}
 
 		$this->projectID  = $projectID;
@@ -62,6 +72,7 @@ class Project {
 		$this->description = $description;
 		$this->created   = $created;
 		$this->username    = $username;
+		$this->userID = $userID;
 	}
 
 	/**
@@ -97,6 +108,13 @@ class Project {
 	 */
 	public function getUsername() {
 		return $this->username;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getUserID() {
+		return $this->userID;
 	}
 
 	/**

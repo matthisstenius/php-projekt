@@ -29,7 +29,7 @@ class Navigation {
 	 * @param  string $name
 	 * @return string HTML
 	 */
-	public function getProjectLink($porjectID, $cleanName, $name) {
+	public function getProjectLink($projectID, $cleanName, $name) {
 		return "<a href='/php-projekt/project/$projectID/$cleanName'>$name</a>";
 	}
 

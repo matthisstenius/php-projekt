@@ -11,7 +11,7 @@ class ProjectDAL extends \common\model\DALBase {
 	public function getProjects() {
 		$result = array();
 
-		$stm = self::getDBConnection()->prepare("SELECT idProject, name, description, created, User.username FROM Project
+		$stm = self::getDBConnection()->prepare("SELECT idProject, name, description, created, User.username, idUser_User AS userID FROM Project
 												 INNER JOIN User ON User.idUser = idUser_User");
 
 		$stm->execute();
@@ -28,7 +28,7 @@ class ProjectDAL extends \common\model\DALBase {
 	 * @return array 
 	 */
 	public function getProject($id) {
-		$stm = self::getDBConnection()->prepare("SELECT idProject, name, description, created, User.username FROM Project
+		$stm = self::getDBConnection()->prepare("SELECT idProject, name, description, created, User.username, idUser_User AS userID FROM Project
 												 INNER JOIN User ON User.idUser = idUser_User
 												 WHERE idProject=:id");
 
@@ -46,13 +46,18 @@ class ProjectDAL extends \common\model\DALBase {
 	 * @return void
 	 */
 	public function addProject(\project\model\Project $project) {
-		$stm = self::getDBConnection()->prepare("INSERT INTO Project name, description, created, idUser_User
+		$stm = self::getDBConnection()->prepare("INSERT INTO Project (name, description, created, idUser_User)
 												 VALUES(:name, :description, :created, :userID)");
 
-		$stm->bindParam(':name', $project->getName(), \PDO::PARAM_STRING);
-		$stm->bindParam(':description', $project->getDescription(), \PDO::PARAM_STRING);
-		$stm->bindParam(':created', $project->getDateCreated(), \PDO::PARAM_DATE);
-		$stm->bindParam(':userID', $project->getUserID(), \PDO::PARAM_INT);
+		$name = $project->getName();
+		$description = $project->getDescription();
+		$created = $project->getDateCreated();
+		$userID = $project->getUserID();
+
+		$stm->bindParam(':name', $name);
+		$stm->bindParam(':description', $description);
+		$stm->bindParam(':created', $created);
+		$stm->bindParam(':userID', $userID);
 
 		$stm->execute();
 	}
