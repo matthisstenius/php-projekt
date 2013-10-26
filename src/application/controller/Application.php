@@ -10,6 +10,7 @@ require_once("src/project/controller/Project.php");
 require_once("src/project/controller/NewProject.php");
 require_once("src/post/controller/Posts.php");
 require_once("src/post/controller/Post.php");
+require_once("src/post/controller/NewPost.php");
 
 class Application {
 	/**
@@ -26,6 +27,11 @@ class Application {
 	 * @var project\model\ProjectHandeler
 	 */
 	private $projectHandeler;
+
+	/**
+	 * @var post\model\PostHandeler
+	 */
+	private $postHandeler;
 
 	/**
 	 * @var project\controller\Projects
@@ -45,11 +51,15 @@ class Application {
 	public function __construct() {
 		$this->router = new \common\view\Router();
 		$this->page = new \common\view\Page();
+
 		$this->projectHandeler = new \project\model\ProjectHandeler();
+		$this->postHandeler = new \post\model\PostHandeler();
 
 		$this->projectsController = new \project\controller\Projects($this->projectHandeler);
 		$this->projectController = new \project\controller\Project($this->projectHandeler);
 		$this->newProjectController = new \project\controller\NewProject($this->projectHandeler);
+
+		$this->newPostController = new \post\controller\NewPost($this->postHandeler);
 	}
 
 	public function init() {		
@@ -78,6 +88,16 @@ class Application {
 
 		$this->router->post('/newProject', function() {
 			$this->newProjectController->addProject();
+		});
+
+		$this->router->get('/project/:projectID/:projectName/newPost', function($projectID, $projectName) {
+			echo $this->page->getPage("Add new post", 
+										$this->projectsController->showProjects(),
+										$this->newPostController->showNewPostForm($projectID, $projectName));
+		});
+
+		$this->router->post('/project/:projectID/:projectName/newPost', function($projectID, $projectName) {
+			$this->newPostController->addPost(+$projectID, $projectName);
 		});
 
 		$this->router->notFound("/404", function() {

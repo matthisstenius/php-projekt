@@ -40,7 +40,7 @@ class Project {
 	 * @return string HTML
 	 */
 	public function showProject($projectID, $name) {
-		return $this->projectView->getProjectHTML($projectID, $name) . $this->posts->showPosts($projectID);
+		return $this->projectView->getProjectHTML($projectID, $name, $this->posts->showPosts($projectID));
 	}
 
 	public function showProjectPost($projectID, $id, $title) {

@@ -25,8 +25,8 @@ class Projects {
 		$html = "<ul class='projects-list'>";
 
 		foreach ($this->projectHandeler->getProjects() as $project) {
-			$link = $this->navigationView->getProjectLink($project->getProjectID(), $project->getCleanName(), $project->getName());
-			$html .= "<li>$link</li>";
+			$link = $this->navigationView->getProjectSrc($project->getProjectID(), $project->getCleanName());
+			$html .= "<li><a href='$link'>" . $project->getName() . "</a></li>";
 
 		}
 

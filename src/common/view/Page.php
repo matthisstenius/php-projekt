@@ -5,6 +5,14 @@ namespace common\view;
 class Page {
 	private $headerContent;
 
+	/**
+	 * @var common\view\Navigation
+	 */
+	private $navigationView;
+	public function __construct() {
+		$this->navigationView = new Navigation();
+	}
+
 	public function getPage($title, $projects, $body = null) {
 		$html = "<!DOCTYPE html>
 		<html lang='sv'>
@@ -44,16 +52,19 @@ class Page {
 
 	/**
 	 * @return string HTML
+	 * @param string $projects HTML containing all projects
 	 */
 	private function getHeader($projects) {
+		$homeSrc = $this->navigationView->getHomeSrc();
+		$newProjectSrc = $this->navigationView->getAddNewProjectSrc();
+
 		return "<header class='header pad'>
-					<a href='/php-projekt' class='logo'>Bloggen</a>
+					<a href='$homeSrc' class='logo'>Bloggen</a>
 					<p>Denna blogg är representerar projektet i kursen Webbutveckling med PHP</p>
 
 					<nav class='main-nav'>
 						<ul>
-							<li><a href='posts'>Inlägg</a></li>
-							<li><a href='add'>Skapa nytt inlägg</a></li>
+							<li><a href='$newProjectSrc'>Create new project</a></li>
 						</ul>
 
 						$projects

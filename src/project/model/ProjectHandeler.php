@@ -48,7 +48,8 @@ class ProjectHandeler {
 	 * @return  void
 	 */
 	public function addProject(\project\model\Project $project) {
-		$this->projectDAL->addProject($project);
+		$projectID = $this->projectDAL->addProject($project);
+		$project->setProjectID($projectID);
 	}
 
 	/**

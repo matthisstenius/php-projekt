@@ -23,20 +23,30 @@ class Project {
 
 	/**
 	 * @param  int $id
+	 * @param  sting HTML containg Posts
 	 * @return string HTML
 	 */
-	public function getProjectHTML($id, $title) {
+	public function getProjectHTML($projectID, $projectName, $projectPosts) {
 		try {
-			$project = $this->projectHandeler->getProject($id);
+			$project = $this->projectHandeler->getProject($projectID);
 
-			if ($project->getCleanName() != $title) {
-				$this->navigationView->goToProject($id, $project->getCleanName());
+			if ($project->getCleanName() != $projectName) {
+				$this->navigationView->goToProject($projectID, $project->getCleanName());
 			}
 
-			$html = "<h1 class='title'>" . $project->getName() . "</h1>";
+			$html = "<header class='project-header'>";
+
+			$html .= "<h1 class='title'>" . $project->getName() . "</h1>";
 			$html .= "<p>" . $project->getUsername() . "</p>";
 			$html .= "<p>" . $project->getDescription() . "</p>";
 			$html .= "<span class='date'>" . $project->getDateCreated() . "</span>";
+
+			$newPostSrc = $this->navigationView->getNewPostSrc($projectID, $projectName);
+			$html .= "<a href='$newPostSrc'>Add new post to this project</a>";
+			
+			$html .= "</header>";
+
+			$html .= $projectPosts;
 		}
 
 		catch (\Exception $e) {

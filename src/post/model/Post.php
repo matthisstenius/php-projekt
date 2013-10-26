@@ -6,27 +6,37 @@ class Post {
 	/**
 	 * @var int
 	 */
-	private $postID;
+	protected $postID;
 
 	/**
 	 * @var string
 	 */
-	private $title;
+	protected $title;
 
 	/**
 	 * @var string
 	 */
-	private $content;
+	protected $content;
 
 	/**
 	 * @var date
 	 */
-	private $added;
+	protected $added;
 
 	/**
 	 * @var string
 	 */
-	private $username;
+	protected $username;
+
+	/**
+	 * @var string
+	 */
+	protected $projectID;
+
+	/**
+	 * @var string
+	 */
+	protected $userID;
 
 	/**
 	 * @param int $postID
@@ -36,7 +46,7 @@ class Post {
 	 * @param string $username
 	 * @throws Exception If validation failes
 	 */
-	public function __construct($postID, $title, $content, $added, $username) {
+	public function __construct($postID, $title, $content, $added, $username, $projectID, $userID) {
 		if (!is_int($postID)) {
 			throw new \Exception("invalid postID");
 		}
@@ -57,11 +67,21 @@ class Post {
 			throw new \Exception("invalid user");
 		}
 
+		if (!is_int($projectID)) {
+			throw new \Exception("invalid projectID");
+		}
+
+		if (!is_int($userID)) {
+			throw new \Exception("invalid postID");
+		}
+
 		$this->postID  = $postID;
 		$this->title   = $title;
 		$this->content = $content;
 		$this->added   = $added;
 		$this->username    = $username;
+		$this->projectID = $projectID;
+		$this->userID = $userID;
 	}
 
 	/**
@@ -97,6 +117,20 @@ class Post {
 	 */
 	public function getUsername() {
 		return $this->username;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getProjectID() {
+		return $this->projectID;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getUserID() {
+		return $this->userID;
 	}
 
 	/**

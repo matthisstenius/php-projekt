@@ -43,23 +43,33 @@ class ProjectDAL extends \common\model\DALBase {
 
 	/**
 	 * @param  project\model\Project $project
-	 * @return void
+	 * @return int ProjectID
 	 */
 	public function addProject(\project\model\Project $project) {
-		$stm = self::getDBConnection()->prepare("INSERT INTO Project (name, description, created, idUser_User)
+		try {
+			$pdo = self::getDBConnection();
+
+			$stm = $pdo->prepare("INSERT INTO Project (name, description, created, idUser_User)
 												 VALUES(:name, :description, :created, :userID)");
 
-		$name = $project->getName();
-		$description = $project->getDescription();
-		$created = $project->getDateCreated();
-		$userID = $project->getUserID();
+			$name = $project->getName();
+			$description = $project->getDescription();
+			$created = $project->getDateCreated();
+			$userID = $project->getUserID();
 
-		$stm->bindParam(':name', $name);
-		$stm->bindParam(':description', $description);
-		$stm->bindParam(':created', $created);
-		$stm->bindParam(':userID', $userID);
+			$stm->bindParam(':name', $name);
+			$stm->bindParam(':description', $description);
+			$stm->bindParam(':created', $created);
+			$stm->bindParam(':userID', $userID);
 
-		$stm->execute();
+			$stm->execute();
+
+			return +$pdo->lastInsertId();
+		}
+
+		catch (\Exception $e) {
+			var_dump($e->getMessage());
+		}
 	}
 
 	/**

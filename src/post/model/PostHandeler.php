@@ -15,26 +15,29 @@ class PostHandeler {
 	}
 
 	/**
+	 * @param int $projectID
 	 * @return array array of posts
 	 */
-	public function getPosts($id) {
+	public function getPosts($projectID) {
 		$posts = array();
 
-		foreach ($this->postDAL->getPosts($id) as $row) {
-			$posts[] = new Post(+$row['idPost'], $row['title'], $row['content'], Date($row['added']), $row['username']);
+		foreach ($this->postDAL->getPosts($projectID) as $row) {
+			$posts[] = new Post(+$row['idPost'], $row['title'], $row['content'], Date($row['added']), $row['username'],
+								+$row['userID'], +$row['projectID']);
 		}
 
 		return $posts;
 	}
 
 	/**
-	 * @param  int $post
+	 * @param  int $postID
 	 * @return post\model\Post
 	 * @throws Exception If no post is found
 	 */
-	public function getPost($id) {
-		if ($row = $this->postDAL->getPost($id)) {
-			return new Post(+$row['idPost'], $row['title'], $row['content'], Date($row['added']), $row['username']);
+	public function getPost($postID) {
+		if ($row = $this->postDAL->getPost($postID)) {
+			return new Post(+$row['idPost'], $row['title'], $row['content'], Date($row['added']), $row['username'],
+							+$row['userID'], +$row['projectID']);
 		}
 		
 		throw new \Exception("No post found");
@@ -45,7 +48,8 @@ class PostHandeler {
 	 * @return  void
 	 */
 	public function addPost(\post\model\Post $post) {
-		$this->postDAL->addPost($post);
+		$postID = $this->postDAL->addPost($post);
+		$post->setPostID($postID);
 	}
 
 	/**

@@ -9,14 +9,15 @@ class PostDAL extends \common\model\DALBase {
 	/**
 	 * @return array
 	 */
-	public function getPosts($id) {
+	public function getPosts($projectID) {
 		$result = array();
 
-		$stm = self::getDBConnection()->prepare("SELECT idPost, title, content, added, User.username FROM Post
+		$stm = self::getDBConnection()->prepare("SELECT idPost, title, content, added, User.username, User_idUser
+												 AS userID, projectID_Project AS projectID FROM Post
 												 INNER JOIN User ON User.idUser = User_idUser
 												 WHERE projectID_Project=:projectID");
 
-		$stm->bindParam(':projectID', $id, \PDO::PARAM_INT);
+		$stm->bindParam(':projectID', $projectID, \PDO::PARAM_INT);
 		$stm->execute();
 
 		while ($row = $stm->fetch(\PDO::FETCH_ASSOC)) {
@@ -30,12 +31,13 @@ class PostDAL extends \common\model\DALBase {
 	 * @param  int $id
 	 * @return array 
 	 */
-	public function getPost($id) {
-		$stm = self::getDBConnection()->prepare("SELECT idPost, title, content, added, User.username FROM Post
+	public function getPost($postID) {
+		$stm = self::getDBConnection()->prepare("SELECT idPost, title, content, added, User.username, User_idUser
+												 AS userID, projectID_Project AS projectID FROM Post
 												 INNER JOIN User ON User.idUser = User_idUser
 												 WHERE idPost=:id");
 
-		$stm->bindParam(':id', $id, \PDO::PARAM_INT);
+		$stm->bindParam(':id', $postID, \PDO::PARAM_INT);
 
 		$stm->execute();
 
@@ -46,16 +48,29 @@ class PostDAL extends \common\model\DALBase {
 
 	/**
 	 * @param  post\model\Post $post
-	 * @return void
+	 * @return int PostID
 	 */
 	public function addPost(\post\model\Post $post) {
-		$stm = self::getDBConnection()->prepare("INSERT INTO Post title, content, added VALUES(:title, :content, :added)");
+		$pdo = self::getDBConnection();
 
-		$stm->bindParam(':title', $post->getTitle(), \PDO::PARAM_STRING);
-		$stm->bindParam(':content', $post->getContent(), \PDO::PARAM_STRING);
-		$stm->bindParam(':added', $post->getDateAdded(), \PDO::PARAM_DATE);
+		$stm = $pdo->prepare("INSERT INTO Post (title, content, added, projectID_Project, User_idUser) 
+							  VALUES(:title, :content, :added, :projectID, :userID)");
+
+		$title = $post->getTitle();
+		$content = $post->getContent();
+		$added = $post->getDateAdded();
+		$projectID = $post->getProjectID();
+		$userID = $post->getUserID();
+
+		$stm->bindParam(':title', $title);
+		$stm->bindParam(':content', $content);
+		$stm->bindParam(':added', $added);
+		$stm->bindParam(':projectID', $projectID);
+		$stm->bindParam(':userID', $userID);
 
 		$stm->execute();
+
+		return +$pdo->lastInsertId();
 	}
 
 	/**
@@ -63,7 +78,8 @@ class PostDAL extends \common\model\DALBase {
 	 * @return void
 	 */
 	public function editPost(\post\model\Post $post) {
-		$stm = self::getDBConnection()->prepare("UPDATE Post SET title = :title, content = :content WHERE idPost = :id");
+		$stm = self::getDBConnection()->prepare("UPDATE Post SET title = :title, content = :content 
+												 WHERE idPost = :id");
 
 		$stm->bindParam(':title', $post->getTitle(), \PDO::PARAM_STRING);
 		$stm->bindParam(':content', $post->getContent(), \PDO::PARAM_STRING);

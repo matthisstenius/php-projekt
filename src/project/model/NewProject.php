@@ -7,26 +7,6 @@ namespace project\model;
  */
 class NewProject extends Project {
 	/**
-	 * @var string $name
-	 */
-	private $name;
-
-	/**
-	 * @var string $description
-	 */
-	private $description;
-
-	/**
-	 * @var date $created
-	 */
-	private $created;
-
-	/**
-	 * @var int $userID
-	 */
-	private $userID;
-
-	/**
 	 * @param string $name
 	 * @param string $description
 	 * @param date $created
@@ -56,19 +36,7 @@ class NewProject extends Project {
 		$this->userID      = $userID;
 	}
 
-	public function getName() {
-		return $this->name;
-	}
-
-	public function getDescription() {
-		return $this->description;
-	}
-
-	public function getDateCreated() {
-		return $this->created;
-	}
-
-	public function getUserID() {
-		return $this->userID;
+	public function setProjectID($projectID) {
+		$this->projectID = $projectID;
 	}
 }

@@ -8,7 +8,7 @@ class Navigation {
 	 * @param  int $projectID
 	 * @param  int $postID
 	 * @param  string $title
-	 * @return string HTML
+	 * @return void
 	 */
 	public function goToPost($projectID, $postID, $title) {
 		header("Location: /php-projekt/project/$projectID/post/$postID/$title");
@@ -16,30 +16,63 @@ class Navigation {
 
 	/**
 	 * @param  int $projectID
+	 * @return void
+	 */
+	public function gotoNewPost($projectID, $projectName) {
+		header("Location: /php-projekt/project/$projectID/$projectName/newPost");
+	}
+
+	/**
+	 * @param  int $projectID
 	 * @param  string $name
-	 * @return string HTML
+	 * @return void
 	 */
 	public function goToProject($projectID, $name) {
 		header("Location: /php-projekt/project/$projectID/$name");
 	}
 
+	public function gotoNewProject() {
+		header("Location: /php-projekt/newProject");
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getHomeSrc() {
+		return "/php-projekt";
+	}
+
 	/**
 	 * @param  int $porjectID
 	 * @param  string $cleanName
-	 * @param  string $name
-	 * @return string HTML
+	 * @return string
 	 */
-	public function getProjectLink($projectID, $cleanName, $name) {
-		return "<a href='/php-projekt/project/$projectID/$cleanName'>$name</a>";
+	public function getProjectSrc($projectID, $cleanName) {
+		return "/php-projekt/project/$projectID/$cleanName";
 	}
 
 	/**
 	 * @param  int $projectID
 	 * @param  int $postID
 	 * @param  string $postName
-	 * @return string HTML
+	 * @return string 
 	 */
 	public function getPostLink($projectID, $postID, $postName) {
-		return "<a href='/php-projekt/project/$projectID/post/$postID/$postName'>$postName</a>";
+		return "/php-projekt/project/$projectID/post/$postID/$postName";
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getAddNewProjectSrc() {
+		return "/php-projekt/newProject";
+	}
+
+	/**
+	 * @param  int $projectID
+	 * @return string
+	 */
+	public function getNewPostSrc($projectID, $projectName) {
+		return "/php-projekt/project/$projectID/$projectName/newPost";
 	}
 }

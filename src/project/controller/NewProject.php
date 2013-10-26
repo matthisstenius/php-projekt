@@ -26,6 +26,6 @@ class NewProject {
 	}
 
 	public function addProject() {
-		$this->newProjectView->addProject();
+		$newProject = $this->newProjectView->addProject();
 	}
 }

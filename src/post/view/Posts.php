@@ -25,12 +25,17 @@ class Posts {
 		$html = "<div class='post-thumbs'>";
 
 		foreach ($this->postHandeler->getPosts($projectID) as $post) {
+			$postSrc = $this->navigationView->getPostLink($projectID, $post->getPostID(), $post->getCleanTitle());
+
 			$html .= "<div class='post-thumb box pad'>";
 			$html .= "<h1 class='post-title'>" . $post->getTitle() . "</h1>";
 			$html .= "<p class='post-excerpt'>" . $post->getExcerpt() . "...</p>";
-			$html .= $this->navigationView->getPostLink($projectID, $post->getPostID(), $post->getCleanTitle());
+			$html .= "<a href='$postSrc'>" . $post->getTitle() . "</a>";
 			$html .= "</div>";
 		}
+
+		$html .= "</div>";
+
 
 		return $html;
 	}

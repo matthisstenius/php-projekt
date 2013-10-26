@@ -6,32 +6,32 @@ class Project {
 	/**
 	 * @var int
 	 */
-	private $projectID;
+	protected $projectID;
 
 	/**
 	 * @var string
 	 */
-	private $name;
+	protected $name;
 
 	/**
 	 * @var string
 	 */
-	private $description;
+	protected $description;
 
 	/**
 	 * @var date
 	 */
-	private $created;
+	protected $created;
 
 	/**
 	 * @var string
 	 */
-	private $username;
+	protected $username;
 
 	/**
 	 * @var int
 	 */
-	private $userID;
+	protected $userID;
 
 	/**
 	 * @param int $projectID
