@@ -7,7 +7,7 @@ require_once("src/post/model/NewPost.php");
 class NewPost {
 	private static $title = "title";
 	private static $content = "content";
-	private static $errorMessage = "errorMessage";
+	private static $errorMessage = "post::view::errorMessage";
 
 	/**
 	 * @var post\model\PostHandeler

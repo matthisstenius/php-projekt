@@ -8,7 +8,7 @@ require_once("src/common/view/Filter.php");
 class NewProject {
 	private static $projectName = "projectName";
 	private static $projectDescription = "projectDescription";
-	private static $errorMessage = "errorMessage";
+	private static $errorMessage = "project::view::errorMessage";
 	/**
 	 * @var project\model\ProjectHandeler
 	 */
