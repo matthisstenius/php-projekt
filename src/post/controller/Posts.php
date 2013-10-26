@@ -14,7 +14,7 @@ class Posts {
 	/**
 	 * @var post\view\Post
 	 */
-	private $postView;
+	private $postsView;
 
 	/**
 	 * @param post\view\Post   $postView
@@ -22,13 +22,14 @@ class Posts {
 	 */
 	public function __construct(\post\model\PostHandeler $postHandeler) {
 		$this->postHandeler = $postHandeler;
-		$this->postView = new \post\view\Posts($this->postHandeler);
+		$this->postsView = new \post\view\Posts($this->postHandeler);
 	}
 
 	/**
+	 * @param  int $projectID
 	 * @return string HTML
 	 */
-	public function showPosts($id) {
-		return $this->postView->getHTML($id);
+	public function showPosts($projectID) {
+		return $this->postsView->getHTML($projectID);
 	}
 }

@@ -45,10 +45,10 @@ class Application {
 										$this->projectsController->showProjects());
 		});
 
-		$this->router->get('/project/:id/:name', function($id, $name) {
+		$this->router->get('/project/:projectID/:name', function($projectID, $name) {
 			echo $this->page->getPage("Project title", 
 										$this->projectsController->showProjects(), 
-										$this->projectController->showProject(+$id, $name));
+										$this->projectController->showProject(+$projectID, $name));
 		});
 
 		$this->router->get('/project/:projectID/post/:postID/:title', function($projectID, $postID, $title) {

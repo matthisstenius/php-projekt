@@ -19,11 +19,13 @@ class Post {
 	}
 
 	/**
-	 * @param  int $id
-	 * @return string HTMLzx
+	 * @param  int $projectID
+	 * @param  int $postID
+	 * @param  string $title
+	 * @return string HTML
 	 */
-	public function showPost($projectID, $id, $title) {
-		return $this->postView->getPostHTML($projectID, $id, $title);
+	public function showPost($projectID, $postID, $title) {
+		return $this->postView->getPostHTML($projectID, $postID, $title);
 
 	}
 }
