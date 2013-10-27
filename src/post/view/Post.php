@@ -36,10 +36,9 @@ class Post {
 				$this->navigationView->goToPost($projectID, $id, $post->getCleanTitle());
 			}
 
-			$html .= "<h1 class='post-title'>" . $post->getTitle() . "</h1>";
-			$html .= "<p class='post-username'>By: " . $post->getUsername() . "</p>";
+			$html .= "<h1 class='post-title title'>" . $post->getTitle() . "</h1>";
+			$html .= "<span class='created'>Added by: " . $post->getUsername() . " " . $post->getDateAdded() . "</span>";
 			$html .= "<p class='post-content'>" . $post->getContent() . "</p>";
-			$html .= "<span class='date'>" . $post->getDateAdded() . "</span>";	
 		}
 		
 		catch (\Exception $e) {

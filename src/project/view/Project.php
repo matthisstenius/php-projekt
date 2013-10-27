@@ -37,13 +37,12 @@ class Project {
 			$html = "<header class='project-header'>";
 
 			$html .= "<h1 class='title'>" . $project->getName() . "</h1>";
-			$html .= "<p>" . $project->getUsername() . "</p>";
-			$html .= "<p>" . $project->getDescription() . "</p>";
-			$html .= "<span class='date'>" . $project->getDateCreated() . "</span>";
+			$html .= "<span class='created'>Created by: " . $project->getUsername() . " " . $project->getDateCreated() . "</span>";
 
 			$newPostSrc = $this->navigationView->getNewPostSrc($projectID, $projectName);
-			$html .= "<a href='$newPostSrc'>Add new post to this project</a>";
-			
+			$html .= "<a class='btn btn-add right' href='$newPostSrc'>Add new post</a>";
+
+			$html .= "<p>" . $project->getDescription() . "</p>";
 			$html .= "</header>";
 
 			$html .= $projectPosts;

@@ -28,9 +28,10 @@ class Posts {
 			$postSrc = $this->navigationView->getPostLink($projectID, $post->getPostID(), $post->getCleanTitle());
 
 			$html .= "<div class='post-thumb box pad'>";
-			$html .= "<h1 class='post-title'>" . $post->getTitle() . "</h1>";
+			$html .= "<h1 class='post-title title'>" . $post->getTitle() . "</h1>";
+			$html .= "<span class='created'>Added by: " . $post->getUsername() . " " . $post->getDateAdded() . "</span>";
 			$html .= "<p class='post-excerpt'>" . $post->getExcerpt() . "...</p>";
-			$html .= "<a href='$postSrc'>" . $post->getTitle() . "</a>";
+			$html .= "<a href='$postSrc'>Read More</a>";
 			$html .= "</div>";
 		}
 

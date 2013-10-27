@@ -12,6 +12,10 @@
 */
 	$blue: #34AADC;
 	$grey: #EDEDED;
+	$darkGrey: #575D63;
+	$eggShell: #EFEFEF;
+	$green: #4CD964;
+
 /*
 ----------------------------------------
  * General
@@ -69,7 +73,7 @@
 	}
 
 	.btn-add {
-		background-color: #4CD964;
+		background-color: $green;
 	}
 
 /*
@@ -98,6 +102,10 @@
 		text-decoration: none;
 	}
 
+	.title {
+		margin-bottom: 5px;
+	}
+
 /*
 ----------------------------------------
  * Forms
@@ -118,7 +126,7 @@
 ----------------------------------------
 */
 	.header {
-		background-color: #575D63;
+		background-color: $darkGrey;
 		position: fixed;
 		height: 100%;
 		box-shadow: inset -9px 0 20px #383E44;
@@ -132,7 +140,7 @@
 		}
 
 		a {
-			color: #EFEFEF;
+			color: $eggShell;
 
 			&:hover {
 				color: $blue;
@@ -155,6 +163,20 @@
  * Posts
 ----------------------------------------
 */
+	.post-thumbs {
+		@include clearfix();
+	}
+
 	.post-title {
 		margin-top: 0;
+	}
+
+/*
+----------------------------------------
+ * Project
+----------------------------------------
+*/
+	.created {
+		font-style: italic;
+		font-size: .9em;
 	}
