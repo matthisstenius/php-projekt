@@ -8,6 +8,7 @@ require_once("src/project/model/ProjectHandeler.php");
 require_once("src/project/controller/Projects.php");
 require_once("src/project/controller/Project.php");
 require_once("src/project/controller/NewProject.php");
+require_once("src/project/controller/EditProject.php");
 require_once("src/post/controller/Posts.php");
 require_once("src/post/controller/Post.php");
 require_once("src/post/controller/NewPost.php");
@@ -46,7 +47,12 @@ class Application {
 	/**
 	 * @var project\controller\NewProject
 	 */
-	private $newProjectController; 
+	private $newProjectController;
+
+	/**
+	 * @var project\controller\EditProject
+	 */
+	private $editProjectController; 
 
 	public function __construct() {
 		$this->router = new \common\view\Router();
@@ -58,6 +64,7 @@ class Application {
 		$this->projectsController = new \project\controller\Projects($this->projectHandeler);
 		$this->projectController = new \project\controller\Project($this->projectHandeler);
 		$this->newProjectController = new \project\controller\NewProject($this->projectHandeler);
+		$this->editProjectController = new \project\controller\EditProject($this->projectHandeler);
 
 		$this->newPostController = new \post\controller\NewPost($this->postHandeler);
 	}
@@ -84,6 +91,20 @@ class Application {
 			echo $this->page->getPage("Add New Project", 
 										$this->projectsController->showProjects(),
 										$this->newProjectController->showNewProjectForm());
+		});
+
+		$this->router->post('/newProject', function() {
+			$this->newProjectController->addProject();
+		});
+
+		$this->router->get('/edit/project/:projectID/:projectName', function($projectID, $projectName) {
+			echo $this->page->getPage("Edit $projectName",
+										$this->projectsController->showProjects(),
+										$this->editProjectController->showEditProjectForm(+$projectID, $projectName));
+		});
+
+		$this->router->post('/edit/project/:projectID/:projectName', function($projectID, $projectName) {
+			$this->editProjectController->saveProject(+$projectID, $projectName);
 		});
 
 		$this->router->post('/newProject', function() {

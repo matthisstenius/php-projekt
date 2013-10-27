@@ -35,6 +35,10 @@ class Navigation {
 		header("Location: /php-projekt/newProject");
 	}
 
+	public function gotoEditProject($projectID, $projectName) {
+		header("Location: /php-projekt/edit/project/$projectID/$projectName");
+	}
+	
 	/**
 	 * @return string
 	 */
@@ -51,6 +55,14 @@ class Navigation {
 		return "/php-projekt/project/$projectID/$cleanName";
 	}
 
+	/**
+	 * @param  int $projectID
+	 * @param  string $projectName
+	 * @return string
+	 */
+	public function getEditProjectSrc($projectID, $projectName) {
+		return "/php-projekt/edit/project/$projectID/$projectName";
+	}
 	/**
 	 * @param  int $projectID
 	 * @param  int $postID

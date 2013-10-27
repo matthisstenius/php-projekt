@@ -42,6 +42,9 @@ class Project {
 			$newPostSrc = $this->navigationView->getNewPostSrc($projectID, $projectName);
 			$html .= "<a class='btn btn-add right' href='$newPostSrc'>Add new post</a>";
 
+			$editProjectSrc = $this->navigationView->getEditProjectSrc($projectID, $projectName);
+			$html .= "<a href='$editProjectSrc' class ='btn btn-edit'>Edit Project</a>";
+
 			$html .= "<p>" . $project->getDescription() . "</p>";
 			$html .= "</header>";
 

@@ -68,7 +68,7 @@ class ProjectDAL extends \common\model\DALBase {
 		}
 
 		catch (\Exception $e) {
-			var_dump($e->getMessage());
+			//var_dump($e->getMessage());
 		}
 	}
 
@@ -77,11 +77,18 @@ class ProjectDAL extends \common\model\DALBase {
 	 * @return void
 	 */
 	public function editProject(\project\model\Project $project) {
-		$stm = self::getDBConnection()->prepare("UPDATE Project SET name = :name, description = :description 
-												 WHERE idPost = :id");
+		$pdo = self::getDBConnection();
 
-		$stm->bindParam(':name', $project->getName(), \PDO::PARAM_STRING);
-		$stm->bindParam(':content', $projekt->getDescription(), \PDO::PARAM_STRING);
+		$stm = $pdo->prepare("UPDATE Project SET name = :name, description = :description
+												 WHERE idProject = :projectID");
+
+		$name = $project->getName();
+		$description = $project->getDescription();
+		$projectID = $project->getProjectID();
+
+		$stm->bindParam(':name', $name, \PDO::PARAM_STR);
+		$stm->bindParam(':description', $description, \PDO::PARAM_STR);
+		$stm->bindParam(':projectID', $projectID, \PDO::PARAM_INT);
 
 		$stm->execute();
 	}
