@@ -44,6 +44,14 @@ class Project {
 
 			$editProjectSrc = $this->navigationView->getEditProjectSrc($projectID, $projectName);
 			$html .= "<a href='$editProjectSrc' class ='btn btn-edit'>Edit Project</a>";
+			
+
+			$deleteProjectSrc = $this->navigationView->getDeleteProjectSrc($projectID);
+			//$html .= "<a href='$deleteProjectSrc' class ='btn btn-remove'>Delete Project</a>";
+			$html .= "<form action='$deleteProjectSrc' method='POST'>
+						<input name='_method' type='hidden' value='delete'>
+						<button class='btn btn-remove'>Delete Project</button>
+					</form>";
 
 			$html .= "<p>" . $project->getDescription() . "</p>";
 			$html .= "</header>";

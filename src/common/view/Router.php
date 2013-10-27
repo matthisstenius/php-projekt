@@ -43,7 +43,13 @@ class Router {
 			$this->callbacks[$action][] = $callbacks;
 		}
 
-		$this->requestMethod = $_SERVER['REQUEST_METHOD'];
+		if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['_method'])) {
+			$this->requestMethod = strtoupper($_POST['_method']);
+		}
+
+		else {
+			$this->requestMethod = $_SERVER['REQUEST_METHOD'];
+		}
 	}
 
 	/**
@@ -89,6 +95,7 @@ class Router {
 	public function notFound($route, $callback) {
 		$this->add($route, $callback, "401");
 	}
+
 	/**
 	 * Matches the incoming URI against an array of URI's
 	 * @return void
@@ -99,6 +106,7 @@ class Router {
 		$incomingUri = trim($incomingUri, '/\//');
 		
 		$routesByMethod = $this->routes[$this->requestMethod];
+
 		$requestParams = array();
 
 		foreach ($routesByMethod as $routeKey => $route) {

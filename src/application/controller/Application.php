@@ -9,6 +9,7 @@ require_once("src/project/controller/Projects.php");
 require_once("src/project/controller/Project.php");
 require_once("src/project/controller/NewProject.php");
 require_once("src/project/controller/EditProject.php");
+require_once("src/project/controller/DeleteProject.php");
 require_once("src/post/controller/Posts.php");
 require_once("src/post/controller/Post.php");
 require_once("src/post/controller/NewPost.php");
@@ -54,6 +55,11 @@ class Application {
 	 */
 	private $editProjectController; 
 
+	/**
+	 * @var project\controller\DeleteProject
+	 */
+	private $deleteProjectController;
+
 	public function __construct() {
 		$this->router = new \common\view\Router();
 		$this->page = new \common\view\Page();
@@ -65,6 +71,7 @@ class Application {
 		$this->projectController = new \project\controller\Project($this->projectHandeler);
 		$this->newProjectController = new \project\controller\NewProject($this->projectHandeler);
 		$this->editProjectController = new \project\controller\EditProject($this->projectHandeler);
+		$this->deleteProjectController = new \project\controller\DeleteProject($this->projectHandeler);
 
 		$this->newPostController = new \post\controller\NewPost($this->postHandeler);
 	}
@@ -107,8 +114,8 @@ class Application {
 			$this->editProjectController->saveProject(+$projectID, $projectName);
 		});
 
-		$this->router->post('/newProject', function() {
-			$this->newProjectController->addProject();
+		$this->router->delete('/remove/project/:projectID', function($projectID) {
+			$this->deleteProjectController->deleteProject(+$projectID);
 		});
 
 		$this->router->get('/project/:projectID/:projectName/newPost', function($projectID, $projectName) {

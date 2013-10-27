@@ -3,7 +3,10 @@
 namespace common\view;
 
 class Navigation {
-	
+	public function gotoFrontPage() {
+		header("Location: /php-projekt/");
+	}
+
 	/**
 	 * @param  int $projectID
 	 * @param  int $postID
@@ -63,6 +66,15 @@ class Navigation {
 	public function getEditProjectSrc($projectID, $projectName) {
 		return "/php-projekt/edit/project/$projectID/$projectName";
 	}
+
+	/**
+	 * @param  int $projectID
+	 * @return string
+	 */
+	public function getDeleteProjectSrc($projectID) {
+		return "/php-projekt/remove/project/$projectID";
+	}
+
 	/**
 	 * @param  int $projectID
 	 * @param  int $postID
