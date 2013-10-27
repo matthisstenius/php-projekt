@@ -50,6 +50,7 @@ class EditProject {
 			$editProjectSrc = $this->navigationView->getEditProjectSrc($projectID, $projectName);
 			
 			$html .= "<form class='pure-form pure-form-stacked' action='$editProjectSrc' method='POST'>
+						<input type='hidden' name='_method' value='put'>
 						<input class='input-wide' id='". self::$projectName . "' type='text' 
 						name='". self::$projectName . "' value='" . $project->getName() . "'>
 

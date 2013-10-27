@@ -110,7 +110,7 @@ class Application {
 										$this->editProjectController->showEditProjectForm(+$projectID, $projectName));
 		});
 
-		$this->router->post('/edit/project/:projectID/:projectName', function($projectID, $projectName) {
+		$this->router->put('/edit/project/:projectID/:projectName', function($projectID, $projectName) {
 			$this->editProjectController->saveProject(+$projectID, $projectName);
 		});
 
