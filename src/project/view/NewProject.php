@@ -31,21 +31,21 @@ class NewProject {
 	 * @return string HTML
 	 */
 	public function getNewprojectForm() {
-		$html = "";
+		$html = "<h1>Add new project</h1>";
 
 		if (isset($_SESSION[self::$errorMessage])) {
 			$html .= $this->userInputFaulty();
 			unset($_SESSION[self::$errorMessage]);
 		}
 
-		$html .= "<form action='/php-projekt/newProject' method='POST'>
-					<label for='". self::$projectName . "'>Project Name</label>
-					<input id='". self::$projectName . "' type='text' name='". self::$projectName . "'>
+		$html .= "<form class='pure-form pure-form-stacked' action='/php-projekt/newProject' method='POST'>
+					<input class='input-wide' id='". self::$projectName . "' type='text' 
+					name='". self::$projectName . "' placeholder='Project name'>
 
-					<label for='". self::$projectDescription . "'>Project Description</label>
-					<input id='". self::$projectDescription . "' type='text' name='". self::$projectDescription . "'>
+					<textarea class='input-wide input-content' 
+					name='". self::$projectDescription . "' placeholder='Project description'></textarea>
 
-					<input type='submit' value='Create Project'>
+					<button class='btn btn-add'>Create Project</button>
 				</form>";
 
 		return $html;

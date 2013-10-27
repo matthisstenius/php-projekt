@@ -2,6 +2,7 @@
 @import "neat/neat";
 @import "layout";
 @import "fonts";
+@import "form";
 
 
 /*
@@ -9,7 +10,7 @@
  * Color
 ----------------------------------------
 */
-	$blue: #238DB7;
+	$blue: #34AADC;
 	$grey: #EDEDED;
 /*
 ----------------------------------------
@@ -44,6 +45,33 @@
 		border-radius: 3px;
 		border: 1px solid #ccc;
 	}
+
+/*
+----------------------------------------
+ * Buttons
+----------------------------------------
+*/
+	.btn {
+		display: inline-block;
+		padding: 10px 20px;
+		border-radius: 3px;
+		border: none;
+		color: white;
+		text-align: center;
+
+		&:hover {
+			color: white;
+		}
+	}
+
+	.btn-wide {
+		display: block;
+	}
+
+	.btn-add {
+		background-color: #4CD964;
+	}
+
 /*
 ----------------------------------------
  * Typo
@@ -72,6 +100,20 @@
 
 /*
 ----------------------------------------
+ * Forms
+----------------------------------------
+*/
+	.input-wide {
+		width: 100%;
+		margin-bottom: 20px;
+	}
+
+	.input-content {
+		min-height: 300px;
+		resize: vertical;
+	}
+/*
+----------------------------------------
  * Header
 ----------------------------------------
 */
@@ -80,11 +122,32 @@
 		position: fixed;
 		height: 100%;
 		box-shadow: inset -9px 0 20px #383E44;
+		
+		.logo, h3 {
+			color: white;
+		}	
+
+		p {
+			color: #999;
+		}
+
+		a {
+			color: #EFEFEF;
+
+			&:hover {
+				color: $blue;
+				@include transition (all .5s ease-in-out);
+			}
+		}
 	}
 
 	.logo {
 		font-size: 2em;
 		color: white;
+	}
+
+	.projects-list li {
+		margin: 5px 0;
 	}
 
 /*

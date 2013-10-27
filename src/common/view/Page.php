@@ -66,7 +66,8 @@ class Page {
 						<ul>
 							<li><a href='$newProjectSrc'>Create new project</a></li>
 						</ul>
-
+						
+						<h3>My Projects</h3>
 						$projects
 					</nav>
 				</header>";

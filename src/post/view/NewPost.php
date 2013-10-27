@@ -34,20 +34,21 @@ class NewPost {
 	 */
 	public function getNewPostForm($projectID, $projectName) {
 		$fromAction = $this->navigationView->getNewPostSrc($projectID, $projectName);
-		$html = "";
+		$html = "<h1>Add new post to $projectName</h1>";
 
 		if (isset($_SESSION[self::$errorMessage])) {
 			$html .= $this->userInputFaulty();
+			unset($_SESSION[self::$errorMessage]);
 		}
 
-		$html .= "<form action='$fromAction' method='POST'>
-					<label for='" . self::$title . "'>Title</label>
-					<input type='text' id='" . self::$title . "' name='" . self::$title . "'>
+		$html .= "<form class='pure-form pure-form-stacked' action='$fromAction' method='POST'>
+					<input type='text' class='input-wide' id='" . self::$title . "' 
+					name='" . self::$title . "' placeholder='Title'>
 
-					<label for='" . self::$content . "'>Post content</label>
-					<input type='text' id='" . self::$content . "' name='" . self::$content . "'>
+					<textarea class='input-wide input-content' id='" . self::$content . "' 
+					name='" . self::$content . "'></textarea>
 
-					<input type='submit' value='Save Post'>
+					<button class='btn btn-add'>Save Post</button>
 				</form>";
 
 		return $html;
