@@ -128,7 +128,7 @@ class Project {
 	 * Makes URI friendly title
 	 * @param  string $title
 	 * @return string
-	 * @todo  fix duplication! Same as in Post
+	 * @todo  fix duplication! Same as in Post move this to common view
 	 */
 	private function generateCleanTitle($title) {
 		$cleanTitle = preg_replace('/\s+/', ' ', $title);

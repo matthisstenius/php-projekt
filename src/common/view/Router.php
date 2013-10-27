@@ -95,7 +95,7 @@ class Router {
 	 */
 	public function match() {
 		$incomingUri = isset($_GET[self::$uriIndex]) ? $_GET[self::$uriIndex] : "/";;
-		$incomingUri = htmlentities($incomingUri);
+		$incomingUri = htmlspecialchars($incomingUri);
 		$incomingUri = trim($incomingUri, '/\//');
 		
 		$routesByMethod = $this->routes[$this->requestMethod];
@@ -105,13 +105,13 @@ class Router {
 			$choppedRoute = explode("/", $route);
 			$choppedIncomingUri = explode("/", $incomingUri);
 			
-			$choppedChangedParamsUri = preg_replace('/:{1}.+/', '[\w-]+', $choppedRoute);
+			$choppedChangedParamsUri = preg_replace('/:{1}.+/', '[\wåäö-]+', $choppedRoute);
 			$changedParamsUri = implode("/", $choppedChangedParamsUri);
 
 			if (preg_match("#^$changedParamsUri$#", $incomingUri)) {
 
 				foreach ($choppedChangedParamsUri as $key => $value) {
-					if ($value == "[\w-]+") {
+					if ($value == "[\wåäö-]+") {
 						$requestParams[] = $choppedIncomingUri[$key];
 					}
 				}

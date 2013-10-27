@@ -17,8 +17,8 @@ class Page {
 		$html = "<!DOCTYPE html>
 		<html lang='sv'>
 		<head>
-			<title>$title</title>
-			<meta charset='utf-8'>"
+			<meta charset='utf-8'>
+			<title>$title</title>"
 			. $this->getStylesheet() .
 		"</head>
 		<body>

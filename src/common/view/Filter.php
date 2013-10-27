@@ -8,6 +8,6 @@ class Filter {
 	 * @return string
 	 */
 	public static function clean($input) {
-		return trim(htmlentities($input));
+		return trim(htmlspecialchars($input));
 	}
 }

@@ -80,8 +80,8 @@ class NewProject {
 		try {
 			$project = new \project\model\NewProject($this->getProjectName(), $this->getProjectDescription(), \Date('y-m-d'), 3);
 			$this->projectHandeler->addProject($project);
-			$this->navigationView->goToProject($newProject->getProjectID(), $newProject->getCleanName(), 
-											$newProject->getName());
+			$this->navigationView->goToProject($project->getProjectID(), $project->getCleanName(), 
+												$project->getName());
 		}
 
 		catch (\Exception $e) {
