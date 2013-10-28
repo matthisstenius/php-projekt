@@ -65,6 +65,6 @@ class PostHandeler {
 	 * @return  void
 	 */
 	public function deletePost(\post\model\Post $post) {
-		$this->postDAL->deletePost($post->getPostID());
+		$this->postDAL->deletePost($post);
 	}
 }

@@ -103,4 +103,8 @@ class Navigation {
 	public function getEditPostSrc($projectID, $projectName, $postID, $postName) {
 		return "/php-projekt/project/$projectID/$projectName/edit/post/$postID/$postName";
 	}
+
+	public function getDeletePostSrc($projectID, $projectName, $postID) {
+		return "/php-projekt/project/$projectID/$projectName/remove/post/$postID";
+	}
 }

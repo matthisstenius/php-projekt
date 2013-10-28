@@ -14,6 +14,7 @@ require_once("src/post/controller/Posts.php");
 require_once("src/post/controller/Post.php");
 require_once("src/post/controller/NewPost.php");
 require_once("src/post/controller/EditPost.php");
+require_once("src/post/controller/DeletePost.php");
 
 class Application {
 	/**
@@ -175,12 +176,19 @@ class Application {
 			$editPostController->editPost($projectID, $projectName);
 		});
 
+		$this->router->delete('/project/:projectID/:projectName/remove/post/:postID', function($projectID, $projectName,
+																								$postID) {
+			$deletePostController = new \post\controller\DeletePost($this->postHandeler, $postID);
+
+			$deletePostController->deletePost(+$projectID, $projectName);
+		});
+
 		/**
 	 	* GET 404 page
 	 	* @todo Fix propper 404 page
 	 	*/
 		$this->router->notFound("/404", function() {
-			echo  $this->page->getPage("404", $this->projects->showProjects(), "<h1>404 page not found</h1>");
+			echo  $this->page->getPage("404", $this->projectsController->showProjects(), "<h1>404 page not found</h1>");
 		});
 
 		$this->router->match();

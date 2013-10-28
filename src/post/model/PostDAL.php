@@ -93,13 +93,15 @@ class PostDAL extends \common\model\DALBase {
 	}
 
 	/**
-	 * @param  int $id
+	 * @param  \post\model\Post
 	 * @return void
 	 */
-	public function deletPost($id) {
-		$stm = self::getDBConnection()->prepare('DELETE Post WHERE idPost = :id');
+	public function deletePost(\post\model\Post $post) {
+		$stm = self::getDBConnection()->prepare('DELETE FROM Post WHERE idPost = :id');
 
-		$stm->bindParam(':id', $id, \PDO::PARAM_INT);
+		$postID = $post->getPostID();
+
+		$stm->bindParam(':id', $postID, \PDO::PARAM_INT);
 
 		$stm->execute();
 	}

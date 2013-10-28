@@ -38,6 +38,13 @@ class Post {
 
 			$editPostSrc = $this->navigationView->getEditPostSrc($projectID, $projectName, $postID, $postTitle);
 			$html .= "<a href='$editPostSrc' class='btn btn-edit'>Edit Post</a>";
+
+			$deletePostSrc = $this->navigationView->getDeletePostSrc($projectID, $projectName, $postID);
+			$html .= "<form action='$deletePostSrc' method='POST'>
+						<input type='hidden' name='_method' value='delete'>
+						<button class='btn btn-remove'>Delete Post</button>
+					</form>";
+
 			$html .= "<h1 class='post-title title'>" . $post->getTitle() . "</h1>";
 			$html .= "<span class='created'>Added by: " . $post->getUsername() . " " . $post->getDateAdded() . "</span>";
 			$html .= "<p class='post-content'>" . $post->getContent() . "</p>";
