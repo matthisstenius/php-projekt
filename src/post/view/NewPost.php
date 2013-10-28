@@ -76,12 +76,17 @@ class NewPost {
 		return "";
 	}
 
+	/**
+	 * @param int $projectID
+	 * @param string $projectName
+	 * @return void
+	 */
 	public function addPost($projectID, $projectName) {
 		try {
 			$post = new \post\model\NewPost($this->getPostTitle(), $this->getPostContent(), \Date('y-m-d'), $projectID, 3);
 			$this->postHandeler->addPost($post);
 
-			$this->navigationView->goToPost($post->getProjectID(), $post->getPostID(), 
+			$this->navigationView->goToPost($post->getProjectID(), $projectName, $post->getPostID(), 
 											$post->getCleanTitle());
 		}
 

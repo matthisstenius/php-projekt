@@ -94,13 +94,15 @@ class ProjectDAL extends \common\model\DALBase {
 	}
 
 	/**
-	 * @param  int $id
+	 * @param  project\model\Project $project
 	 * @return void
 	 */
-	public function deleteProject($id) {
+	public function deleteProject(\project\model\Project $project) {
 		$stm = self::getDBConnection()->prepare('DELETE FROM Project WHERE idProject =  :id');
 
-		$stm->bindParam(':id', $id, \PDO::PARAM_INT);
+		$projectID = $project->getProjectID();
+
+		$stm->bindParam(':id', $projectID, \PDO::PARAM_INT);
 
 		$stm->execute();
 	}

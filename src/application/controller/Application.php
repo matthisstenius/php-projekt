@@ -41,26 +41,6 @@ class Application {
 	 */
 	private $projectsController;
 
-	/**
-	 * @var project\controller\Project
-	 */
-	private $projectController;
-
-	/**
-	 * @var project\controller\NewProject
-	 */
-	private $newProjectController;
-
-	/**
-	 * @var project\controller\DeleteProject
-	 */
-	private $deleteProjectController;
-
-	/**
-	 * @var post\controller\NewPost
-	 */
-	private $newPostController;
-
 	public function __construct() {
 		$this->router = new \common\view\Router();
 		$this->page = new \common\view\Page();
@@ -69,41 +49,67 @@ class Application {
 		$this->postHandeler = new \post\model\PostHandeler();
 
 		$this->projectsController = new \project\controller\Projects($this->projectHandeler);
-		$this->projectController = new \project\controller\Project($this->projectHandeler);
-		$this->newProjectController = new \project\controller\NewProject($this->projectHandeler);
-		$this->deleteProjectController = new \project\controller\DeleteProject($this->projectHandeler);
-
-		$this->newPostController = new \post\controller\NewPost($this->postHandeler);
 	}
 
-	public function init() {		
+	/**
+	 * Main routing for the application
+	 * @return void 
+	 */
+	public function init() {
+		/**
+	 	* GET FrontPage
+	 	*/
 		$this->router->get('/', function() {
 			echo $this->page->getPage("Hello Blog!", 
 										$this->projectsController->showProjects());
 		});
 
+		/**
+	 	* GET Project
+	 	*/
 		$this->router->get('/project/:projectID/:projectName', function($projectID, $projectName) {
+			$projectController = new \project\controller\Project($this->projectHandeler);
+
 			echo $this->page->getPage("Project title", 
 										$this->projectsController->showProjects(), 
-										$this->projectController->showProject(+$projectID, $projectName));
+										$projectController->showProject(+$projectID, $projectName));
 		});
 
+		/**
+	 	* GET Post in Project
+	 	*/
 		$this->router->get('/project/:projectID/:projectName/post/:postID/:title', function($projectID, $projectName, $postID, $title) {
+			$projectController = new \project\controller\Project($this->projectHandeler);
+
 			echo $this->page->getPage("Post tile", 
 										$this->projectsController->showProjects(), 
-										$this->projectController->showProjectPost(+$projectID, $projectName, +$postID, $title));
+										$projectController->showProjectPost(+$projectID, $projectName, +$postID, $title));
 		});
 
+		/**
+	 	* GET Add new project
+	 	*/
 		$this->router->get('/newProject', function() {
+			$newProjectController = new \project\controller\NewProject($this->projectHandeler);
+
 			echo $this->page->getPage("Add New Project", 
 										$this->projectsController->showProjects(),
-										$this->newProjectController->showNewProjectForm());
+										$newProjectController->showNewProjectForm());
 		});
 
+		/**
+	 	* POST Add new project
+	 	*/
 		$this->router->post('/newProject', function() {
-			$this->newProjectController->addProject();
+			$newProjectController = new \project\controller\NewProject($this->projectHandeler);
+
+			$newProjectController->addProject();
 		});
 
+
+		/**
+	 	* GET Edit project
+	 	*/
 		$this->router->get('/edit/project/:projectID/:projectName', function($projectID, $projectName) {
 			$editProjectController = new \project\controller\EditProject($this->projectHandeler, $projectID);
 
@@ -112,25 +118,46 @@ class Application {
 										$editProjectController->showEditProjectForm($projectName));
 		});
 
+		/**
+	 	* PUT Edit project
+	 	*/
 		$this->router->put('/edit/project/:projectID/:projectName', function($projectID, $projectName) {
 			$editProjectController = new \project\controller\EditProject($this->projectHandeler, $projectID);
+
 			$editProjectController->saveProject(+$projectID, $projectName);
 		});
 
+		/**
+	 	* DELETE remove project
+	 	*/
 		$this->router->delete('/remove/project/:projectID', function($projectID) {
-			$this->deleteProjectController->deleteProject(+$projectID);
+			$deleteProjectController = new \project\controller\DeleteProject($this->projectHandeler, $projectID);
+			$deleteProjectController->deleteProject();
 		});
 
+		/**
+	 	* GET add new post in project
+	 	*/
 		$this->router->get('/project/:projectID/:projectName/newPost', function($projectID, $projectName) {
+			$newPostController = new \post\controller\NewPost($this->postHandeler);
+
 			echo $this->page->getPage("Add new post", 
 										$this->projectsController->showProjects(),
-										$this->newPostController->showNewPostForm($projectID, $projectName));
+										$newPostController->showNewPostForm($projectID, $projectName));
 		});
 
+		/**
+	 	* POST add new post in project
+	 	*/
 		$this->router->post('/project/:projectID/:projectName/newPost', function($projectID, $projectName) {
-			$this->newPostController->addPost();
+			$newPostController = new \post\controller\NewPost($this->postHandeler);
+
+			$newPostController->addPost(+$projectID, $projectName);
 		});
 
+		/**
+	 	* GET edit post in project
+	 	*/
 		$this->router->get('/project/:projectID/:projectName/edit/post/:postID/:postName', function($projectID, $projectName,
 																								$postID, $postName) {
 			$editPostController = new \post\controller\EditPost($this->postHandeler, $postID);
@@ -139,14 +166,21 @@ class Application {
 										$editPostController->showEditPostForm($projectID, $projectName));
 		});
 
+		/**
+	 	* PUT edit post in project
+	 	*/
 		$this->router->put('/project/:projectID/:projectName/edit/post/:postID/:postName', function($projectID, $projectName,
 																									$postID, $postName) {
 			$editPostController = new \post\controller\EditPost($this->postHandeler, $postID);
 			$editPostController->editPost($projectID, $projectName);
 		});
 
+		/**
+	 	* GET 404 page
+	 	* @todo Fix propper 404 page
+	 	*/
 		$this->router->notFound("/404", function() {
-			echo  "404";
+			echo  $this->page->getPage("404", $this->projects->showProjects(), "<h1>404 page not found</h1>");
 		});
 
 		$this->router->match();

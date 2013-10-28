@@ -61,10 +61,10 @@ class ProjectHandeler {
 	}
 
 	/**
-	 * @param int $projectID
+	 * @param project\model\Project $project
 	 * @return  void
 	 */
-	public function deleteProject($projectID) {
-		$this->projectDAL->deleteProject($projectID);
+	public function deleteProject(\project\model\Project $project) {
+		$this->projectDAL->deleteProject($project);
 	}
 }
