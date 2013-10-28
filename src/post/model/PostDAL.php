@@ -79,10 +79,15 @@ class PostDAL extends \common\model\DALBase {
 	 */
 	public function editPost(\post\model\Post $post) {
 		$stm = self::getDBConnection()->prepare("UPDATE Post SET title = :title, content = :content 
-												 WHERE idPost = :id");
+												 WHERE idPost = :postID");
 
-		$stm->bindParam(':title', $post->getTitle(), \PDO::PARAM_STRING);
-		$stm->bindParam(':content', $post->getContent(), \PDO::PARAM_STRING);
+		$postTitle = $post->getTitle();
+		$postContent = $post->getContent();
+		$postID = $post->getPostID();
+
+		$stm->bindParam(':title', $postTitle, \PDO::PARAM_STR);
+		$stm->bindParam(':content', $postContent, \PDO::PARAM_STR);
+		$stm->bindParam(':postID', $postID, \PDO::PARAM_INT);
 
 		$stm->execute();
 	}

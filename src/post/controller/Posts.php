@@ -29,7 +29,7 @@ class Posts {
 	 * @param  int $projectID
 	 * @return string HTML
 	 */
-	public function showPosts($projectID) {
-		return $this->postsView->getHTML($projectID);
+	public function showPosts($projectID, $projectName) {
+		return $this->postsView->getHTML($projectID, $projectName);
 	}
 }

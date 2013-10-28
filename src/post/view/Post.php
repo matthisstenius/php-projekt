@@ -26,16 +26,18 @@ class Post {
 	 * @param  string $title
 	 * @return string     HTML
 	 */
-	public function getPostHTML($projectID, $id, $title) {
+	public function getPostHTML($projectID, $projectName, $postID, $postTitle) {
 		$html = "<div class='box pad'>
 					<article>";
 		try {
-			$post = $this->postHandeler->getPost($id);
+			$post = $this->postHandeler->getPost($postID);
 
-			if ($post->getCleanTitle() != $title) {
-				$this->navigationView->goToPost($projectID, $id, $post->getCleanTitle());
+			if ($post->getCleanTitle() != $postTitle) {
+				$this->navigationView->goToPost($projectID, $projectName, $postID, $post->getCleanTitle());
 			}
 
+			$editPostSrc = $this->navigationView->getEditPostSrc($projectID, $projectName, $postID, $postTitle);
+			$html .= "<a href='$editPostSrc' class='btn btn-edit'>Edit Post</a>";
 			$html .= "<h1 class='post-title title'>" . $post->getTitle() . "</h1>";
 			$html .= "<span class='created'>Added by: " . $post->getUsername() . " " . $post->getDateAdded() . "</span>";
 			$html .= "<p class='post-content'>" . $post->getContent() . "</p>";

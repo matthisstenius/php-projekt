@@ -13,6 +13,7 @@ require_once("src/project/controller/DeleteProject.php");
 require_once("src/post/controller/Posts.php");
 require_once("src/post/controller/Post.php");
 require_once("src/post/controller/NewPost.php");
+require_once("src/post/controller/EditPost.php");
 
 class Application {
 	/**
@@ -60,6 +61,11 @@ class Application {
 	 */
 	private $deleteProjectController;
 
+	/**
+	 * @var post\controller\NewPost
+	 */
+	private $newPostController;
+
 	public function __construct() {
 		$this->router = new \common\view\Router();
 		$this->page = new \common\view\Page();
@@ -82,16 +88,16 @@ class Application {
 										$this->projectsController->showProjects());
 		});
 
-		$this->router->get('/project/:projectID/:name', function($projectID, $name) {
+		$this->router->get('/project/:projectID/:projectName', function($projectID, $projectName) {
 			echo $this->page->getPage("Project title", 
 										$this->projectsController->showProjects(), 
-										$this->projectController->showProject(+$projectID, $name));
+										$this->projectController->showProject(+$projectID, $projectName));
 		});
 
-		$this->router->get('/project/:projectID/post/:postID/:title', function($projectID, $postID, $title) {
+		$this->router->get('/project/:projectID/:projectName/post/:postID/:title', function($projectID, $projectName, $postID, $title) {
 			echo $this->page->getPage("Post tile", 
 										$this->projectsController->showProjects(), 
-										$this->projectController->showProjectPost(+$projectID, +$postID, $title));
+										$this->projectController->showProjectPost(+$projectID, $projectName, +$postID, $title));
 		});
 
 		$this->router->get('/newProject', function() {
@@ -126,6 +132,20 @@ class Application {
 
 		$this->router->post('/project/:projectID/:projectName/newPost', function($projectID, $projectName) {
 			$this->newPostController->addPost(+$projectID, $projectName);
+		});
+
+		$this->router->get('/project/:projectID/:projectName/edit/post/:postID/:postName', function($projectID, $projectName,
+																								$postID, $postName) {
+			$editPostController = new \post\controller\EditPost($this->postHandeler, $postID);
+			echo $this->page->getPage("Edit post", 
+										$this->projectsController->showProjects(),
+										$editPostController->showEditPostForm($projectID, $projectName));
+		});
+
+		$this->router->put('/project/:projectID/:projectName/edit/post/:postID/:postName', function($projectID, $projectName,
+																									$postID, $postName) {
+			$editPostController = new \post\controller\EditPost($this->postHandeler, $postID);
+			$editPostController->editPost($projectID, $projectName);
 		});
 
 		$this->router->notFound("/404", function() {

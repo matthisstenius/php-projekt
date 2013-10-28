@@ -13,8 +13,8 @@ class Navigation {
 	 * @param  string $title
 	 * @return void
 	 */
-	public function goToPost($projectID, $postID, $title) {
-		header("Location: /php-projekt/project/$projectID/post/$postID/$title");
+	public function goToPost($projectID, $projectName, $postID, $title) {
+		header("Location: /php-projekt/project/$projectID/$projectName/post/$postID/$title");
 	}
 
 	/**
@@ -81,8 +81,8 @@ class Navigation {
 	 * @param  string $postName
 	 * @return string 
 	 */
-	public function getPostLink($projectID, $postID, $postName) {
-		return "/php-projekt/project/$projectID/post/$postID/$postName";
+	public function getPostLink($projectID, $projectName, $postID, $postName) {
+		return "/php-projekt/project/$projectID/$projectName/post/$postID/$postName";
 	}
 
 	/**
@@ -98,5 +98,9 @@ class Navigation {
 	 */
 	public function getNewPostSrc($projectID, $projectName) {
 		return "/php-projekt/project/$projectID/$projectName/newPost";
+	}
+
+	public function getEditPostSrc($projectID, $projectName, $postID, $postName) {
+		return "/php-projekt/project/$projectID/$projectName/edit/post/$postID/$postName";
 	}
 }

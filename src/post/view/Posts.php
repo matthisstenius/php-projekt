@@ -21,11 +21,11 @@ class Posts {
 		$this->navigationView = new \common\view\Navigation();
 	}
 
-	public function getHTML($projectID) {
+	public function getHTML($projectID, $projectName) {
 		$html = "<div class='post-thumbs'>";
 
 		foreach ($this->postHandeler->getPosts($projectID) as $post) {
-			$postSrc = $this->navigationView->getPostLink($projectID, $post->getPostID(), $post->getCleanTitle());
+			$postSrc = $this->navigationView->getPostLink($projectID, $projectName, $post->getPostID(), $post->getCleanTitle());
 
 			$html .= "<div class='post-thumb box pad'>";
 			$html .= "<h1 class='post-title title'>" . $post->getTitle() . "</h1>";

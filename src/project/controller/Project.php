@@ -39,11 +39,11 @@ class Project {
 	/**
 	 * @return string HTML
 	 */
-	public function showProject($projectID, $name) {
-		return $this->projectView->getProjectHTML($projectID, $name, $this->posts->showPosts($projectID));
+	public function showProject($projectID, $projectName) {
+		return $this->projectView->getProjectHTML($projectID, $projectName, $this->posts->showPosts($projectID, $projectName));
 	}
 
-	public function showProjectPost($projectID, $id, $title) {
-		return $this->post->showPost($projectID, $id, $title);
+	public function showProjectPost($projectID, $projectName, $postID, $postTitle) {
+		return $this->post->showPost($projectID, $projectName, $postID, $postTitle);
 	}
 }
