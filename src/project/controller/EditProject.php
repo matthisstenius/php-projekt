@@ -16,23 +16,44 @@ class EditProject {
 	private $editProjectView;
 
 	/**
-	 * @param project\model\ProjectHandeler $projectHandeler
+	 * @var project\model\Project
 	 */
-	public function __construct(\project\model\ProjectHandeler $projectHandeler) {
+	private $project;
+
+	/**
+	 * @var common\view\Navigation
+	 */
+	private $navigationView;
+
+	/**
+	 * @param project\model\ProjectHandeler $projectHandeler
+	 * @param int $projectID
+	 */
+	public function __construct(\project\model\ProjectHandeler $projectHandeler, $projectID) {
 		$this->projectHandeler = $projectHandeler;
-		$this->editProjectView = new \project\view\EditProject($this->projectHandeler);
+		$this->navigationView = new \common\view\Navigation();
+
+		try {
+			$this->project = $this->projectHandeler->getProject($projectID);
+			$this->editProjectView = new \project\view\EditProject($this->projectHandeler, $this->project,
+																	$this->navigationView);
+		}
+
+		catch (\Exception $e) {
+			$this->navigationView->gotoErrorPage();
+		}
+		
 	}
 
 	/**
-	 * @param  int $projectID
 	 * @param  string $projectName
 	 * @return string HTML
 	 */
-	public function showEditProjectForm($projectID, $projectName) {
+	public function showEditProjectForm($projectName) {
 		return $this->editProjectView->getEditProjectForm($projectID, $projectName);
 	}
 
-	public function saveProject($projectID, $projectName) {
+	public function saveProject() {
 		$this->editProjectView->saveProject($projectID, $projectName);
 	}
 }

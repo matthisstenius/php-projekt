@@ -2,17 +2,22 @@
 
 namespace project\view;
 
-require_once("src/project/model/NewProject.php");
 require_once("src/common/view/Filter.php");
 
 class EditProject {
 	private static $projectName = "projectName";
 	private static $projectDescription = "projectDescription";
 	private static $errorMessage = "project::view::edit::errorMessage";
+	
 	/**
 	 * @var project\model\ProjectHandeler
 	 */
 	private $projectHandeler;
+
+	/**
+	 * @var project\model\Project
+	 */
+	private $project;
 
 	/**
 	 * @var common\view\Navigation
@@ -21,49 +26,46 @@ class EditProject {
 
 	/**
 	 * @param project\model\ProjectHandeler $projectHandeler
+	 * @param project\model\Project $project
+	 * @param common\view\Navigation $navigationView
 	 */
-	public function __construct(\project\model\ProjectHandeler $projectHandeler) {
+	public function __construct(\project\model\ProjectHandeler $projectHandeler, \project\model\Project $project,
+								\common\view\Navigation $navigationView) {
+
 		$this->projectHandeler = $projectHandeler;
-		$this->navigationView = new \common\view\Navigation();
+		$this->project = $project;
+		$this->navigationView = $navigationView;
 	}
 
 	/**
-	 * @param int $projectID
 	 * @param string $projectName
 	 * @return string HTML
 	 */
-	public function getEditProjectForm($projectID, $projectName) {
-		try {
-			$project = $this->projectHandeler->getProject($projectID);
-
-			if ($project->getCleanName() != $projectName) {
-				$this->navigationView->goToEditProject($project->getProjectID(), $project->getCleanName());
-			}
-
-			$html = "<h1>Edit " . $project->getName() . "</h1>";
-
-			if (isset($_SESSION[self::$errorMessage])) {
-				$html .= $this->userInputFaulty();
-				unset($_SESSION[self::$errorMessage]);
-			}
-
-			$editProjectSrc = $this->navigationView->getEditProjectSrc($projectID, $projectName);
-			
-			$html .= "<form class='pure-form pure-form-stacked' action='$editProjectSrc' method='POST'>
-						<input type='hidden' name='_method' value='put'>
-						<input class='input-wide' id='". self::$projectName . "' type='text' 
-						name='". self::$projectName . "' value='" . $project->getName() . "'>
-
-						<textarea class='input-wide input-content' 
-						name='". self::$projectDescription . "'>" . $project->getDescription() . "</textarea>
-
-						<button class='btn btn-add'>Save Project</button>
-					</form>";
+	public function getEditProjectForm($projectName) {
+		if ($this->project->getCleanName() != $projectName) {
+			$this->navigationView->goToEditProject($this->project->getProjectID(), $this->project->getCleanName());
 		}
 
-		catch (\Exception $e) {
-			$html = "<p>Project could not be found</p>";
+		$html = "<h1>Edit " . $this->project->getName() . "</h1>";
+
+		if (isset($_SESSION[self::$errorMessage])) {
+			$html .= $this->userInputFaulty();
+			unset($_SESSION[self::$errorMessage]);
 		}
+
+		$editProjectSrc = $this->navigationView->getEditProjectSrc($this->project->getProjectID(),
+																	$this->project->getCleanName());
+		
+		$html .= "<form class='pure-form pure-form-stacked' action='$editProjectSrc' method='POST'>
+					<input type='hidden' name='_method' value='put'>
+					<input class='input-wide' id='". self::$projectName . "' type='text' 
+					name='". self::$projectName . "' value='" . $this->project->getName() . "'>
+
+					<textarea class='input-wide input-content' 
+					name='". self::$projectDescription . "'>" . $this->project->getDescription() . "</textarea>
+
+					<button class='btn btn-add'>Save Project</button>
+				</form>";
 
 		return $html;
 	}
@@ -91,16 +93,14 @@ class EditProject {
 	}
 
 	/**
-	 * @return porject\model\NewProject
-	 * @todo  look into refactoring this
+	 * @return void
 	 */
-	public function saveProject($projectID, $projectName) {
+	public function saveProject() {
 		try {
-			$project = $this->projectHandeler->getProject($projectID);
-
-			$newProject = new \project\model\Project($project->getProjectID(), $this->getProjectName(), 
+			$newProject = new \project\model\Project($this->project->getProjectID(), $this->getProjectName(), 
 															$this->getProjectDescription(),
-														 	$project->getDateCreated(), "Matthis", $project->getUserID());
+														 	$this->project->getDateCreated(), "Matthis", 
+														 	$this->project->getUserID());
 			
 			$this->projectHandeler->editProject($newProject);
 
@@ -110,7 +110,7 @@ class EditProject {
 
 		catch (\Exception $e) {
 			$this->setErrorMessageSession();
-			$this->navigationView->goToEditProject($projectID, $projectName);
+			$this->navigationView->goToEditProject($this->project->getProjectID(), $this->project->getName());
 		}
 	}
 
@@ -122,7 +122,15 @@ class EditProject {
 	 * @return string HTML
 	 */
 	private function userInputFaulty() {
-		$errorMessage = "<p>Oppps... Project could not be saved. Please try again later.</p>";
+		$errorMessage = "";
+
+		if ($this->getProjectName() == "") {
+			$errorMessage .= "<p>Enter a Project name</p>";
+		}
+
+		if ($this->getProjectDescription() == "") {
+			$errorMessage .= "<p>Enter a valid description</p>";
+		}
 
 		return $errorMessage;
 	}

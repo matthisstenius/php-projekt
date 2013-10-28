@@ -52,11 +52,6 @@ class Application {
 	private $newProjectController;
 
 	/**
-	 * @var project\controller\EditProject
-	 */
-	private $editProjectController; 
-
-	/**
 	 * @var project\controller\DeleteProject
 	 */
 	private $deleteProjectController;
@@ -76,7 +71,6 @@ class Application {
 		$this->projectsController = new \project\controller\Projects($this->projectHandeler);
 		$this->projectController = new \project\controller\Project($this->projectHandeler);
 		$this->newProjectController = new \project\controller\NewProject($this->projectHandeler);
-		$this->editProjectController = new \project\controller\EditProject($this->projectHandeler);
 		$this->deleteProjectController = new \project\controller\DeleteProject($this->projectHandeler);
 
 		$this->newPostController = new \post\controller\NewPost($this->postHandeler);
@@ -111,13 +105,16 @@ class Application {
 		});
 
 		$this->router->get('/edit/project/:projectID/:projectName', function($projectID, $projectName) {
+			$editProjectController = new \project\controller\EditProject($this->projectHandeler, $projectID);
+
 			echo $this->page->getPage("Edit $projectName",
 										$this->projectsController->showProjects(),
-										$this->editProjectController->showEditProjectForm(+$projectID, $projectName));
+										$editProjectController->showEditProjectForm($projectName));
 		});
 
 		$this->router->put('/edit/project/:projectID/:projectName', function($projectID, $projectName) {
-			$this->editProjectController->saveProject(+$projectID, $projectName);
+			$editProjectController = new \project\controller\EditProject($this->projectHandeler, $projectID);
+			$editProjectController->saveProject(+$projectID, $projectName);
 		});
 
 		$this->router->delete('/remove/project/:projectID', function($projectID) {
@@ -131,7 +128,7 @@ class Application {
 		});
 
 		$this->router->post('/project/:projectID/:projectName/newPost', function($projectID, $projectName) {
-			$this->newPostController->addPost(+$projectID, $projectName);
+			$this->newPostController->addPost();
 		});
 
 		$this->router->get('/project/:projectID/:projectName/edit/post/:postID/:postName', function($projectID, $projectName,
