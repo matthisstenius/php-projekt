@@ -30,29 +30,35 @@ class Project {
 		try {
 			$project = $this->projectHandeler->getProject($projectID);
 
-			if ($project->getCleanName() != $projectName) {
-				$this->navigationView->goToProject($projectID, $project->getCleanName());
+			if (\common\view\Filter::getCleanUrl($project->getName()) != $projectName) {
+				$this->navigationView->goToProject($projectID, \common\view\Filter::getCleanUrl($project->getName()));
 			}
 
 			$html = "<header class='project-header'>";
 
+			$html .= "<div class='title-area left'>";
 			$html .= "<h1 class='title'>" . $project->getName() . "</h1>";
-			$html .= "<span class='created'>Created by: " . $project->getUsername() . " " . $project->getDateCreated() . "</span>";
+			$html .= "<span class='created'>Created by: " . $project->getUsername() . " " . 
+					 $project->getDateCreated() . "</span>";
+			$html .= "</div>";
 
+			$html .= "<div class='btn-area right'>";
 			$newPostSrc = $this->navigationView->getNewPostSrc($projectID, $projectName);
 			$html .= "<a class='btn btn-add right' href='$newPostSrc'>Add new post</a>";
 
 			$editProjectSrc = $this->navigationView->getEditProjectSrc($projectID, $projectName);
-			$html .= "<a href='$editProjectSrc' class ='btn btn-edit'>Edit Project</a>";
+			$html .= "<a href='$editProjectSrc' class ='btn btn-edit right'>Edit Project</a>";
 			
 			$deleteProjectSrc = $this->navigationView->getDeleteProjectSrc($projectID);
-			$html .= "<form action='$deleteProjectSrc' method='POST'>
+			$html .= "<form class='right' action='$deleteProjectSrc' method='POST'>
 						<input name='_method' type='hidden' value='delete'>
 						<button class='btn btn-remove'>Delete Project</button>
 					</form>";
 
-			$html .= "<p>" . $project->getDescription() . "</p>";
+			$html .= "</div>";
 			$html .= "</header>";
+			$html .= "<p class='content'>" . $project->getDescription() . "</p>";
+			
 
 			$html .= $projectPosts;
 		}

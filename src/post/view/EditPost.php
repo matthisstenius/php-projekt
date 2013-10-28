@@ -41,10 +41,20 @@ class EditPost {
 	 * @param  string $projectName
 	 * @return string HTML
 	 */
-	public function getEditPostForm($projectID, $projectName) {
+	public function getEditPostForm($projectID, $projectName, $postTitle) {
+		$cleanTitle = \common\view\Filter::getCleanUrl($this->post->getTitle());
+
+		if ($cleanTitle != $postTitle) {
+			$this->navigationView->gotoEditPost($projectID, $projectName, $this->post->getPostID(),
+											$cleanTitle);
+		}
 		$fromAction = $this->navigationView->getEditPostSrc($projectID, $projectName, $this->post->getPostID(),
-															$this->post->getCleanTitle());
-		$html = "<h1>Add new post to $projectName</h1>";
+															$cleanTitle);
+
+		$backToPostSrc = $this->navigationView->getPostLink($projectID, $projectName, $this->post->getPostID(),
+															$cleanTitle);
+
+		$html = "<h1>Add new post to project</h1>";
 
 		if (isset($_SESSION[self::$errorMessage])) {
 			$html .= $this->userInputFaulty();
@@ -63,6 +73,7 @@ class EditPost {
 					name='" . self::$content . "'>$postContent</textarea>
 
 					<button class='btn btn-add'>Save Post</button>
+					<a href='$backToPostSrc' class='btn btn-remove'>Cancel</a>
 				</form>";
 
 		return $html;
@@ -104,7 +115,7 @@ class EditPost {
 			$this->postHandeler->editPost($post);
 
 			$this->navigationView->goToPost($post->getProjectID(), $projectName, $post->getPostID(), 
-											$post->getCleanTitle());
+											\common\view\Filter::getCleanUrl($post->getTitle()));
 		}
 
 		catch (\Exception $e) {

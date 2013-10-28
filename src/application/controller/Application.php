@@ -144,7 +144,7 @@ class Application {
 
 			echo $this->page->getPage("Add new post", 
 										$this->projectsController->showProjects(),
-										$newPostController->showNewPostForm($projectID, $projectName));
+										$newPostController->showNewPostForm(+$projectID, $projectName));
 		});
 
 		/**
@@ -164,7 +164,7 @@ class Application {
 			$editPostController = new \post\controller\EditPost($this->postHandeler, $postID);
 			echo $this->page->getPage("Edit post", 
 										$this->projectsController->showProjects(),
-										$editPostController->showEditPostForm($projectID, $projectName));
+										$editPostController->showEditPostForm($projectID, $projectName, $postName));
 		});
 
 		/**

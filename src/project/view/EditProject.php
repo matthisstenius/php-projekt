@@ -42,8 +42,10 @@ class EditProject {
 	 * @return string HTML
 	 */
 	public function getEditProjectForm($projectName) {
-		if ($this->project->getCleanName() != $projectName) {
-			$this->navigationView->goToEditProject($this->project->getProjectID(), $this->project->getCleanName());
+		$cleanUrl = \common\view\Filter::getCleanUrl($this->project->getName());
+
+		if ($cleanUrl != $projectName) {
+			$this->navigationView->goToEditProject($this->project->getProjectID(), $cleanUrl);
 		}
 
 		$html = "<h1>Edit " . $this->project->getName() . "</h1>";
@@ -54,7 +56,10 @@ class EditProject {
 		}
 
 		$editProjectSrc = $this->navigationView->getEditProjectSrc($this->project->getProjectID(),
-																	$this->project->getCleanName());
+																	$cleanUrl);
+
+		$backToProjectSrc = $this->navigationView->getProjectSrc($this->project->getProjectID(), 
+																 $projectName);
 		
 		$html .= "<form class='pure-form pure-form-stacked' action='$editProjectSrc' method='POST'>
 					<input type='hidden' name='_method' value='put'>
@@ -65,6 +70,7 @@ class EditProject {
 					name='". self::$projectDescription . "'>" . $this->project->getDescription() . "</textarea>
 
 					<button class='btn btn-add'>Save Project</button>
+					<a href='$backToProjectSrc' class='btn btn-remove'>Cancel</a>
 				</form>";
 
 		return $html;
@@ -104,8 +110,9 @@ class EditProject {
 			
 			$this->projectHandeler->editProject($newProject);
 
-			$this->navigationView->goToProject($newProject->getProjectID(), $newProject->getCleanName(), 
-											$newProject->getName());
+			$this->navigationView->goToProject($newProject->getProjectID(), 
+												\common\view\Filter::getCleanUrl($newProject->getName()), 
+												$newProject->getName());
 		}
 
 		catch (\Exception $e) {

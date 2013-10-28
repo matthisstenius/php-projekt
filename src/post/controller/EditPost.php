@@ -22,8 +22,8 @@ class EditPost {
 
 	}
 
-	public function showEditPostForm($projectID, $projectName) {
-		return $this->editPostView->getEditPostForm($projectID, $projectName);
+	public function showEditPostForm($projectID, $projectName, $postName) {
+		return $this->editPostView->getEditPostForm($projectID, $projectName, $postName);
 	}
 
 	public function editPost($projectID, $projectName) {

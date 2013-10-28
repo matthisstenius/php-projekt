@@ -116,25 +116,4 @@ class Project {
 	public function getUserID() {
 		return $this->userID;
 	}
-
-	/**
-	 * @return string
-	 */
-	public function getCleanName() {
-		return $this->generateCleanTitle($this->name);
-	}
-
-	/**
-	 * Makes URI friendly title
-	 * @param  string $title
-	 * @return string
-	 * @todo  fix duplication! Same as in Post move this to common view
-	 */
-	private function generateCleanTitle($title) {
-		$cleanTitle = preg_replace('/\s+/', ' ', $title);
-		$cleanTitle = str_replace(' ', '-', $cleanTitle);
-		$cleanTitle = strtolower($cleanTitle);
-
-		return $cleanTitle;
-	}
 }

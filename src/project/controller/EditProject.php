@@ -50,10 +50,10 @@ class EditProject {
 	 * @return string HTML
 	 */
 	public function showEditProjectForm($projectName) {
-		return $this->editProjectView->getEditProjectForm($projectID, $projectName);
+		return $this->editProjectView->getEditProjectForm($projectName);
 	}
 
-	public function saveProject() {
+	public function saveProject($projectID, $projectName) {
 		$this->editProjectView->saveProject($projectID, $projectName);
 	}
 }

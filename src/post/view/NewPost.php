@@ -7,7 +7,7 @@ require_once("src/post/model/NewPost.php");
 class NewPost {
 	private static $title = "title";
 	private static $content = "content";
-	private static $errorMessage = "post::view::errorMessage";
+	private static $errorMessage = "post::view::NewPosterrorMessage";
 
 	/**
 	 * @var post\model\PostHandeler
@@ -34,7 +34,9 @@ class NewPost {
 	 */
 	public function getNewPostForm($projectID, $projectName) {
 		$fromAction = $this->navigationView->getNewPostSrc($projectID, $projectName);
-		$html = "<h1>Add new post to $projectName</h1>";
+		$backToProjectSrc = $this->navigationView->getProjectSrc($projectID, $projectName);
+
+		$html = "<h1>Add new post to project</h1>";
 
 		if (isset($_SESSION[self::$errorMessage])) {
 			$html .= $this->userInputFaulty();
@@ -49,6 +51,7 @@ class NewPost {
 					name='" . self::$content . "'></textarea>
 
 					<button class='btn btn-add'>Save Post</button>
+					<a href='$backToProjectSrc' class='btn btn-remove'>Cancel</a>
 				</form>";
 
 		return $html;
@@ -87,7 +90,7 @@ class NewPost {
 			$this->postHandeler->addPost($post);
 
 			$this->navigationView->goToPost($post->getProjectID(), $projectName, $post->getPostID(), 
-											$post->getCleanTitle());
+											\common\view\Filter::getCleanUrl($post->getTitle()));
 		}
 
 		catch (\Exception $e) {

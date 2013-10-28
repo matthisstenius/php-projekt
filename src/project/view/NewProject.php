@@ -38,6 +38,8 @@ class NewProject {
 			unset($_SESSION[self::$errorMessage]);
 		}
 
+		$backToFrontPage = $this->navigationView->getHomeSrc();
+
 		$html .= "<form class='pure-form pure-form-stacked' action='/php-projekt/newProject' method='POST'>
 					<input class='input-wide' id='". self::$projectName . "' type='text' 
 					name='". self::$projectName . "' placeholder='Project name'>
@@ -46,6 +48,7 @@ class NewProject {
 					name='". self::$projectDescription . "' placeholder='Project description'></textarea>
 
 					<button class='btn btn-add'>Create Project</button>
+					<a href='$backToFrontPage' class='btn btn-remove'>Cancel</a>
 				</form>";
 
 		return $html;

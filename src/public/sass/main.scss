@@ -73,6 +73,10 @@
 	.btn-wide {
 		display: block;
 	}
+	
+	.btn-area .btn {
+		margin-left: 5px;
+	}
 
 	.btn-add {
 		background-color: $green;
@@ -110,6 +114,10 @@
 	a {
 		color: $blue;
 		text-decoration: none;
+	}
+	
+	.title-link {
+		color: initial;
 	}
 
 	.title {
@@ -173,7 +181,7 @@
  * Posts
 ----------------------------------------
 */
-	.post-thumbs {
+	.post-thumbs, .post, .post-header {
 		@include clearfix();
 	}
 
@@ -189,4 +197,12 @@
 	.created {
 		font-style: italic;
 		font-size: .9em;
+	}
+	
+	.project-header {
+		@include clearfix();
+	}
+
+	.content {
+		clear: both;
 	}

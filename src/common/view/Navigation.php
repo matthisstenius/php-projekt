@@ -42,6 +42,9 @@ class Navigation {
 		header("Location: /php-projekt/edit/project/$projectID/$projectName");
 	}
 	
+	public function gotoEditPost($projectID, $projectName, $postID, $postName) {
+		header("Location: /php-projekt/project/$projectID/$projectName/edit/post/$postID/$postName");
+	}
 	/**
 	 * @return string
 	 */

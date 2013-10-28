@@ -133,13 +133,6 @@ class Post {
 		return $this->userID;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getCleanTitle() {
-		return $this->generateCleanTitle($this->title);
-	}
-
 	public function getExcerpt() {
 		$content = $this->getContent();
 
@@ -150,17 +143,5 @@ class Post {
 		else {
 			return $this->getContent();
 		}
-	}
-	/**
-	 * Makes URI friendly title
-	 * @param  string $title
-	 * @return string
-	 */
-	private function generateCleanTitle($title) {
-		$cleanTitle = preg_replace('/\s+/', ' ', $title);
-		$cleanTitle = str_replace(' ', '-', $cleanTitle);
-		$cleanTitle = strtolower($cleanTitle);
-
-		return $cleanTitle;
 	}
 }
