@@ -45,6 +45,11 @@ class Navigation {
 	public function gotoEditPost($projectID, $projectName, $postID, $postName) {
 		header("Location: /php-projekt/project/$projectID/$projectName/edit/post/$postID/$postName");
 	}
+
+	public function gotoLoginPage() {
+		header("Location: /php-projekt/login");
+	}
+
 	/**
 	 * @return string
 	 */
@@ -103,11 +108,45 @@ class Navigation {
 		return "/php-projekt/project/$projectID/$projectName/newPost";
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getEditPostSrc($projectID, $projectName, $postID, $postName) {
 		return "/php-projekt/project/$projectID/$projectName/edit/post/$postID/$postName";
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getDeletePostSrc($projectID, $projectName, $postID) {
 		return "/php-projekt/project/$projectID/$projectName/remove/post/$postID";
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLoginSrc() {
+		return "/php-projekt/login";
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLogoutSrc() {
+		return "/php-projekt/logout";
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getRegisterSrc() {
+		return "/php-projekt/register";
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getUserPageSrc($userID, $username) {
+		return "/php-projekt/$userID/$username";
 	}
 }
