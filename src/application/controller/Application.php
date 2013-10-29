@@ -18,6 +18,7 @@ require_once("src/post/controller/DeletePost.php");
 require_once("src/login/controller/Login.php");
 require_once("src/user/model/UserHandeler.php");
 require_once("src/login/model/Login.php");
+require_once("src/login/controller/Logout.php");
 
 class Application {
 	/**
@@ -201,6 +202,11 @@ class Application {
 
 		$this->router->post('/login', function() {
 			$this->loginController->login();
+		});
+
+		$this->router->get('/logout', function() {
+			$logoutController = new \login\controller\Logout($this->userHandeler, $this->loginHandeler);
+			$logoutController->logout();
 		});
 
 		/**

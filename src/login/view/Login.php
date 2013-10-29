@@ -4,7 +4,7 @@ namespace login\view;
 
 require_once("src/login/model/LoginCredentials.php");
 require_once("src/login/model/TokenCredentials.php");
-require_once("src/login/model/NullTokenCredentials.php");
+require_once("src/login/model/TokenGenerator.php");
 
 class Login {
 	private static $username = "username";
@@ -104,12 +104,17 @@ class Login {
 	}
 
 	public function setCookieValue(\user\model\User $user) {
-		$tokenExpireDate = time() + 60;
+		$tokenGenerator = new \login\model\TokenGenerator();
+
+		$token = $tokenGenerator->getToken();
+		$tokenExpireDate = $tokenGenerator->getTokenExpireDate();
 
 		$user->setTokenExpireDate($tokenExpireDate);
+		$user->setToken($token);
+
 		$this->userHandeler->saveTokenCredentials($user);
 
-		setcookie(self::$userCookie, $user->getToken(), $tokenExpireDate);
+		setcookie(self::$userCookie, $token, $tokenExpireDate);
 	}
 
 	public function removeCookie() {
@@ -139,7 +144,7 @@ class Login {
 				return new \login\model\TokenCredentials($this->getCookieValue());
 			}
 
-			return new \login\model\NullTokenCredentials();
+			return new \login\model\TokenCredentials();
 		}
 
 		catch (\Exception $e) {

@@ -44,6 +44,10 @@ class Login {
 		$_SESSION[self::$user] = $user;
 	}
 
+	public function unsetUserLoggedIn() {
+		unset($_SESSION[self::$user]);
+	}
+
 	public function isUserLoggedIn() {
 		return isset($_SESSION[self::$user]);
 	}

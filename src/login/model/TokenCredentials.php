@@ -6,17 +6,19 @@ class TokenCredentials {
 	/**
 	 * @var string
 	 */
-	private $token;
+	protected $token;
 
 	/**
 	 * @param string $token
 	 */
-	public function __construct($token) {
-		if (!is_string($token) || $token == "") {
-			throw new \Exception("Invalid token");
+	public function __construct($token = null) {
+		if ($token != null) {
+			if (!is_string($token) || $token == "") {
+				throw new \Exception("Invalid token");
+			}
+
+			$this->token = $token;	
 		}
-		
-		$this->token = $token;
 	}
 
 	/**

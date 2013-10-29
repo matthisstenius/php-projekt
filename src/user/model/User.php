@@ -24,7 +24,7 @@ class User {
 	private $token;
 
 	/**
-	 * @var int
+	 * @var string
 	 */
 	private $tokenExpireDate;
 
@@ -33,7 +33,7 @@ class User {
 	 * @param string $username
 	 * @param string $password
 	 * @param string $token
-	 * @param int $tokenExpireDate
+	 * @param string $tokenExpireDate
 	 */
 	public function __construct($userID, $username, $password, $token, $tokenExpireDate) {
 		if (!is_int($userID)) {
@@ -93,16 +93,23 @@ class User {
 	}
 
 	/**
-	 * @return int
+	 * @return string
 	 */
 	public function getTokenExpireDate() {
 		return $this->tokenExpireDate;
 	}
 
 	/**
-	 * @param int $tokenExpireDate
+	 * @param string $tokenExpireDate
 	 */
 	public function setTokenExpireDate($tokenExpireDate) {
 		$this->tokenExpireDate = $tokenExpireDate;
+	}
+
+	/**
+	 * @param string $token
+	 */
+	public function setToken($token) {
+		$this->token = $token;
 	}
 }
