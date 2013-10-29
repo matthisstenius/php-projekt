@@ -34,7 +34,7 @@ class Login {
 		$this->loginHandeler = $loginHandeler;
 
 		$this->navigationView = new \common\view\Navigation();
-		$this->loginView = new \login\view\Login($this->navigationView);
+		$this->loginView = new \login\view\Login($this->navigationView, $this->userHandeler);
 
 		$this->users = $this->userHandeler->getUsers();
 	}
@@ -50,13 +50,32 @@ class Login {
 		$loginCredentials = $this->loginView->getUserCredentials();
 
 		try {
-			if ($this->loginHandeler->isLoginOK($this->users, $loginCredentials)) {
+			if ($user = $this->loginHandeler->isLoginOK($this->users, $loginCredentials)) {
+				if ($this->loginView->userWantsToBeRemebered()) {
+					$this->loginView->setCookieValue($user);	
+				}
+				
 				$this->navigationView->gotoFrontPage();
 			}
 		}
 
 		catch (\Exception $e) {
 			$this->loginView->setErrorMessage();
+			$this->navigationView->gotoLoginPage();
+		}
+	}
+
+	public function loginWithToken() {
+		$loginCredentials = $this->loginView->getTokenCredentials();
+
+		try {
+			if ($this->loginView->userIsRemembered()) {
+				$this->loginHandeler->loginWithTokenOK($this->users, $loginCredentials);
+			}
+		}
+
+		catch (\Exception $e) {
+			$this->loginView->removeCookie();
 			$this->navigationView->gotoLoginPage();
 		}
 	}

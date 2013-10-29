@@ -9,7 +9,7 @@ class UserDAL extends \common\model\DALBase {
 	public function getUsers() {
 		$db = self::getDBConnection();
 
-		$stm = $db->prepare("SELECT idUser AS userID, username, password, token
+		$stm = $db->prepare("SELECT idUser AS userID, username, password, token, tokenExpireDate
 							 FROM User");
 
 		$stm->execute();
@@ -30,7 +30,7 @@ class UserDAL extends \common\model\DALBase {
 	public function getUser(User $user) {
 		$db = self::getDBConnection();
 
-		$stm = $db->prepare("SELECT idUser AS userID, username, password, token
+		$stm = $db->prepare("SELECT idUser AS userID, username, password, token, tokenExpireDate
 							 FROM User WHERE idUser = :userID");
 
 		$userID = $user->getUserID();
@@ -101,6 +101,26 @@ class UserDAL extends \common\model\DALBase {
 
 		$userID = $user->getUserID();
 
+		$stm->bindParam(':userID', $userID, \PDO::PARAM_INT);
+
+		$stm->execute();
+	}
+
+	/**
+	 * @param  User   $user 
+	 */
+	public function saveTokenCredentials(User $user) {
+		$pdo = self::getDBConnection();
+
+		$stm = $pdo->prepare("UPDATE User SET token = :token, tokenExpireDate = :tokenExpireDate
+							 WHERE idUser = :userID");
+
+		$token = $user->getToken();
+		$tokenExpireDate = $user->getTokenExpireDate();
+		$userID = $user->getUserID();
+
+		$stm->bindParam(':token', $token, \PDO::PARAM_STR);
+		$stm->bindParam(':tokenExpireDate', $tokenExpireDate, \PDO::PARAM_INT);
 		$stm->bindParam(':userID', $userID, \PDO::PARAM_INT);
 
 		$stm->execute();

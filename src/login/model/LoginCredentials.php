@@ -43,4 +43,5 @@ class LoginCredentials {
 	public function getPassword() {
 		return $this->password;
 	}
+
 }

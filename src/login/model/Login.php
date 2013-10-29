@@ -15,14 +15,29 @@ class Login {
 		foreach ($users as $user) {
 			$usernamesAreEqual = $loginCredentials->getUsername() == $user->getUsername();
 			$passwordsAreEqual = $loginCredentials->getPassword() == $user->getPassword();
+			
 
 			if ($usernamesAreEqual && $passwordsAreEqual) {
 				$this->setUserLoggedIn($user);
-				return true;
+				return $user;
 			}
 		}
 		
 		throw new \Exception("Wrong password and/or username");	
+	}
+
+	public function loginWithTokenOK($users, TokenCredentials $tokenCredentials) {
+		foreach ($users as $user) {
+			$tokensAreEqual = $tokenCredentials->getToken() == $user->getToken();
+
+			if ($tokensAreEqual && time() < $user->getTokenExpireDate()) {
+				$this->setUserLoggedIn($user);
+				return $user;
+			}
+		}
+
+		throw new \Exception("Failed login with token");
+		
 	}
 
 	private function setUserLoggedIn(\user\model\User $user) {

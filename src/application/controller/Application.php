@@ -59,6 +59,7 @@ class Application {
 		$this->loginHandeler = new \login\model\Login();
 		$this->projectsController = new \project\controller\Projects($this->projectHandeler);
 
+		$this->loginController = new \login\controller\Login($this->userHandeler, $this->loginHandeler);
 		$this->page = new \common\view\Page($this->loginHandeler, $this->projectsController);
 	}
 
@@ -72,8 +73,8 @@ class Application {
 	 	* GET FrontPage
 	 	*/
 		$this->router->get('/', function() {
-			//$this->isAuthorized();
-			echo $this->page->getPage("Hello Blog!");
+			$this->isAuthorized();
+			echo $this->page->getPage("Hello Blog!", "<h1>Hello world</h1>");
 		});
 
 		/**
@@ -195,15 +196,11 @@ class Application {
 		});
 
 		$this->router->get('/login', function() {
-			$loginController = new \login\controller\Login($this->userHandeler, $this->loginHandeler);
-
-			echo $this->page->getPage("Login", $loginController->showLoginForm());
+			echo $this->page->getPage("Login", $this->loginController->showLoginForm());
 		});
 
 		$this->router->post('/login', function() {
-			$loginController = new \login\controller\Login($this->userHandeler, $this->loginHandeler);
-
-			$loginController->login();
+			$this->loginController->login();
 		});
 
 		/**
@@ -218,9 +215,11 @@ class Application {
 	}
 
 	public function isAuthorized() {
+		$this->loginController->loginWithToken();
+
 		if (!$this->loginHandeler->isUserLoggedIn()) {
-				$navigationView = new \common\view\Navigation();
-				$navigationView->gotoLoginPage();
+			$navigationView = new \common\view\Navigation();
+			$navigationView->gotoLoginPage();
 		}
 	}
 }

@@ -24,12 +24,18 @@ class User {
 	private $token;
 
 	/**
+	 * @var int
+	 */
+	private $tokenExpireDate;
+
+	/**
 	 * @param int $userID
 	 * @param string $username
 	 * @param string $password
 	 * @param string $token
+	 * @param int $tokenExpireDate
 	 */
-	public function __construct($userID, $username, $password, $token) {
+	public function __construct($userID, $username, $password, $token, $tokenExpireDate) {
 		if (!is_int($userID)) {
 			throw new \Exception("Invalid userID");
 		}
@@ -47,10 +53,15 @@ class User {
 			throw new \Exception("Invalid token");
 		}
 
+		if (!is_int($tokenExpireDate)) {
+			throw new \Exception("Invalid tokenExpireDate");
+		}
+
 		$this->userID   = $userID;
 		$this->username = $username;
 		$this->password = $password;
 		$this->token    = $token;
+		$this->tokenExpireDate = $tokenExpireDate;
 	}
 
 	/**
@@ -79,5 +90,19 @@ class User {
 	 */
 	public function getToken() {
 		return $this->token;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getTokenExpireDate() {
+		return $this->tokenExpireDate;
+	}
+
+	/**
+	 * @param int $tokenExpireDate
+	 */
+	public function setTokenExpireDate($tokenExpireDate) {
+		$this->tokenExpireDate = $tokenExpireDate;
 	}
 }

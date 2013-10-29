@@ -3,10 +3,16 @@
 namespace login\view;
 
 require_once("src/login/model/LoginCredentials.php");
+require_once("src/login/model/TokenCredentials.php");
+require_once("src/login/model/NullTokenCredentials.php");
 
 class Login {
 	private static $username = "username";
 	private static $password = "password";
+	private static $remember = "remember";
+	private static $userCookie = "persistent";
+	private static $inputFaultyMessage = "login::view::login::inputFaultyMessage";
+	private static $errorMessage = "login::view::login::errorMessage";
 
 	/**
 	 * @var common\view\Navigtion
@@ -14,10 +20,17 @@ class Login {
 	private $navigationView;
 
 	/**
-	 * @param common\view\Navigation $navigationView
+	 * @var user\model\UserHandeler
 	 */
-	public function __construct(\common\view\Navigation $navigationView) {
+	private $userHandeler;
+
+	/**
+	 * @param common\view\Navigation $navigationView
+	 * @param user\model\UserHandeler $userHandeler
+	 */
+	public function __construct(\common\view\Navigation $navigationView, \user\model\UserHandeler $userHandeler) {
 		$this->navigationView = $navigationView;
+		$this->userHandeler = $userHandeler;
 	}
 
 	/**
@@ -28,15 +41,21 @@ class Login {
 
 		$loginSrc = $this->navigationView->getLoginSrc();
 
-		if (isset($_SESSION['errorMessage'])) {
+		if (isset($_SESSION[self::$inputFaultyMessage])) {
 			$html .= $this->userInputFaulty();
-			unset($_SESSION['errorMessage']);
+			unset($_SESSION[self::$inputFaultyMessage]);
+		}
+
+		else if (isset($_SESSION[self::$errorMessage])) {
+			$html .= "<p>Wrong username or password</p>";
+			unset($_SESSION[self::$errorMessage]);
 		}
 
 		$html .= "<form class='pure-form pure-form-stacked' action='$loginSrc' method='POST'>
 					<input type='text' name='" . self::$username . "' placeholder='Username'>
 					<input type='password' name='" . self::$password . "' placeholder='Password'>
-
+					<label for='remember'>Remember Me</label>
+					<input id='" . self::$remember . "' type='checkbox' name='" . self::$remember . "'>
 					<button class='btn btn-login'>Log In</button>
 				</form>";
 
@@ -61,19 +80,79 @@ class Login {
 		}
 	}
 
+	/**
+	 * @return boolean
+	 */
+	public function userWantsToBeRemebered() {
+		return isset($_POST[self::$remember]);
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function userIsRemembered() {
+		return isset($_COOKIE[self::$userCookie]);
+	}
+
+	/**
+	 * @return string
+	 */
+	private function getCookieValue() {
+		if ($this->userIsRemembered()) {
+			return $_COOKIE[self::$userCookie];
+		}
+	}
+
+	public function setCookieValue(\user\model\User $user) {
+		$tokenExpireDate = time() + 60;
+
+		$user->setTokenExpireDate($tokenExpireDate);
+		$this->userHandeler->saveTokenCredentials($user);
+
+		setcookie(self::$userCookie, $user->getToken(), $tokenExpireDate);
+	}
+
+	public function removeCookie() {
+		setCookie(self::$userCookie, $this->getCookieValue(), time() - 3600);
+	}
+
+	/**
+	 * @return login\model\UserCredentials
+	 */
 	public function getUserCredentials() {
 		try {
 			return new \login\model\LoginCredentials($this->getUsername(), $this->getPassword());
 		}
 
 		catch (\Exception $e) {
-			$this->setErrorMessage();
+			$this->setInputFaultyMesssage();
 			$this->navigationView->gotoLoginPage();
 		}
 	}
 
+	/**
+	 * @return login\model\TokenCredentials
+	 */
+	public function getTokenCredentials() {
+		try {
+			if ($this->userIsRemembered()) {
+				return new \login\model\TokenCredentials($this->getCookieValue());
+			}
+
+			return new \login\model\NullTokenCredentials();
+		}
+
+		catch (\Exception $e) {
+
+		}
+	}
+
 	public function setErrorMessage() {
-		$_SESSION['errorMessage'] = true;
+		$_SESSION[self::$errorMessage] = true;
+	}
+
+	private function setInputFaultyMesssage() {
+		$_SESSION[self::$inputFaultyMessage] = true;
 	}
 
 	/**

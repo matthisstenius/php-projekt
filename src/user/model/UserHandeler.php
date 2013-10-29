@@ -23,7 +23,7 @@ class UserHandeler {
 		$users = array();
 
 		foreach ($rows as $row) {
-			$users[] = new User(+$row['userID'], $row['username'], $row['password'], $row['token']);
+			$users[] = new User(+$row['userID'], $row['username'], $row['password'], $row['token'], +$row['tokenExpireDate']);
 		}
 
 		return $users;
@@ -35,7 +35,7 @@ class UserHandeler {
 	public function getUser(User $user) {
 		$row = $this->userDAL->getUser($user);
 
-		return new User(+$row['userID'], $row['username'], $row['password'], $row['token']);
+		return new User(+$row['userID'], $row['username'], $row['password'], $row['token'], +$row['tokenExpireDate']);
 	}
 
 	/**
@@ -59,5 +59,13 @@ class UserHandeler {
 	 */
 	public function deleteUser(User $user) {
 		$this->userDAL->deleteUser($user);
+	}
+
+	/**
+	 * @param  User   $user
+	 * @return void
+	 */
+	public function saveTokenCredentials(User $user) {
+		$this->userDAL->saveTokenCredentials($user);
 	}
 }
