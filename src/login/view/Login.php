@@ -37,7 +37,8 @@ class Login {
 	 * @return string HTML
 	 */
 	public function getLoginForm() {
-		$html = "<h1>Log in</h1>";
+		$html = "<div class='login-box'>
+					<h1>Log in</h1>";
 
 		$loginSrc = $this->navigationView->getLoginSrc();
 
@@ -51,14 +52,18 @@ class Login {
 			unset($_SESSION[self::$errorMessage]);
 		}
 
-		$html .= "<form class='pure-form pure-form-stacked' action='$loginSrc' method='POST'>
-					<input type='text' name='" . self::$username . "' placeholder='Username'>
-					<input type='password' name='" . self::$password . "' placeholder='Password'>
-					<label for='remember'>Remember Me</label>
-					<input id='" . self::$remember . "' type='checkbox' name='" . self::$remember . "'>
-					<button class='btn btn-login'>Log In</button>
-				</form>";
+		$html .= "<form class='pure-form login-form' action='$loginSrc' method='POST'>
+					<div class='pure-group'>
+						<input type='text' name='" . self::$username . "' placeholder='Username'>
+						<input type='password' name='" . self::$password . "' placeholder='Password'>
 
+						<button class='btn btn-wide btn-login'>Log In</button>
+
+						<label for='remember'>Remember Me</label>
+						<input id='" . self::$remember . "' type='checkbox' name='" . self::$remember . "'>
+					</div>
+				</form>";
+		$html .= "</div>";
 		return $html;
 	}
 

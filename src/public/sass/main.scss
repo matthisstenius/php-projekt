@@ -14,6 +14,7 @@
 	$blue: #34AADC;
 	$grey: #EDEDED;
 	$darkGrey: #575D63;
+	$almostWhite: #FCFCFC;
 	$eggShell: #EFEFEF;
 	$green: #4CD964;
 
@@ -72,13 +73,14 @@
 
 	.btn-wide {
 		display: block;
+		width: 100%;
 	}
 	
 	.btn-area .btn {
 		margin-left: 5px;
 	}
 
-	.btn-add {
+	.btn-add, .btn-login {
 		background-color: $green;
 	}
 
@@ -144,13 +146,13 @@
 ----------------------------------------
 */
 	.header {
-		background-color: $darkGrey;
+		background-color: $almostWhite;
 		position: fixed;
 		height: 100%;
-		box-shadow: inset -9px 0 20px #383E44;
+		border-right: 1px solid #ccc;
 		
 		.logo, h3 {
-			color: white;
+			color: $darkGrey;
 		}	
 
 		p {
@@ -158,10 +160,10 @@
 		}
 
 		a {
-			color: $eggShell;
+			color: $blue;
 
 			&:hover {
-				color: $blue;
+				color: $green;
 				@include transition (all .5s ease-in-out);
 			}
 		}
@@ -205,4 +207,24 @@
 
 	.content {
 		clear: both;
+	}
+
+/*
+----------------------------------------
+ * Login
+----------------------------------------
+*/
+	.login-form {
+		input {
+			width: 100%;
+		}
+		
+		label {
+			color: black;
+		}
+
+		input[type="checkbox"] {
+			display: inline;
+			width: initial;
+		}
 	}

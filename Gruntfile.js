@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 			build: {
 				expand: true,
 				cwd: 'src',
-				src: ['application/**', 'common/**', 'post/**', 'login/**', 'register/**', '../index.php'],
+				src: ['**', '!public/**', '../index.php'],
 				dest: 'build/php-projekt/src'
 			}
 		},
