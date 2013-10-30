@@ -42,11 +42,13 @@ class Post {
 	 * @param int $postID
 	 * @param string $title
 	 * @param string $content
-	 * @param date $added
+	 * @param int $userID
 	 * @param string $username
+	 * @param date $added
+	 * @param int $projectID
 	 * @throws Exception If validation failes
 	 */
-	public function __construct($postID, $title, $content, $added, $username, $projectID, $userID) {
+	public function __construct($postID, $title, $content, $userID, $username, $added, $projectID) {
 		if (!is_int($postID)) {
 			throw new \Exception("invalid postID");
 		}
@@ -75,13 +77,14 @@ class Post {
 			throw new \Exception("invalid postID");
 		}
 
-		$this->postID  = $postID;
-		$this->title   = $title;
-		$this->content = $content;
-		$this->added   = $added;
-		$this->username    = $username;
+		$this->postID    = $postID;
+		$this->title     = $title;
+		$this->content   = $content;
+		$this->userID    = $userID;
+		$this->username  = $username;
+		$this->added     = $added;
 		$this->projectID = $projectID;
-		$this->userID = $userID;
+		
 	}
 
 	/**
@@ -133,6 +136,9 @@ class Post {
 		return $this->userID;
 	}
 
+	/**	
+	 * @todo move this to a view
+	 */
 	public function getExcerpt() {
 		$content = $this->getContent();
 

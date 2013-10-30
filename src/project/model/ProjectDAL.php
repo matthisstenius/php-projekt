@@ -6,6 +6,7 @@ require_once("src/common/model/DALBase.php");
 
 class ProjectDAL extends \common\model\DALBase {
 	/**
+	 * @param user\model\User $user
 	 * @return array
 	 */
 	public function getProjects(\user\model\User $user) {

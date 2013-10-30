@@ -23,35 +23,43 @@ class EditPost {
 	private $navigationView;
 
 	/**
+	 * @var project\model\Project
+	 */
+	private $project;
+
+	/**
 	 * @param post\model\PostHandeler $postHandeler
 	 * @param post\model\Post $post
 	 * @param common\view\Navigation $navigationView
+	 * @param project\model\Project $project
 	 */
-	public function __construct(\post\model\PostHandeler $postHandeler, \post\model\Post $post,
-								\common\view\Navigation $navigationView) {
+	public function __construct(\post\model\PostHandeler $postHandeler, 
+								\post\model\Post $post,
+								\common\view\Navigation $navigationView,
+								\project\model\Project $project) {
 		
 		$this->postHandeler = $postHandeler;
 		$this->post = $post;
+		$this->project = $project;
 
 		$this->navigationView = $navigationView;
 	}
 
 	/**
-	 * @param  int $projectID
-	 * @param  string $projectName
 	 * @return string HTML
 	 */
-	public function getEditPostForm($projectID, $projectName, $postTitle) {
+	public function getEditPostForm() {
 		$cleanTitle = \common\view\Filter::getCleanUrl($this->post->getTitle());
+		$cleanProjectName = \common\view\Filter::getCleanUrl($this->project->getName());
 
-		if ($cleanTitle != $postTitle) {
-			$this->navigationView->gotoEditPost($projectID, $projectName, $this->post->getPostID(),
-											$cleanTitle);
-		}
-		$fromAction = $this->navigationView->getEditPostSrc($projectID, $projectName, $this->post->getPostID(),
+		$fromAction = $this->navigationView->getEditPostSrc($this->project->getProjectID(),
+															$cleanProjectName,
+															$this->post->getPostID(),
 															$cleanTitle);
 
-		$backToPostSrc = $this->navigationView->getPostLink($projectID, $projectName, $this->post->getPostID(),
+		$backToPostSrc = $this->navigationView->getPostLink($this->project->getProjectID(), 
+															$this->project->getName(),
+															$this->post->getPostID(),
 															$cleanTitle);
 
 		$html = "<h1>Add new post to project</h1>";
@@ -102,25 +110,30 @@ class EditPost {
 	}
 
 	/**
-	 * @param  int $projectID
-	 * @param  string $projectName
 	 * @return void
 	 */
-	public function editPost($projectID, $projectName) {
+	public function editPost() {
 		try {
-			$post = new \post\model\Post($this->post->getPostID(), $this->getPostTitle(), $this->getPostContent(),
-										 $this->post->getDateAdded(), $this->post->getUsername(),
-										 $this->post->getProjectID(), $this->post->getUserID());
+			$post = new \post\model\Post($this->post->getPostID(), 
+										$this->getPostTitle(), 
+										$this->getPostContent(),
+										$this->post->getUserID(), 
+										$this->post->getUsername(),
+										$this->post->getDateAdded(),
+										$this->post->getProjectID());
 			
 			$this->postHandeler->editPost($post);
 
-			$this->navigationView->goToPost($post->getProjectID(), $projectName, $post->getPostID(), 
+			$this->navigationView->goToPost($post->getProjectID(), 
+											\common\view\Filter::getCleanUrl($this->project->getName()), 
+											$post->getPostID(), 
 											\common\view\Filter::getCleanUrl($post->getTitle()));
 		}
 
 		catch (\Exception $e) {
 			$this->setErrorMessageSession();
-			$this->navigationView->gotoNewPost($projectID, $projectName);
+			$this->navigationView->gotoNewPost($this->project->getProjectID(),
+					 							\common\view\Filter::getCleanUrl($this->project->getName()));
 		}
 	}
 

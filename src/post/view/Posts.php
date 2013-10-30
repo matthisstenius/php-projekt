@@ -9,30 +9,40 @@ class Posts {
 	private $postHandeler;
 
 	/**
+	 * @var project\model\Project
+	 */
+	private $project;
+
+	/**
 	 * @var common\view\Navigation
 	 */
 	private $navigationView;
 
 	/**
 	 * @param post\model\PostHandeler $postHandeler
+	 * @param project\model\Project $project
 	 */
-	public function __construct(\post\model\PostHandeler $postHandeler) {
+	public function __construct(\post\model\PostHandeler $postHandeler, \project\model\Project $project) {
 		$this->postHandeler = $postHandeler;
+		$this->project = $project;
+
 		$this->navigationView = new \common\view\Navigation();
 	}
 
 	/**
-	 * @param  int $projectID
-	 * @param  string $projectName
 	 * @return string HTML
 	 */
-	public function getHTML($projectID, $projectName) {
+	public function getHTML() {
 		$html = "<div class='post-thumbs'>";
 
-		foreach ($this->postHandeler->getPosts($projectID) as $post) {
+		foreach ($this->postHandeler->getPosts($this->project) as $post) {
 			$cleanTitle = \common\view\Filter::getCleanUrl($post->getTitle());
+			$cleanProjectName = \common\view\Filter::getCleanUrl($this->project->getName());
 
-			$postSrc = $this->navigationView->getPostLink($projectID, $projectName, $post->getPostID(), $cleanTitle);
+			$postSrc = $this->navigationView->getPostLink($this->project->getProjectID(), 
+															$cleanProjectName, 
+															$post->getPostID(), 
+															$cleanTitle);
 
 			$html .= "<div class='post-thumb box pad'>";
 			$html .= "<a class='title-link' href='$postSrc'>

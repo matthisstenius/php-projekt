@@ -5,28 +5,46 @@ namespace post\controller;
 require_once("src/post/view/EditPost.php");
 
 class EditPost {
+	/**
+	 * @var post\model\PostHandeler
+	 */
 	private $postHandeler;
 
-	public function __construct(\post\model\PostHandeler $postHandeler, $postID) {
+	/**
+	 * @var post\model\Post
+	 */
+	private $post;
+
+	/**
+	 * @var project\model\Project
+	 */
+	private $project;
+
+	/**
+	 * @param post\model\PostHandeler $postHandeler
+	 * @param post\model\Post         $post
+	 * @param project\model\Project   $project
+	 */
+	public function __construct(\post\model\PostHandeler $postHandeler, \post\model\Post $post,
+								\project\model\Project $project) {
+
 		$this->postHandeler = $postHandeler;
+		$this->post = $post;
+		$this->project = $project;
+
 		$this->navigationView = new \common\view\Navigation();
 
-		try {
-			$this->post = $this->postHandeler->getPost($postID);
-			$this->editPostView = new \post\view\EditPost($this->postHandeler, $this->post, $this->navigationView);
-		}
-		
-		catch (\Exception $e) {
-			$this->navigationView->gotoErrorPage();
-		}
-
+		$this->editPostView = new \post\view\EditPost($this->postHandeler, 
+														$this->post,
+														$this->navigationView,
+														$this->project);
 	}
 
-	public function showEditPostForm($projectID, $projectName, $postName) {
-		return $this->editPostView->getEditPostForm($projectID, $projectName, $postName);
+	public function showEditPostForm() {
+		return $this->editPostView->getEditPostForm();
 	}
 
-	public function editPost($projectID, $projectName) {
-		$this->editPostView->editPost($projectID, $projectName);
+	public function editPost() {
+		$this->editPostView->editPost();
 	}
 }

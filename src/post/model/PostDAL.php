@@ -7,15 +7,18 @@ require_once("src/post/model/Post.php");
 
 class PostDAL extends \common\model\DALBase {
 	/**
+	 * @param project\model\Project $project
 	 * @return array
 	 */
-	public function getPosts($projectID) {
+	public function getPosts(\project\model\Project $project) {
 		$result = array();
 
-		$stm = self::getDBConnection()->prepare("SELECT idPost, title, content, added, User.username, User_idUser
-												 AS userID, projectID_Project AS projectID FROM Post
+		$stm = self::getDBConnection()->prepare("SELECT idPost, title, content, User_idUser AS userID, User.username, added,
+												 projectID_Project AS projectID FROM Post
 												 INNER JOIN User ON User.idUser = User_idUser
 												 WHERE projectID_Project=:projectID");
+
+		$projectID = $project->getProjectID();
 
 		$stm->bindParam(':projectID', $projectID, \PDO::PARAM_INT);
 		$stm->execute();
@@ -32,8 +35,8 @@ class PostDAL extends \common\model\DALBase {
 	 * @return array 
 	 */
 	public function getPost($postID) {
-		$stm = self::getDBConnection()->prepare("SELECT idPost, title, content, added, User.username, User_idUser
-												 AS userID, projectID_Project AS projectID FROM Post
+		$stm = self::getDBConnection()->prepare("SELECT idPost, title, content, User_idUser AS userID, User.username, added,
+												 projectID_Project AS projectID FROM Post
 												 INNER JOIN User ON User.idUser = User_idUser
 												 WHERE idPost=:id");
 
@@ -93,7 +96,7 @@ class PostDAL extends \common\model\DALBase {
 	}
 
 	/**
-	 * @param  \post\model\Post
+	 * @param  \post\model\Post $post
 	 * @return void
 	 */
 	public function deletePost(\post\model\Post $post) {

@@ -16,6 +16,7 @@ class ProjectHandeler {
 	}
 
 	/**
+	 * @param user\model\User $user
 	 * @return array of Projects
 	 */
 	public function getProjects(\user\model\User $user) {

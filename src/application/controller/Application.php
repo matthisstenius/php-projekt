@@ -52,6 +52,11 @@ class Application {
 	 */
 	private $projectsController;
 
+	/**
+	 * @var common\view\Navigation
+	 */
+	private $navigationView;
+
 	public function __construct() {
 		$this->router = new \common\view\Router();
 
@@ -66,6 +71,8 @@ class Application {
 
 		$this->loginController = new \login\controller\Login($this->userHandeler, $this->loginHandeler);
 		$this->page = new \common\view\Page($this->loginHandeler, $this->projectsController);
+
+		$this->navigationView = new \common\view\Navigation();
 	}
 
 	/**
@@ -87,20 +94,27 @@ class Application {
 	 	*/
 		$this->router->get('/project/:projectID/:projectName', function($projectID, $projectName) {
 			$this->isAuthorized();
-			$projectController = new \project\controller\Project($this->projectHandeler);
 
-			echo $this->page->getPage("Project title", $projectController->showProject(+$projectID, $projectName));
+			try {
+				$project = $this->projectHandeler->getProject(+$projectID);
+
+				$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());
+
+				if ($cleanProjectName != $projectName) {
+					$this->navigationView->goToProject($project->getProjectID(), $cleanProjectName);
+				}
+
+				$projectController = new \project\controller\Project($project);
+
+				echo $this->page->getPage("Project title", $projectController->showProject(+$projectID, $projectName));	
+			}
+
+			catch (\Exception $e) {
+				$this->navigationView->gotoErrorPage();
+			}
+			
 		});
 
-		/**
-	 	* GET Post in Project
-	 	*/
-		$this->router->get('/project/:projectID/:projectName/post/:postID/:title', function($projectID, $projectName, $postID, $title) {
-			$this->isAuthorized();
-			$projectController = new \project\controller\Project($this->projectHandeler);
-
-			echo $this->page->getPage("Post tile", $projectController->showProjectPost(+$projectID, $projectName, +$postID, $title));
-		});
 
 		/**
 	 	* GET Add new project
@@ -128,9 +142,25 @@ class Application {
 	 	*/
 		$this->router->get('/edit/project/:projectID/:projectName', function($projectID, $projectName) {
 			$this->isAuthorized();
-			$editProjectController = new \project\controller\EditProject($this->projectHandeler, $projectID);
 
-			echo $this->page->getPage("Edit $projectName", $editProjectController->showEditProjectForm($projectName));
+			try {
+				$project = $this->projectHandeler->getProject(+$projectID);
+
+				$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());
+
+				if ($cleanProjectName != $projectName) {
+					$this->navigationView->goToEditProject($project->getProjectID(), $cleanProjectName);
+				}
+
+				$editProjectController = new \project\controller\EditProject($this->projectHandeler, $project);
+
+				echo $this->page->getPage("Edit $projectName", $editProjectController->showEditProjectForm());	
+			}
+
+			catch (\Exception $e) {
+				$this->navigationView->gotoErrorPage();
+			}
+			
 		});
 
 		/**
@@ -138,9 +168,19 @@ class Application {
 	 	*/
 		$this->router->put('/edit/project/:projectID/:projectName', function($projectID, $projectName) {
 			$this->isAuthorized();
-			$editProjectController = new \project\controller\EditProject($this->projectHandeler, $projectID);
 
-			$editProjectController->saveProject(+$projectID, $projectName);
+			try {
+				$project = $this->projectHandeler->getProject(+$projectID);
+
+				$editProjectController = new \project\controller\EditProject($this->projectHandeler, $project);
+
+				$editProjectController->saveProject();
+			}
+
+			catch (\Exception $e) {
+				$this->navigationView->gotoErrorPage();
+			}
+
 		});
 
 		/**
@@ -148,8 +188,47 @@ class Application {
 	 	*/
 		$this->router->delete('/remove/project/:projectID', function($projectID) {
 			$this->isAuthorized();
-			$deleteProjectController = new \project\controller\DeleteProject($this->projectHandeler, $projectID);
-			$deleteProjectController->deleteProject();
+
+			try {
+				$project = $this->projectHandeler->getProject(+$projectID);
+
+				$deleteProjectController = new \project\controller\DeleteProject($this->projectHandeler, $project);
+				$deleteProjectController->deleteProject();
+			}
+
+			catch (\Exception $e) {
+				$this->navigationView->gotoErrorPage();
+			}
+
+		});
+
+		/**
+	 	* GET Post in Project
+	 	*/
+		$this->router->get('/project/:projectID/:projectName/post/:postID/:title', function($projectID, $projectName, $postID, $postTitle) {
+			$this->isAuthorized();
+
+			try {
+				$project = $this->projectHandeler->getProject(+$projectID);
+				$post = $this->postHandeler->getPost(+$postID);
+
+				$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());
+				$cleanPostTitle = \common\view\Filter::getCleanUrl($post->getTitle());
+
+				if ($cleanProjectName != $projectName || $cleanPostTitle != $postTitle) {
+					$this->navigationView->goToPost($project->getProjectID(), $cleanProjectName,
+													$post->getPostID(), $cleanPostTitle);
+				}
+
+				$projectController = new \project\controller\Project($project);
+
+				echo $this->page->getPage("Post tile", $projectController->showProjectPost($post));	
+			}
+
+			catch (\Exception $e) {
+				$this->navigationView->gotoErrorPage();
+			}
+			
 		});
 
 		/**
@@ -157,9 +236,25 @@ class Application {
 	 	*/
 		$this->router->get('/project/:projectID/:projectName/newPost', function($projectID, $projectName) {
 			$this->isAuthorized();
-			$newPostController = new \post\controller\NewPost($this->postHandeler, $this->user);
 
-			echo $this->page->getPage("Add new post", $newPostController->showNewPostForm(+$projectID, $projectName));
+			try {
+				$project = $this->projectHandeler->getProject(+$projectID);
+
+				$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());
+
+				if ($cleanProjectName != $projectName) {
+					$this->navigationView->gotoNewPost($project->getProjectID(), $cleanProjectName);
+				}
+
+				$newPostController = new \post\controller\NewPost($this->postHandeler, $project);
+
+				echo $this->page->getPage("Add new post", $newPostController->showNewPostForm());
+			}
+
+			catch (\Exception $e) {
+				$this->navigationView->gotoErrorPage();
+			}
+			
 		});
 
 		/**
@@ -167,19 +262,48 @@ class Application {
 	 	*/
 		$this->router->post('/project/:projectID/:projectName/newPost', function($projectID, $projectName) {
 			$this->isAuthorized();
-			$newPostController = new \post\controller\NewPost($this->postHandeler, $this->user);
 
-			$newPostController->addPost(+$projectID, $projectName);
+			try {
+				$project = $this->projectHandeler->getProject(+$projectID);
+
+				$newPostController = new \post\controller\NewPost($this->postHandeler, $project);
+
+				$newPostController->addPost();
+			}
+
+			catch (\Exception $e) {
+				$this->navigationView->gotoErrorPage();
+			}
+			
 		});
 
 		/**
 	 	* GET edit post in project
 	 	*/
 		$this->router->get('/project/:projectID/:projectName/edit/post/:postID/:postName', function($projectID, $projectName,
-																								$postID, $postName) {
+																								$postID, $postTitle) {
 			$this->isAuthorized();
-			$editPostController = new \post\controller\EditPost($this->postHandeler, $postID);
-			echo $this->page->getPage("Edit post", $editPostController->showEditPostForm($projectID, $projectName, $postName));
+
+			try {
+				$project = $this->projectHandeler->getProject(+$projectID);
+				$post = $this->postHandeler->getPost(+$postID);
+
+				$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());
+				$cleanPostTitle = \common\view\Filter::getCleanUrl($post->getTitle());
+
+				if ($cleanProjectName != $projectName || $cleanPostTitle != $postTitle) {
+					$this->navigationView->gotoEditPost($project->getProjectID(), $cleanProjectName,
+													$post->getPostID(), $cleanPostTitle);
+				}
+
+				$editPostController = new \post\controller\EditPost($this->postHandeler, $post, $project);
+				echo $this->page->getPage("Edit post", $editPostController->showEditPostForm());
+			}
+
+			catch (\Exception $e) {
+				$this->navigationView->gotoErrorPage();
+			}
+			
 		});
 
 		/**
@@ -188,16 +312,42 @@ class Application {
 		$this->router->put('/project/:projectID/:projectName/edit/post/:postID/:postName', function($projectID, $projectName,
 																									$postID, $postName) {
 			$this->isAuthorized();
-			$editPostController = new \post\controller\EditPost($this->postHandeler, $postID);
-			$editPostController->editPost($projectID, $projectName);
+
+			try {
+				$project = $this->projectHandeler->getproject(+$projectID);
+				$post = $this->postHandeler->getPost(+$postID);
+
+				$editPostController = new \post\controller\EditPost($this->postHandeler, $post, $project);
+				$editPostController->editPost();
+			}
+
+			catch (\Exception $e) {
+				var_dump($e->getMessage());
+				$this->navigationView->gotoErrorPage();
+			}
+			
 		});
 
+		/**
+		 * DELET Post in project
+		 */
 		$this->router->delete('/project/:projectID/:projectName/remove/post/:postID', function($projectID, $projectName,
 																								$postID) {
 			$this->isAuthorized();
-			$deletePostController = new \post\controller\DeletePost($this->postHandeler, $postID);
 
-			$deletePostController->deletePost(+$projectID, $projectName);
+			try {
+				$project = $this->projectHandeler->getProject(+$projectID);
+				$post = $this->postHandeler->getPost(+$postID);
+
+				$deletePostController = new \post\controller\DeletePost($this->postHandeler, $post, $project);
+
+				$deletePostController->deletePost();
+			}
+
+			catch (\Exception $e) {
+				$this->navigationView->gotoErrorPage();
+			}
+			
 		});
 
 		$this->router->get('/login', function() {
@@ -233,6 +383,14 @@ class Application {
 			echo  $this->page->getPage("404", "<h1>404 page not found</h1>");
 		});
 
+		/**
+	 	* GET 500 page
+	 	* @todo Fix propper 404 page
+	 	*/
+		$this->router->get("/500", function() {
+			echo  $this->page->getPage("500", "<h1>Error 500 something went terrebly wrong!</h1>");
+		});
+
 		$this->router->match();
 	}
 
@@ -240,8 +398,7 @@ class Application {
 		$this->loginController->loginWithToken();
 
 		if (!$this->loginHandeler->isUserLoggedIn()) {
-			$navigationView = new \common\view\Navigation();
-			$navigationView->gotoLoginPage();
+			$this->navigationView->gotoLoginPage();
 		}
 	}
 }

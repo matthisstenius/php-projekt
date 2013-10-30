@@ -6,9 +6,9 @@ require_once("src/project/view/Project.php");
 
 class Project {
 	/**
-	 * @var project\model\ProjectHandeler
+	 * @var project\model\Project
 	 */
-	private $projectHandeler;
+	private $project;
 
 	/**
 	 * @var project\view\Project
@@ -21,29 +21,35 @@ class Project {
 	private $postHandeler;
 
 	/**
-	 * @var post\controller\Post
+	 * @var post\controller\Posts
 	 */
-	private $posts;
+	private $postsController;
 
 	/**
-	 * @param project\model\ProjectHandeler $projectHandeler
+	 * @var post\controller\Post
 	 */
-	public function __construct(\project\model\projectHandeler $projectHandeler) {
-		$this->projectHandeler = $projectHandeler;
-		$this->projectView = new \project\view\Project($this->projectHandeler);
+	private $postController;
+
+	/**
+	 * @param project\model\Project $project
+	 */
+	public function __construct(\project\model\Project $project) {
+		$this->project = $project;
+		$this->projectView = new \project\view\Project($this->project);
+
 		$this->postHandeler = new \post\model\PostHandeler();
-		$this->posts = new \post\controller\Posts($this->postHandeler);
-		$this->post = new \post\controller\Post($this->postHandeler);
+		$this->postsController = new \post\controller\Posts($this->postHandeler, $this->project);
+		$this->postController = new \post\controller\Post($this->postHandeler, $this->project);
 	}
 
 	/**
 	 * @return string HTML
 	 */
-	public function showProject($projectID, $projectName) {
-		return $this->projectView->getProjectHTML($projectID, $projectName, $this->posts->showPosts($projectID, $projectName));
+	public function showProject() {
+		return $this->projectView->getProjectHTML($this->postsController->showPosts());
 	}
 
-	public function showProjectPost($projectID, $projectName, $postID, $postTitle) {
-		return $this->post->showPost($projectID, $projectName, $postID, $postTitle);
+	public function showProjectPost(\post\model\Post $post) {
+		return $this->postController->showPost($post);
 	}
 }

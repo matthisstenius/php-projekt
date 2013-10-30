@@ -11,9 +11,9 @@ class NewPost {
 	private $postHandeler;
 
 	/**
-	 * @var user\model\User
+	 * @var project\model\Project
 	 */
-	private $user;
+	private $project;
 
 	/**
 	 * @var post\view\NewPost
@@ -22,27 +22,26 @@ class NewPost {
 
 	/**
 	 * @param post\model\PostHandeler $postHandeler
+	 * @param project\model\Project $project
 	 */
-	public function __construct(\post\model\PostHandeler $postHandeler, \user\model\User $user) {
+	public function __construct(\post\model\PostHandeler $postHandeler, \project\model\Project $project) {
 		$this->postHandeler = $postHandeler;
-		$this->user = $user;
-		$this->newPostView = new \post\view\NewPost($this->postHandeler, $this->user);
+		$this->project = $project;
+
+		$this->newPostView = new \post\view\NewPost($this->postHandeler, $this->project);
 	}
 
 	/**
-	 * @param int $projectID
-	 * @param string $projectName
 	 * @return string HTML
 	 */
-	public function showNewPostForm($projectID, $projectName) {
-		return $this->newPostView->getNewPostForm($projectID, $projectName);
+	public function showNewPostForm() {
+		return $this->newPostView->getNewPostForm();
 	}
 
 	/**
-	 * @param int $projectID
-	 * @param string $projectName
+	 * @return void
 	 */
-	public function addPost($projectID, $projectName) {
-		$this->newPostView->addPost($projectID, $projectName);
+	public function addPost() {
+		$this->newPostView->addPost();
 	}
 }

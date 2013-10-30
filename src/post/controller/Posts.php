@@ -12,24 +12,29 @@ class Posts {
 	private $postHandeler;
 
 	/**
+	 * @var project\model\Project
+	 */
+	private $project;
+
+	/**
 	 * @var post\view\Post
 	 */
 	private $postsView;
 
 	/**
-	 * @param post\view\Post   $postView
-	 * @param post\model\PostHandeler $postHandeler
+	 * @param post\model\PostHandeler   $postHandeler
+	 * @param project\model\Project 	$project
 	 */
-	public function __construct(\post\model\PostHandeler $postHandeler) {
+	public function __construct(\post\model\PostHandeler $postHandeler, \project\model\Project $project) {
 		$this->postHandeler = $postHandeler;
-		$this->postsView = new \post\view\Posts($this->postHandeler);
+		$this->project = $project;
+		$this->postsView = new \post\view\Posts($this->postHandeler, $this->project);
 	}
 
 	/**
-	 * @param  int $projectID
 	 * @return string HTML
 	 */
-	public function showPosts($projectID, $projectName) {
-		return $this->postsView->getHTML($projectID, $projectName);
+	public function showPosts() {
+		return $this->postsView->getHTML();
 	}
 }

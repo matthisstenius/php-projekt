@@ -28,7 +28,6 @@ class EditProject {
 	 * @param project\model\ProjectHandeler $projectHandeler
 	 * @param project\model\Project $project
 	 * @param common\view\Navigation $navigationView
-	 * @param user\model\User $user
 	 */
 	public function __construct(\project\model\ProjectHandeler $projectHandeler, 
 								\project\model\Project $project,
@@ -40,15 +39,10 @@ class EditProject {
 	}
 
 	/**
-	 * @param string $projectName
 	 * @return string HTML
 	 */
-	public function getEditProjectForm($projectName) {
+	public function getEditProjectForm() {
 		$cleanUrl = \common\view\Filter::getCleanUrl($this->project->getName());
-
-		if ($cleanUrl != $projectName) {
-			$this->navigationView->goToEditProject($this->project->getProjectID(), $cleanUrl);
-		}
 
 		$html = "<h1>Edit " . $this->project->getName() . "</h1>";
 
@@ -61,7 +55,7 @@ class EditProject {
 																	$cleanUrl);
 
 		$backToProjectSrc = $this->navigationView->getProjectSrc($this->project->getProjectID(), 
-																 $projectName);
+																 $this->project->getName());
 		
 		$html .= "<form class='pure-form pure-form-stacked' action='$editProjectSrc' method='POST'>
 					<input type='hidden' name='_method' value='put'>

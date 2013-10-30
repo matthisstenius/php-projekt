@@ -11,11 +11,11 @@ class NewPost extends Post {
 	 * @param string $title
 	 * @param string $content
 	 * @param date $added
-	 * @param int $projectID
 	 * @param int $userID
+	 * @param int $projectID
 	 * @throws Exception If validation fails
 	 */
-	public function __construct($title, $content, $added, $projectID, $userID) {
+	public function __construct($title, $content, $userID, $added, $projectID) {
 		if (!is_string($title) || $title == "") {
 			throw new \Exception("invalid title");
 		}
@@ -38,9 +38,9 @@ class NewPost extends Post {
 
 		$this->title     = $title;
 		$this->content   = $content;
+		$this->userID    = $userID;
 		$this->added     = $added;
 		$this->projectID = $projectID;
-		$this->userID    = $userID;
 	}
 
 	/**

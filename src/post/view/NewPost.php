@@ -16,9 +16,9 @@ class NewPost {
 	private $postHandeler;
 
 	/**
-	 * @var user\model\User
+	 * @var project\model\Project
 	 */
-	private $user;
+	private $project;
 	
 	/**
 	 * @var common\view\Navigation
@@ -27,21 +27,26 @@ class NewPost {
 
 	/**
 	 * @param post\model\PostHandeler $postHandeler
+	 * @param project\model\Project $project
 	 */
-	public function __construct(\post\model\PostHandeler $postHandeler, \user\model\User $user) {
+	public function __construct(\post\model\PostHandeler $postHandeler, \project\model\Project $project) {
 		$this->postHandeler = $postHandeler;
-		$this->user = $user;
+		$this->project = $project;
+
 		$this->navigationView = new \common\view\Navigation();
 	}
 
 	/**
-	 * @param  int $projectID
-	 * @param  string $projectName
 	 * @return string HTML
 	 */
-	public function getNewPostForm($projectID, $projectName) {
-		$fromAction = $this->navigationView->getNewPostSrc($projectID, $projectName);
-		$backToProjectSrc = $this->navigationView->getProjectSrc($projectID, $projectName);
+	public function getNewPostForm() {
+		$cleanProjectName = \common\view\Filter::getCleanUrl($this->project->getName());
+
+		$fromAction = $this->navigationView->getNewPostSrc($this->project->getProjectID(),
+							 								$cleanProjectName);
+
+		$backToProjectSrc = $this->navigationView->getProjectSrc($this->project->getProjectID(),
+							 									$cleanProjectName);
 
 		$html = "<h1>Add new post to project</h1>";
 
@@ -94,24 +99,30 @@ class NewPost {
 	}
 
 	/**
-	 * @param int $projectID
-	 * @param string $projectName
 	 * @return void
 	 */
-	public function addPost($projectID, $projectName) {
+	public function addPost() {
 		try {
-			$post = new \post\model\NewPost($this->getPostTitle(), $this->getPostContent(),
-											 \Date('y-m-d'), $projectID, $this->user->getUserID());
+			$post = new \post\model\NewPost($this->getPostTitle(), 
+											$this->getPostContent(),
+											$this->project->getUserID(),
+											\Date('y-m-d'),
+											$this->project->getProjectID()
+											);
+
 			$this->postHandeler->addPost($post);
 
-			$this->navigationView->goToPost($post->getProjectID(), $projectName, $post->getPostID(), 
+			$this->navigationView->goToPost($post->getProjectID(), 
+											\common\view\Filter::getCleanUrl($this->project->getName()),
+										 	$post->getPostID(), 
 											\common\view\Filter::getCleanUrl($post->getTitle()));
 		}
 
 		catch (\Exception $e) {
 			$this->userInputFaulty();
 			$this->savePostTitle();
-			$this->navigationView->gotoNewPost($projectID, $projectName);
+			$this->navigationView->gotoNewPost($this->project->getProjectID(),
+												$this->project->getName());
 		}
 	}
 

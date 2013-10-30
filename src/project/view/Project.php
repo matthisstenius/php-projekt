@@ -4,9 +4,9 @@ namespace project\view;
 
 class Project {
 	/**
-	 * @var project\model\ProjectHandeler
+	 * @var project\model\Project
 	 */
-	private $projectHandeler;
+	private $project;
 
 	/**
 	 * @var common\view\Navigation
@@ -14,58 +14,51 @@ class Project {
 	private $navigationView;
 
 	/**
-	 * @param project\model\ProjectHandeler $projectHandeler
+	 * @param project\model\Project $project
 	 */
-	public function __construct(\project\model\ProjectHandeler $projectHandeler) {
-		$this->projectHandeler = $projectHandeler;
+	public function __construct(\project\model\Project $project) {
+		$this->project = $project;
+
 		$this->navigationView = new \common\view\Navigation();
 	}
 
 	/**
-	 * @param  int $id
-	 * @param  sting HTML containg Posts
+	 * @todo  check if this is okey
+	 * @param  sting  $projectPosts HTML containg Posts
 	 * @return string HTML
 	 */
-	public function getProjectHTML($projectID, $projectName, $projectPosts) {
-		try {
-			$project = $this->projectHandeler->getProject($projectID);
+	public function getProjectHTML($projectPosts) {
+		$project = $this->project;
+		$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());
 
-			if (\common\view\Filter::getCleanUrl($project->getName()) != $projectName) {
-				$this->navigationView->goToProject($projectID, \common\view\Filter::getCleanUrl($project->getName()));
-			}
+		$html = "<header class='project-header'>";
 
-			$html = "<header class='project-header'>";
+		$html .= "<div class='title-area left'>";
+		$html .= "<h1 class='title'>" . $project->getName() . "</h1>";
+		$html .= "<span class='created'>Created by: " . $project->getUsername() . " " . 
+				 $project->getDateCreated() . "</span>";
+		$html .= "</div>";
 
-			$html .= "<div class='title-area left'>";
-			$html .= "<h1 class='title'>" . $project->getName() . "</h1>";
-			$html .= "<span class='created'>Created by: " . $project->getUsername() . " " . 
-					 $project->getDateCreated() . "</span>";
-			$html .= "</div>";
+		$html .= "<div class='btn-area right'>";
+		$newPostSrc = $this->navigationView->getNewPostSrc($project->getProjectID(), $cleanProjectName);
 
-			$html .= "<div class='btn-area right'>";
-			$newPostSrc = $this->navigationView->getNewPostSrc($projectID, $projectName);
-			$html .= "<a class='btn btn-add right' href='$newPostSrc'>Add new post</a>";
+		$html .= "<a class='btn btn-add right' href='$newPostSrc'>Add new post</a>";
 
-			$editProjectSrc = $this->navigationView->getEditProjectSrc($projectID, $projectName);
-			$html .= "<a href='$editProjectSrc' class ='btn btn-edit right'>Edit Project</a>";
-			
-			$deleteProjectSrc = $this->navigationView->getDeleteProjectSrc($projectID);
-			$html .= "<form class='right' action='$deleteProjectSrc' method='POST'>
-						<input name='_method' type='hidden' value='delete'>
-						<button class='btn btn-remove'>Delete Project</button>
-					</form>";
+		$editProjectSrc = $this->navigationView->getEditProjectSrc($project->getProjectID(), $cleanProjectName);
+		$html .= "<a href='$editProjectSrc' class ='btn btn-edit right'>Edit Project</a>";
+		
+		$deleteProjectSrc = $this->navigationView->getDeleteProjectSrc($project->getProjectID());
+		$html .= "<form class='right' action='$deleteProjectSrc' method='POST'>
+					<input name='_method' type='hidden' value='delete'>
+					<button class='btn btn-remove'>Delete Project</button>
+				</form>";
 
-			$html .= "</div>";
-			$html .= "</header>";
-			$html .= "<p class='content'>" . $project->getDescription() . "</p>";
-			
+		$html .= "</div>";
+		$html .= "</header>";
+		$html .= "<p class='content'>" . $project->getDescription() . "</p>";
+		
 
-			$html .= $projectPosts;
-		}
-
-		catch (\Exception $e) {
-			$html = "No project found!";
-		}
+		$html .= $projectPosts;
 
 		return $html;
 	}

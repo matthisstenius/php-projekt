@@ -3,6 +3,12 @@
 namespace common\view;
 
 class Navigation {
+	public function compareParams($url, $param, $otherParam) {
+		if (\common\view\Filter::getCleanUrl($param) != $otherParam) {
+			header("Location: $url");
+		}
+	}
+
 	public function gotoFrontPage() {
 		header("Location: /php-projekt/");
 	}
@@ -52,6 +58,10 @@ class Navigation {
 
 	public function gotoRegisterPage() {
 		header("Location: /php-projekt/register");
+	}
+
+	public function gotoErrorPage() {
+		header("Location: /php-projekt/500");
 	}
 
 	/**

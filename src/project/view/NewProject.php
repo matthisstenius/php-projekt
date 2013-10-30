@@ -21,6 +21,7 @@ class NewProject {
 	 */
 	
 	private $user;
+
 	/**
 	 * @var common\view\Navigation
 	 */
@@ -93,13 +94,15 @@ class NewProject {
 	}
 
 	/**
-	 * @return porject\model\NewProject
+	 * @return void
 	 */
 	public function addProject() {
 		try {
 			$project = new \project\model\NewProject($this->getProjectName(), $this->getProjectDescription(),
 													 \Date('y-m-d'), $this->user->getUserID());
+
 			$this->projectHandeler->addProject($project);
+			
 			$this->navigationView->goToProject($project->getProjectID(), \common\view\Filter::getCleanUrl($project->getName()), 
 												$project->getName());
 		}
