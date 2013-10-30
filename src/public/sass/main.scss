@@ -17,6 +17,8 @@
 	$almostWhite: #FCFCFC;
 	$eggShell: #EFEFEF;
 	$green: #4CD964;
+	$red: #B72D16;
+	$salmon: #E74C3C;
 
 /*
 ----------------------------------------
@@ -62,7 +64,7 @@
 		padding: 10px 20px;
 		border-radius: 3px;
 		border: none;
-		color: white;
+		color: #FEFEFE;
 		font-size: .9em;
 		text-align: center;
 
@@ -79,6 +81,37 @@
 	.btn-thin {
 		padding: 5px 10px;
 	}
+	
+	.btn-attention {
+		font-size: .9em;
+		display: block;
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		text-align: center;
+		color: white;
+		border-radius: 0 0 3px 3px;
+		padding: 10px 0;
+		background-color: $salmon;
+
+		&:hover {
+			background-color: $red;
+		}
+	}
+	
+	.btn-setting {
+		@include linear-gradient(#FEFEFE, #F5F5F5);
+		color: $darkGrey;
+		border: 1px solid #ccc;
+
+		&:hover {
+			color: $salmon;
+		}
+	}
+
+	.pad > .btn-attention {
+		margin: 0 -10px;
+	}
 
 	.btn-area .btn {
 		margin-left: 5px;
@@ -94,6 +127,10 @@
 
 	.btn-remove {
 		background-color: #FF3B30;
+	}
+
+	button:hover {
+		@include transition (all .5s ease-in-out);
 	}
 
 /*
@@ -118,8 +155,12 @@
 	}
 
 	a {
-		color: $blue;
+		color: $salmon;
 		text-decoration: none;
+
+		&:hover {
+			@include transition (all .5s ease-in-out);
+		}
 	}
 	
 	.title-link {
@@ -128,6 +169,7 @@
 
 	.title {
 		margin-bottom: 5px;
+		margin-top: 0;
 	}
 
 /*
@@ -177,15 +219,6 @@
 		p {
 			color: #999;
 		}
-
-		a {
-			color: $blue;
-
-			&:hover {
-				color: $green;
-				@include transition (all .5s ease-in-out);
-			}
-		}
 	}
 
 	.logo {
@@ -208,6 +241,14 @@
 
 	.post-title {
 		margin-top: 0;
+	}
+
+	.post-content {
+		margin-top: 20px;
+	}
+
+	.post-excerpt {
+		font-style: italic;
 	}
 
 /*

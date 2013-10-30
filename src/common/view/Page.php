@@ -75,7 +75,7 @@ class Page {
 	 */
 	private function getHeader() {
 		$homeSrc = $this->navigationView->getHomeSrc();
-
+		$projectsSrc = $this->navigationView->getProjectsSrc();
 
 		$html = "<header class='header pad'>
 					<a href='$homeSrc' class='logo'>Bloggen</a>
@@ -91,8 +91,8 @@ class Page {
 							$html .= $this->getUserDetails();
 							$html .= "<a href='$logoutSrc'>Logout</a>";
 							$html .= "<li><a href='$newProjectSrc'>Create new project</a></li>";
-							$html .= "<h3>My Projects</h3>";
-							$html .= $this->projectsController->showProjects();	
+							$html .= "<a href='$projectsSrc'><h3>My Projects</h3></a>";
+							$html .= $this->projectsController->showProjectsList();	
 						}
 
 						else {

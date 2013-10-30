@@ -35,11 +35,11 @@ class Post {
 	 * @return string     HTML
 	 */
 	public function getPostHTML(\post\model\Post $post) {
-		$html = "<div class='box pad'>
-					<article class='post'>";
-
+		
 		$cleanPostTitle = \common\view\Filter::getCleanUrl($post->getTitle());
 		$cleanProjectName = \common\view\Filter::getCleanUrl($this->project->getName());
+
+		$html = "<article class='post'>";
 
 		$html .= "<header class='post-header'>";
 		$html .= "<div class='left'>";
@@ -54,7 +54,8 @@ class Post {
 								 							$post->getPostID(), 
 								 							$cleanPostTitle);
 
-		$html .= "<a href='$editPostSrc' class='btn btn-edit right'>Edit Post</a>";
+		$html .= "<a href='$editPostSrc' class='btn btn-setting right'>
+					<span class='icon-pencil'></span>Edit Post</a>";
 
 		$deletePostSrc = $this->navigationView->getDeletePostSrc($this->project->getProjectID(), 
 																$cleanProjectName,
@@ -62,13 +63,15 @@ class Post {
 
 		$html .= "<form class='right' action='$deletePostSrc' method='POST'>
 					<input type='hidden' name='_method' value='delete'>
-					<button class='btn btn-remove'>Delete Post</button>
+					<button class='btn btn-setting'><span class='icon-remove'></span>Delete Post</button>
 				</form>";
 
 		$html .= "</div>";
 		$html .= "</header>";
 
+		$html .= "<div class='box pad post-content'>";
 		$html .= "<p class='content'>" . $post->getContent() . "</p>";
+		$html .= "</div>";
 
 		$html .= "</article>
 				</div>";

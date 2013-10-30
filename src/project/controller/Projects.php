@@ -35,7 +35,14 @@ class Projects {
 	/**
 	 * @return string HTML
 	 */
+	public function showProjectsList() {
+		return $this->projectsView->getProjectsList();
+	}
+
+	/**
+	 * @return string HTML
+	 */
 	public function showProjects() {
-		return $this->projectsView->getHTML();
+		return $this->projectsView->getprojects();
 	}
 }

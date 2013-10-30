@@ -46,12 +46,14 @@ class Posts {
 
 			$html .= "<div class='post-thumb box pad'>";
 			$html .= "<a class='title-link' href='$postSrc'>
-						<h1 class='post-title title'>" . $post->getTitle() . "</h1>
+						<h2 class='post-title title'>" . $post->getTitle() . "</h2>
 					</a>";
 
+			$postExcerpt = \common\view\Filter::getExcerpt($post->getContent());
+
 			$html .= "<span class='created'>Added by: " . $post->getUsername() . " " . $post->getDateAdded() . "</span>";
-			$html .= "<p class='post-excerpt'>" . $post->getExcerpt() . "...</p>";
-			$html .= "<a href='$postSrc'>Read More</a>";
+			$html .= "<p class='post-excerpt'>$postExcerpt...</p>";
+			$html .= "<a class='btn-attention' href='$postSrc'>Read More</a>";
 			$html .= "</div>";
 		}
 

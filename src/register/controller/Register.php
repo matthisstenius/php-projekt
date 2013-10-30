@@ -59,7 +59,7 @@ class Register {
 			if ($registerModel->isUsernameFree()) {
 				$this->userHandeler->addUser($user);
 				$this->loginHandeler->setUserLoggedIn($user);
-				$this->navigationView->gotoFrontPage();
+				$this->navigationView->gotoProjects();
 			}
 		}
 

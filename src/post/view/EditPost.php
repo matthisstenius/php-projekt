@@ -62,7 +62,7 @@ class EditPost {
 															$this->post->getPostID(),
 															$cleanTitle);
 
-		$html = "<h1>Add new post to project</h1>";
+		$html = "<h1>Edit ". $this->post->getTitle() .  "</h1>";
 
 		if (isset($_SESSION[self::$errorMessage])) {
 			$html .= $this->userInputFaulty();

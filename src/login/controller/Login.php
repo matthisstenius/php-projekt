@@ -55,7 +55,7 @@ class Login {
 					$this->loginView->setCookieValue($user);	
 				}
 				
-				$this->navigationView->gotoFrontPage();
+				$this->navigationView->gotoProjects();
 			}
 		}
 

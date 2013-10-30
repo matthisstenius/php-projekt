@@ -48,7 +48,7 @@ class NewPost {
 		$backToProjectSrc = $this->navigationView->getProjectSrc($this->project->getProjectID(),
 							 									$cleanProjectName);
 
-		$html = "<h1>Add new post to project</h1>";
+		$html = "<h1>Add new post to " . $this->project->getName() . "</h1>";
 
 		if (isset($_SESSION[self::$userInputFaultyMessage])) {
 			$html .= $_SESSION[self::$userInputFaultyMessage];

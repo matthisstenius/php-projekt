@@ -135,19 +135,4 @@ class Post {
 	public function getUserID() {
 		return $this->userID;
 	}
-
-	/**	
-	 * @todo move this to a view
-	 */
-	public function getExcerpt() {
-		$content = $this->getContent();
-
-		if (count($content > 140)) {
-			return substr($content, -140);
-		}
-
-		else {
-			return $this->getContent();
-		}
-	}
 }

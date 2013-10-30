@@ -31,6 +31,10 @@ class Navigation {
 		header("Location: /php-projekt/project/$projectID/$projectName/newPost");
 	}
 
+	public function gotoProjects() {
+		header("Location: /php-projekt/projects");
+	}
+
 	/**
 	 * @param  int $projectID
 	 * @param  string $name
@@ -71,6 +75,10 @@ class Navigation {
 		return "/php-projekt";
 	}
 
+	public function getProjectsSrc() {
+		return "/php-projekt/projects";
+	}
+	
 	/**
 	 * @param  int $porjectID
 	 * @param  string $cleanName

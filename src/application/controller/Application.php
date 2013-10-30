@@ -90,6 +90,12 @@ class Application {
 	}
 
 	private function projectRoutes() {
+		$this->router->get('/projects', function() {
+			$this->isAuthorized();
+
+			echo $this->page->getPage("Projects", $this->projectsController->showProjects());
+		});
+
 		/**
 	 	* GET Project
 	 	*/

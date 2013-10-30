@@ -11,6 +11,7 @@
 .main {
 	@include span-columns(11);
 	@include omega();
+	margin-top: 20px;
 }
 
 .test {
@@ -21,6 +22,8 @@
 	@include span-columns(6);
 	@include omega(2n);
 	margin-bottom: 20px;
+	min-height: 209px;
+	position: relative;
 }
 
 .login-box, .register-box {

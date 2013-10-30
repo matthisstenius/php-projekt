@@ -22,4 +22,18 @@ class Filter {
 
 		return $cleanTitle;
 	}
+
+	/**
+	 * @param  string $input
+	 * @return string        Returns the forst 200 characters from given string
+	 */
+	public static function getExcerpt($input) {
+		if (strlen($input) > 200) {
+			return substr($input, 0, 200);
+		}
+
+		else {
+			return $input;
+		}
+	}
 }
