@@ -20,6 +20,8 @@ require_once("src/user/model/UserHandeler.php");
 require_once("src/login/model/Login.php");
 require_once("src/login/controller/Logout.php");
 require_once("src/register/controller/Register.php");
+require_once("src/user/controller/UserProfile.php");
+require_once("src/user/controller/DeleteUser.php");
 
 class Application {
 	/**
@@ -84,6 +86,7 @@ class Application {
 		$this->postRoutes();
 		$this->loginRoutes();
 		$this->registerRoutes();
+		$this->userRoutes();
 		$this->otherRoutes();
 
 		$this->router->match();
@@ -356,6 +359,20 @@ class Application {
 				$this->navigationView->gotoErrorPage();
 			}
 			
+		});
+	}
+
+	private function userRoutes() {
+		$this->router->get('/user/:userID/:username', function($userID, $username) {
+			$this->isAuthorized();
+
+			$userprofileController = new \user\controller\UserProfile($this->user);
+			echo $this->page->getPage("$username 's profile", $userprofileController->showUserProfile());
+		});
+
+		$this->router->delete('/remove/user/:userID/:username', function($userID, $username) {
+			$deleteUserContoller = new \user\controller\DeleteUser($this->user, $this->loginHandeler);
+			$deleteUserContoller->deleteUser();
 		});
 	}
 

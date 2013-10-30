@@ -169,6 +169,10 @@ class Navigation {
 	 * @return string
 	 */
 	public function getUserPageSrc($userID, $username) {
-		return "/php-projekt/$userID/$username";
+		return "/php-projekt/user/$userID/$username";
+	}
+
+	public function getDeleteAccountSrc($userID, $username) {
+		return "/php-projekt/remove/user/$userID/$username";
 	}
 }
