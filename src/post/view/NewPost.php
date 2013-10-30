@@ -16,6 +16,11 @@ class NewPost {
 	private $postHandeler;
 
 	/**
+	 * @var user\model\User
+	 */
+	private $user;
+	
+	/**
 	 * @var common\view\Navigation
 	 */
 	private $navigationView;
@@ -23,8 +28,9 @@ class NewPost {
 	/**
 	 * @param post\model\PostHandeler $postHandeler
 	 */
-	public function __construct(\post\model\PostHandeler $postHandeler) {
+	public function __construct(\post\model\PostHandeler $postHandeler, \user\model\User $user) {
 		$this->postHandeler = $postHandeler;
+		$this->user = $user;
 		$this->navigationView = new \common\view\Navigation();
 	}
 
@@ -94,7 +100,8 @@ class NewPost {
 	 */
 	public function addPost($projectID, $projectName) {
 		try {
-			$post = new \post\model\NewPost($this->getPostTitle(), $this->getPostContent(), \Date('y-m-d'), $projectID, 3);
+			$post = new \post\model\NewPost($this->getPostTitle(), $this->getPostContent(),
+											 \Date('y-m-d'), $projectID, $this->user->getUserID());
 			$this->postHandeler->addPost($post);
 
 			$this->navigationView->goToPost($post->getProjectID(), $projectName, $post->getPostID(), 

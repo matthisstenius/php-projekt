@@ -18,10 +18,10 @@ class ProjectHandeler {
 	/**
 	 * @return array of Projects
 	 */
-	public function getProjects() {
+	public function getProjects(\user\model\User $user) {
 		$projects = array();
 
-		foreach ($this->projectDAL->getProjects() as $row) {
+		foreach ($this->projectDAL->getProjects($user) as $row) {
 			$projects[] = new Project(+$row['idProject'], $row['name'], $row['description'], 
 										Date($row['created']), $row['username'], +$row['userID']);
 		}

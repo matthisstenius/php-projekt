@@ -12,16 +12,24 @@ class Projects {
 	private $projectHandeler;
 
 	/**
+	 * @var user\model\User
+	 */
+	private $user;
+	
+	/**
 	 * @var project\view\Projects
 	 */
 	private $projectsView;
 
 	/**
 	 * @param project\model\ProjectHandeler $projectHandeler
+	 * @param user\model\User $user
 	 */
-	public function __construct(\project\model\projectHandeler $projectHandeler) {
+	public function __construct(\project\model\projectHandeler $projectHandeler, \user\model\User $user) {
 		$this->projectHandeler = $projectHandeler;
-		$this->projectsView = new \project\view\Projects($this->projectHandeler);
+		$this->user = $user;
+
+		$this->projectsView = new \project\view\Projects($this->projectHandeler, $this->user);
 	}
 
 	/**

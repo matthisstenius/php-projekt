@@ -11,6 +11,11 @@ class NewPost {
 	private $postHandeler;
 
 	/**
+	 * @var user\model\User
+	 */
+	private $user;
+
+	/**
 	 * @var post\view\NewPost
 	 */
 	private $newPostView;
@@ -18,9 +23,10 @@ class NewPost {
 	/**
 	 * @param post\model\PostHandeler $postHandeler
 	 */
-	public function __construct(\post\model\PostHandeler $postHandeler) {
+	public function __construct(\post\model\PostHandeler $postHandeler, \user\model\User $user) {
 		$this->postHandeler = $postHandeler;
-		$this->newPostView = new \post\view\NewPost($this->postHandeler);
+		$this->user = $user;
+		$this->newPostView = new \post\view\NewPost($this->postHandeler, $this->user);
 	}
 
 	/**

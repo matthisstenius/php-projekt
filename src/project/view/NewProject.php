@@ -17,15 +17,22 @@ class NewProject {
 	private $projectHandeler;
 
 	/**
+	 * @var user\model\User
+	 */
+	
+	private $user;
+	/**
 	 * @var common\view\Navigation
 	 */
 	private $navigationView;
 
 	/**
 	 * @param project\model\ProjectHandeler $projectHandeler
+	 * @param user\model\User $user
 	 */
-	public function __construct(\project\model\ProjectHandeler $projectHandeler) {
+	public function __construct(\project\model\ProjectHandeler $projectHandeler, \user\model\User $user) {
 		$this->projectHandeler = $projectHandeler;
+		$this->user = $user;
 		$this->navigationView = new \common\view\Navigation();
 	}
 
@@ -90,9 +97,10 @@ class NewProject {
 	 */
 	public function addProject() {
 		try {
-			$project = new \project\model\NewProject($this->getProjectName(), $this->getProjectDescription(), \Date('y-m-d'), 3);
+			$project = new \project\model\NewProject($this->getProjectName(), $this->getProjectDescription(),
+													 \Date('y-m-d'), $this->user->getUserID());
 			$this->projectHandeler->addProject($project);
-			$this->navigationView->goToProject($project->getProjectID(), $project->getCleanName(), 
+			$this->navigationView->goToProject($project->getProjectID(), \common\view\Filter::getCleanUrl($project->getName()), 
 												$project->getName());
 		}
 

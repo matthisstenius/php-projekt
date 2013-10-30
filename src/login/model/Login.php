@@ -2,6 +2,8 @@
 
 namespace login\model;
 
+require_once("src/user/model/NullUser.php");
+
 class Login {
 	private static $user = "login::model::login";
 
@@ -53,6 +55,10 @@ class Login {
 	}
 
 	public function getLoggedInUser() {
-		return $_SESSION[self::$user];
+		if ($this->isUserLoggedIn()) {
+			return $_SESSION[self::$user];
+		}
+
+		return new \user\model\NullUser();
 	}
 }

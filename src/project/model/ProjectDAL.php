@@ -8,12 +8,18 @@ class ProjectDAL extends \common\model\DALBase {
 	/**
 	 * @return array
 	 */
-	public function getProjects() {
+	public function getProjects(\user\model\User $user) {
 		$result = array();
 
-		$stm = self::getDBConnection()->prepare("SELECT idProject, name, description, created, User.username, idUser_User AS userID FROM Project
-												 INNER JOIN User ON User.idUser = idUser_User");
+		$stm = self::getDBConnection()->prepare("SELECT idProject, name, description, created, User.username, 
+												idUser_User AS userID FROM Project
+												INNER JOIN User ON User.idUser = idUser_User
+												WHERE idUser_User = :userID");
 
+		$userID = $user->getUserID();
+
+		$stm->bindParam(':userID', $userID, \PDO::PARAM_INT);
+		
 		$stm->execute();
 
 		while ($row = $stm->fetch(\PDO::FETCH_ASSOC)) {

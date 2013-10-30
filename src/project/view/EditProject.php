@@ -28,8 +28,10 @@ class EditProject {
 	 * @param project\model\ProjectHandeler $projectHandeler
 	 * @param project\model\Project $project
 	 * @param common\view\Navigation $navigationView
+	 * @param user\model\User $user
 	 */
-	public function __construct(\project\model\ProjectHandeler $projectHandeler, \project\model\Project $project,
+	public function __construct(\project\model\ProjectHandeler $projectHandeler, 
+								\project\model\Project $project,
 								\common\view\Navigation $navigationView) {
 
 		$this->projectHandeler = $projectHandeler;
@@ -105,7 +107,8 @@ class EditProject {
 		try {
 			$newProject = new \project\model\Project($this->project->getProjectID(), $this->getProjectName(), 
 															$this->getProjectDescription(),
-														 	$this->project->getDateCreated(), "Matthis", 
+														 	$this->project->getDateCreated(),
+														 	$this->project->getUsername(), 
 														 	$this->project->getUserID());
 			
 			$this->projectHandeler->editProject($newProject);

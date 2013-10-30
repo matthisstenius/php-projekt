@@ -59,7 +59,10 @@ class Application {
 		$this->postHandeler = new \post\model\PostHandeler();
 		$this->userHandeler = new \user\model\UserHandeler();
 		$this->loginHandeler = new \login\model\Login();
-		$this->projectsController = new \project\controller\Projects($this->projectHandeler);
+
+		$this->user = $this->loginHandeler->getLoggedInUser();
+
+		$this->projectsController = new \project\controller\Projects($this->projectHandeler, $this->user);
 
 		$this->loginController = new \login\controller\Login($this->userHandeler, $this->loginHandeler);
 		$this->page = new \common\view\Page($this->loginHandeler, $this->projectsController);
@@ -104,7 +107,7 @@ class Application {
 	 	*/
 		$this->router->get('/newProject', function() {
 			$this->isAuthorized();
-			$newProjectController = new \project\controller\NewProject($this->projectHandeler);
+			$newProjectController = new \project\controller\NewProject($this->projectHandeler, $this->user);
 
 			echo $this->page->getPage("Add New Project", $newProjectController->showNewProjectForm());
 		});
@@ -114,7 +117,7 @@ class Application {
 	 	*/
 		$this->router->post('/newProject', function() {
 			$this->isAuthorized();
-			$newProjectController = new \project\controller\NewProject($this->projectHandeler);
+			$newProjectController = new \project\controller\NewProject($this->projectHandeler, $this->user);
 
 			$newProjectController->addProject();
 		});
@@ -154,7 +157,7 @@ class Application {
 	 	*/
 		$this->router->get('/project/:projectID/:projectName/newPost', function($projectID, $projectName) {
 			$this->isAuthorized();
-			$newPostController = new \post\controller\NewPost($this->postHandeler);
+			$newPostController = new \post\controller\NewPost($this->postHandeler, $this->user);
 
 			echo $this->page->getPage("Add new post", $newPostController->showNewPostForm(+$projectID, $projectName));
 		});
@@ -164,7 +167,7 @@ class Application {
 	 	*/
 		$this->router->post('/project/:projectID/:projectName/newPost', function($projectID, $projectName) {
 			$this->isAuthorized();
-			$newPostController = new \post\controller\NewPost($this->postHandeler);
+			$newPostController = new \post\controller\NewPost($this->postHandeler, $this->user);
 
 			$newPostController->addPost(+$projectID, $projectName);
 		});
