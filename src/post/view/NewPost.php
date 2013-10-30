@@ -7,7 +7,8 @@ require_once("src/post/model/NewPost.php");
 class NewPost {
 	private static $title = "title";
 	private static $content = "content";
-	private static $errorMessage = "post::view::NewPosterrorMessage";
+	private static $userInputFaultyMessage = "post::view::userInputFaultyMessage";
+	private static $savePostTitle = "post::view::savePostTitle";
 
 	/**
 	 * @var post\model\PostHandeler
@@ -38,14 +39,21 @@ class NewPost {
 
 		$html = "<h1>Add new post to project</h1>";
 
-		if (isset($_SESSION[self::$errorMessage])) {
-			$html .= $this->userInputFaulty();
-			unset($_SESSION[self::$errorMessage]);
+		if (isset($_SESSION[self::$userInputFaultyMessage])) {
+			$html .= $_SESSION[self::$userInputFaultyMessage];
+			unset($_SESSION[self::$userInputFaultyMessage]);
+		}
+
+		$postTitle = "";
+
+		if (isset($_SESSION[self::$savePostTitle])) {
+			$postTitle = $_SESSION[self::$savePostTitle];
+			unset($_SESSION[self::$savePostTitle]);
 		}
 
 		$html .= "<form class='pure-form pure-form-stacked' action='$fromAction' method='POST'>
 					<input type='text' class='input-wide' id='" . self::$title . "' 
-					name='" . self::$title . "' placeholder='Title'>
+					name='" . self::$title . "' placeholder='Title' value='$postTitle'>
 
 					<textarea class='input-wide input-content' id='" . self::$content . "' 
 					name='" . self::$content . "'></textarea>
@@ -94,13 +102,14 @@ class NewPost {
 		}
 
 		catch (\Exception $e) {
-			$this->setErrorMessageSession();
+			$this->userInputFaulty();
+			$this->savePostTitle();
 			$this->navigationView->gotoNewPost($projectID, $projectName);
 		}
 	}
 
-	private function setErrorMessageSession() {
-		$_SESSION[self::$errorMessage] = true;
+	private function savePostTitle() {
+		$_SESSION[self::$savePostTitle] = $this->getPostTitle();
 	}
 
 	/**
@@ -117,6 +126,6 @@ class NewPost {
 			$errorMessage .= "<p>Enter some content for your post</p>";
 		}
 
-		return $errorMessage;
+		$_SESSION[self::$userInputFaultyMessage] = $errorMessage;
 	}
 }

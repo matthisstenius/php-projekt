@@ -47,6 +47,7 @@ class Register {
 
 		if (isset($_SESSION[self::$saveUsername])) {
 			$username .= $_SESSION[self::$saveUsername];
+			unset($_SESSION[self::$saveUsername]);
 		}
 
 		$html .= "<form class='pure-form register-form' action='$registerSrc' method='POST'>

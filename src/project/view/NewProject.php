@@ -8,7 +8,9 @@ require_once("src/common/view/Filter.php");
 class NewProject {
 	private static $projectName = "projectName";
 	private static $projectDescription = "projectDescription";
-	private static $errorMessage = "project::view::errorMessage";
+	private static $inputFaultyMessage = "project::view::inputFaultyMessage";
+	private static $saveProjectName = "project::view::saveProjectName";
+
 	/**
 	 * @var project\model\ProjectHandeler
 	 */
@@ -33,16 +35,23 @@ class NewProject {
 	public function getNewprojectForm() {
 		$html = "<h1>Add new project</h1>";
 
-		if (isset($_SESSION[self::$errorMessage])) {
-			$html .= $this->userInputFaulty();
-			unset($_SESSION[self::$errorMessage]);
+		if (isset($_SESSION[self::$inputFaultyMessage])) {
+			$html .= $_SESSION[self::$inputFaultyMessage];
+			unset($_SESSION[self::$inputFaultyMessage]);
+		}
+
+		$projectName = "";
+
+		if (isset($_SESSION[self::$saveProjectName])) {
+			$projectName = $_SESSION[self::$saveProjectName];
+			unset($_SESSION[self::$saveProjectName]);
 		}
 
 		$backToFrontPage = $this->navigationView->getHomeSrc();
 
 		$html .= "<form class='pure-form pure-form-stacked' action='/php-projekt/newProject' method='POST'>
 					<input class='input-wide' id='". self::$projectName . "' type='text' 
-					name='". self::$projectName . "' placeholder='Project name'>
+					name='". self::$projectName . "' placeholder='Project name' value='$projectName'>
 
 					<textarea class='input-wide input-content' 
 					name='". self::$projectDescription . "' placeholder='Project description'></textarea>
@@ -88,13 +97,14 @@ class NewProject {
 		}
 
 		catch (\Exception $e) {
-			$this->setErrorMessageSession();
+			$this->userInputFaulty();
+			$this->saveProjectName();
 			$this->navigationView->gotoNewProject();
 		}
 	}
 
-	private function setErrorMessageSession() {
-		$_SESSION[self::$errorMessage] = true;
+	private function saveProjectName() {
+		$_SESSION[self::$saveProjectName] = $this->getProjectName();
 	}
 
 	/**
@@ -111,6 +121,6 @@ class NewProject {
 			$errorMessage .= "<p>Enter a valid description</p>";
 		}
 
-		return $errorMessage;
+		$_SESSION[self::$inputFaultyMessage] = $errorMessage;
 	}
 }

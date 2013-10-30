@@ -60,7 +60,7 @@ class Login {
 		}
 
 		catch (\Exception $e) {
-			$this->loginView->setErrorMessage();
+			$this->loginView->errorMessage();
 			$this->navigationView->gotoLoginPage();
 		}
 	}

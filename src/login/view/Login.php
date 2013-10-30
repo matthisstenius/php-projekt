@@ -13,6 +13,7 @@ class Login {
 	private static $userCookie = "persistent";
 	private static $inputFaultyMessage = "login::view::login::inputFaultyMessage";
 	private static $errorMessage = "login::view::login::errorMessage";
+	private static $saveUsername = "login::view::login::saveUsername";
 
 	/**
 	 * @var common\view\Navigtion
@@ -43,18 +44,25 @@ class Login {
 		$loginSrc = $this->navigationView->getLoginSrc();
 
 		if (isset($_SESSION[self::$inputFaultyMessage])) {
-			$html .= $this->userInputFaulty();
+			$html .= $_SESSION[self::$inputFaultyMessage];
 			unset($_SESSION[self::$inputFaultyMessage]);
 		}
 
 		else if (isset($_SESSION[self::$errorMessage])) {
-			$html .= "<p>Wrong username or password</p>";
+			$html .= $_SESSION[self::$errorMessage];
 			unset($_SESSION[self::$errorMessage]);
+		}
+
+		$username = "";
+
+		if (isset($_SESSION[self::$saveUsername])) {
+			$username = $_SESSION[self::$saveUsername];
+			unset($_SESSION[self::$saveUsername]);
 		}
 
 		$html .= "<form class='pure-form login-form' action='$loginSrc' method='POST'>
 					<div class='pure-group'>
-						<input type='text' name='" . self::$username . "' placeholder='Username'>
+						<input type='text' name='" . self::$username . "' placeholder='Username' value='$username'>
 						<input type='password' name='" . self::$password . "' placeholder='Password'>
 
 						<button class='btn btn-wide btn-login'>Log In</button>
@@ -135,7 +143,8 @@ class Login {
 		}
 
 		catch (\Exception $e) {
-			$this->setInputFaultyMesssage();
+			$this->inputFaulty();
+			$this->saveUsername();
 			$this->navigationView->gotoLoginPage();
 		}
 	}
@@ -157,18 +166,18 @@ class Login {
 		}
 	}
 
-	public function setErrorMessage() {
-		$_SESSION[self::$errorMessage] = true;
+	private function saveUsername() {
+		$_SESSION[self::$saveUsername] = $this->getUsername();
 	}
 
-	private function setInputFaultyMesssage() {
-		$_SESSION[self::$inputFaultyMessage] = true;
+	public function errorMessage() {
+		$_SESSION[self::$errorMessage] = "<p>Wrong username or password</p>";
 	}
 
 	/**
 	 * @return string HTML
 	 */
-	private function userInputFaulty() {
+	private function inputFaulty() {
 		$errorMessage = "";
 
 		if ($this->getUsername() == "") {
@@ -179,6 +188,6 @@ class Login {
 			$errorMessage .= "<p>Enter your password</p>";
 		}
 
-		return $errorMessage;
+		$_SESSION[self::$inputFaultyMessage] = $errorMessage;
 	}
 }
