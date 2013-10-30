@@ -80,15 +80,16 @@ class Application {
 	 * @return void 
 	 */
 	public function init() {
-		
-		/**
-	 	* GET FrontPage
-	 	*/
-		$this->router->get('/', function() {
-			$this->isAuthorized();
-			echo $this->page->getPage("Hello Blog!", "<h1>Hello world</h1>");
-		});
+		$this->projectRoutes();
+		$this->postRoutes();
+		$this->loginRoutes();
+		$this->registerRoutes();
+		$this->otherRoutes();
 
+		$this->router->match();
+	}
+
+	private function projectRoutes() {
 		/**
 	 	* GET Project
 	 	*/
@@ -114,7 +115,6 @@ class Application {
 			}
 			
 		});
-
 
 		/**
 	 	* GET Add new project
@@ -201,7 +201,9 @@ class Application {
 			}
 
 		});
+	}
 
+	private function postRoutes() {
 		/**
 	 	* GET Post in Project
 	 	*/
@@ -349,30 +351,59 @@ class Application {
 			}
 			
 		});
+	}
 
+	private function loginRoutes() {
+		/**
+		 * GET login page
+		 */
 		$this->router->get('/login', function() {
 			echo $this->page->getPage("Login", $this->loginController->showLoginForm());
 		});
 
+		/**
+		 * POST login
+		 */
 		$this->router->post('/login', function() {
 			$this->loginController->login();
 		});
 
+		/**
+		 * GET logout
+		 */
 		$this->router->get('/logout', function() {
 			$logoutController = new \login\controller\Logout($this->userHandeler, $this->loginHandeler);
 			$logoutController->logout();
 		});
+	}
 
+	private function registerRoutes() {
+		/**
+		 * GET register page
+		 */
 		$this->router->get('/register', function() {
 			$regissterController = new \register\controller\Register($this->loginHandeler, $this->userHandeler);
 			
 			echo $this->page->getPage("Register", $regissterController->showRegisterForm());
 		});
 
+		/**
+		 * POST register
+		 */
 		$this->router->post('/register', function() {
 			$regissterController = new \register\controller\Register($this->loginHandeler, $this->userHandeler);
 			
 			$regissterController->register();
+		});
+	}
+
+	public function otherRoutes() {
+		/**
+	 	* GET FrontPage
+	 	*/
+		$this->router->get('/', function() {
+			$this->isAuthorized();
+			echo $this->page->getPage("Hello Blog!", "<h1>Hello world</h1>");
 		});
 
 		/**
@@ -390,11 +421,9 @@ class Application {
 		$this->router->get("/500", function() {
 			echo  $this->page->getPage("500", "<h1>Error 500 something went terrebly wrong!</h1>");
 		});
-
-		$this->router->match();
 	}
 
-	public function isAuthorized() {
+	private function isAuthorized() {
 		$this->loginController->loginWithToken();
 
 		if (!$this->loginHandeler->isUserLoggedIn()) {
