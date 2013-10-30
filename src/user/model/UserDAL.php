@@ -50,16 +50,14 @@ class UserDAL extends \common\model\DALBase {
 		try {
 			$pdo = self::getDBConnection();
 
-			$stm = $pdo->prepare("INSERT INTO User (username, password, token)
-												 VALUES(:username, :password, :token)");
+			$stm = $pdo->prepare("INSERT INTO User (username, password, token, tokenExpireDate)
+								  VALUES(:username, :password, 'token', 0)");
 
 			$username = $user->getUsername();
 			$password = $user->getPassword();
-			$token = $user->getToken();
 
 			$stm->bindParam(':username', $username);
 			$stm->bindParam(':password', $password);
-			$stm->bindParam(':token', $token);
 
 			$stm->execute();
 

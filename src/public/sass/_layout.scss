@@ -23,7 +23,7 @@
 	margin-bottom: 20px;
 }
 
-.login-box {
+.login-box, .register-box {
 	@include span-columns(6);
 	@include shift(3);
 }

@@ -50,6 +50,10 @@ class Navigation {
 		header("Location: /php-projekt/login");
 	}
 
+	public function gotoRegisterPage() {
+		header("Location: /php-projekt/register");
+	}
+
 	/**
 	 * @return string
 	 */

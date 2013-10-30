@@ -19,6 +19,7 @@ require_once("src/login/controller/Login.php");
 require_once("src/user/model/UserHandeler.php");
 require_once("src/login/model/Login.php");
 require_once("src/login/controller/Logout.php");
+require_once("src/register/controller/Register.php");
 
 class Application {
 	/**
@@ -207,6 +208,18 @@ class Application {
 		$this->router->get('/logout', function() {
 			$logoutController = new \login\controller\Logout($this->userHandeler, $this->loginHandeler);
 			$logoutController->logout();
+		});
+
+		$this->router->get('/register', function() {
+			$regissterController = new \register\controller\Register($this->loginHandeler, $this->userHandeler);
+			
+			echo $this->page->getPage("Register", $regissterController->showRegisterForm());
+		});
+
+		$this->router->post('/register', function() {
+			$regissterController = new \register\controller\Register($this->loginHandeler, $this->userHandeler);
+			
+			$regissterController->register();
 		});
 
 		/**

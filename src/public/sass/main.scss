@@ -80,7 +80,7 @@
 		margin-left: 5px;
 	}
 
-	.btn-add, .btn-login {
+	.btn-add, .btn-login, .btn-register {
 		background-color: $green;
 	}
 
@@ -139,6 +139,21 @@
 	.input-content {
 		min-height: 300px;
 		resize: vertical;
+	}
+
+	.login-form, .register-form {
+		input {
+			width: 100%;
+		}
+		
+		label {
+			color: black;
+		}
+
+		input[type="checkbox"] {
+			display: inline;
+			width: initial;
+		}
 	}
 /*
 ----------------------------------------
@@ -214,17 +229,4 @@
  * Login
 ----------------------------------------
 */
-	.login-form {
-		input {
-			width: 100%;
-		}
-		
-		label {
-			color: black;
-		}
-
-		input[type="checkbox"] {
-			display: inline;
-			width: initial;
-		}
-	}
+	

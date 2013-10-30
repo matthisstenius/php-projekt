@@ -42,7 +42,8 @@ class UserHandeler {
 	 * @param User $user
 	 */
 	public function addUser(User $user) {
-		$this->userDAL->addUser($user);
+		$userID = $this->userDAL->addUser($user);
+		$user->setUserID($userID);
 	}
 
 	/**

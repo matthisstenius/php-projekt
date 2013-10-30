@@ -11,12 +11,12 @@ class User {
 	/**
 	 * @var string
 	 */
-	private $username;
+	protected $username;
 
 	/**
 	 * @var string
 	 */
-	private $password;
+	protected $password;
 
 	/**
 	 * @var string
@@ -97,6 +97,13 @@ class User {
 	 */
 	public function getTokenExpireDate() {
 		return $this->tokenExpireDate;
+	}
+
+	/**
+	 * @param int $userID
+	 */
+	public function setUserID($userID) {
+		$this->userID = $userID;
 	}
 
 	/**

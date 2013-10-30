@@ -40,7 +40,7 @@ class Login {
 		
 	}
 
-	private function setUserLoggedIn(\user\model\User $user) {
+	public function setUserLoggedIn(\user\model\User $user) {
 		$_SESSION[self::$user] = $user;
 	}
 
