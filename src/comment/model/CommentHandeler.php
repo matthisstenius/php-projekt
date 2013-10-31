@@ -16,6 +16,18 @@ class CommentHandeler {
 	}
 
 	/**
+	 * @return Comment
+	 */
+	public function getComment($commentID) {
+		$row = $this->commentDAL->getComment($commentID);
+
+		$comment = new Comment(+$row['commentID'], $row['comment'], +$row['postID'], $row['added'], +$row['userID'], $row['username']);
+		
+
+		return $comment;
+	}
+
+	/**
 	 * @return array of Comments
 	 */
 	public function getComments(\post\model\Post $post) {
@@ -31,6 +43,7 @@ class CommentHandeler {
 
 	/**
 	 * @param Comment $comment
+	 * @param void
 	 */
 	public function addComment(Comment $comment) {
 		$commentID = $this->commentDAL->addComment($comment);

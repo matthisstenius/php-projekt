@@ -2,6 +2,8 @@
 
 namespace post\model;
 
+require_once("src/post/model/Post.php");
+
 /**
  * Extends Post. Used when adding new Posts
  */

@@ -28,6 +28,9 @@ class Comment {
 	 */
 	private $userID;
 
+	/**
+	 * @var string
+	 */
 	private $username;
 
 	/**
@@ -36,6 +39,7 @@ class Comment {
 	 * @param int $postID
 	 * @param date $added
 	 * @param int $userID
+	 * @param string $username
 	 */
 	public function __construct($commentID = null, $comment, $postID, $added, $userID, $username) {
 		if (!is_int($commentID)) {

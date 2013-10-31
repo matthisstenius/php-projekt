@@ -2,21 +2,42 @@
 
 namespace comment\controller;
 
-require_once("src/comment/view/NewComment.php");
-
 class NewComment {
+	/**
+	 * @var post\model\Post
+	 */
 	private $post;
 
+	/**
+	 * @var project\model\Project
+	 */
 	private $project;
 
+	/**
+	 * @var comment\model\CommentHandeler
+	 */
 	private $commentHandeler;
 
+	/**
+	 * @var user\model\User
+	 */
 	private $user;
 
+	/**
+	 * @var common\view\Navigation
+	 */
 	private $navigationView;
 
+	/**
+	 * @var comment\view\NewComment
+	 */
 	private $newCommentView; 
 
+	/**
+	 * @param post\model\Post       $post
+	 * @param project\model\Project $project
+	 * @param user\model\User       $user
+	 */
 	public function __construct(\post\model\Post $post,
 								\project\model\Project $project,
 								\user\model\User $user) {
@@ -24,6 +45,7 @@ class NewComment {
 		$this->post = $post;
 		$this->project = $project;
 		$this->user = $user;
+
 		$this->commentHandeler = new \comment\model\CommentHandeler();
 
 		$this->navigationView = new \common\view\Navigation();
@@ -34,6 +56,9 @@ class NewComment {
 															 $this->commentHandeler);
 	}
 
+	/**
+	 * @return string HTML
+	 */
 	public function showNewCommentForm() {
 		return $this->newCommentView->getNewCommentForm();
 	}

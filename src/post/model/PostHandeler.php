@@ -3,7 +3,6 @@
 namespace post\model;
 
 require_once("src/post/model/PostDAL.php");
-require_once("src/post/model/NullPost.php");
 
 class PostHandeler {
 	/**
@@ -35,18 +34,13 @@ class PostHandeler {
 	 * @return post\model\Post
 	 * @throws Exception If no post is found
 	 */
-	public function getPost($postID = null) {
-		if ($postID != null) {
-			if ($row = $this->postDAL->getPost($postID)) {
-				return new Post(+$row['idPost'], $row['title'], $row['content'], +$row['userID'], $row['username'], Date($row['added']),
-								+$row['projectID']);
-			}
-			
-			throw new \Exception("No post found");	
+	public function getPost($postID) {
+		if ($row = $this->postDAL->getPost($postID)) {
+			return new Post(+$row['idPost'], $row['title'], $row['content'], +$row['userID'], $row['username'], Date($row['added']),
+							+$row['projectID']);
 		}
-
-		return new NullPost();
 		
+		throw new \Exception("No post found");			
 	}
 
 	/**

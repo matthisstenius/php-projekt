@@ -5,12 +5,13 @@ namespace application\controller;
 require_once("src/common/view/Router.php");
 require_once("src/common/view/Navigation.php");
 require_once("src/project/model/ProjectHandeler.php");
+require_once("src/post/model/PostHandeler.php");
+require_once("src/comment/model/CommentHandeler.php");
 require_once("src/project/controller/Projects.php");
 require_once("src/project/controller/Project.php");
 require_once("src/project/controller/NewProject.php");
 require_once("src/project/controller/EditProject.php");
 require_once("src/project/controller/DeleteProject.php");
-require_once("src/post/controller/Posts.php");
 require_once("src/post/controller/Post.php");
 require_once("src/post/controller/NewPost.php");
 require_once("src/post/controller/EditPost.php");
@@ -22,6 +23,9 @@ require_once("src/login/controller/Logout.php");
 require_once("src/register/controller/Register.php");
 require_once("src/user/controller/UserProfile.php");
 require_once("src/user/controller/DeleteUser.php");
+require_once("src/comment/controller/NewComment.php");
+require_once("src/comment/controller/EditComment.php");
+require_once("src/comment/controller/DeleteComment.php");
 
 class Application {
 	/**
@@ -65,6 +69,7 @@ class Application {
 		$this->projectHandeler = new \project\model\ProjectHandeler();
 		$this->postHandeler = new \post\model\PostHandeler();
 		$this->userHandeler = new \user\model\UserHandeler();
+		$this->commentHandeler = new \comment\model\CommentHandeler();
 		$this->loginHandeler = new \login\model\Login();
 
 		$this->user = $this->loginHandeler->getLoggedInUser();
@@ -108,7 +113,7 @@ class Application {
 
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
-				$post = $this->postHandeler->getPost();
+				$posts = $this->postHandeler->getPosts($project);
 
 				$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());
 
@@ -116,9 +121,9 @@ class Application {
 					$this->navigationView->goToProject($project->getProjectID(), $cleanProjectName);
 				}
 
-				$projectController = new \project\controller\Project($project, $post, $this->user);
+				$projectController = new \project\controller\Project($project, $posts, $this->user);
 
-				echo $this->page->getPage("Project title", $projectController->showProject(+$projectID, $projectName));	
+				echo $this->page->getPage("Project title", $projectController->showProject());	
 			}
 
 			catch (\Exception $e) {
@@ -224,6 +229,7 @@ class Application {
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
 				$post = $this->postHandeler->getPost(+$postID);
+				$comments = $this->commentHandeler->getComments($post);
 
 				$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());
 				$cleanPostTitle = \common\view\Filter::getCleanUrl($post->getTitle());
@@ -233,9 +239,13 @@ class Application {
 													$post->getPostID(), $cleanPostTitle);
 				}
 
-				$projectController = new \project\controller\Project($project, $post, $this->user);
+				$postController = new \post\controller\Post($project,
+															$post,
+															$this->user,
+															$comments);
 
-				echo $this->page->getPage("Post tile", $projectController->showProjectPost());	
+
+				echo $this->page->getPage("Post tile", $postController->showPost());	
 			}
 
 			catch (\Exception $e) {
@@ -384,6 +394,78 @@ class Application {
 				$this->navigationView->gotoErrorPage();
 			}
 		});
+
+		$this->router->get("project/:projectID/:projectName/post/:postID/:postName/edit/comment/:commentID", 
+							function($projectID, $projectName, $postID, $postName, $commentID) {
+
+			$this->isAuthorized();
+
+			try {
+				$project = $this->projectHandeler->getProject(+$projectID);
+				$post = $this->postHandeler->getPost(+$postID);
+				$comments = $this->commentHandeler->getComments($post);
+				$comment = $this->commentHandeler->getComment(+$commentID);
+
+				$postController = new \post\controller\Post($this->postHandeler,
+															$project,
+															$post,
+															$this->user,
+															$comments);
+
+				echo $this->page->getPage("Edit comment", $postController->showPostWithEditComment($comment));
+			}
+
+			catch (\Exception $e) {
+				$this->navigationView->gotoErrorPage();
+			}
+
+		});
+
+		$this->router->put("project/:projectID/:projectName/post/:postID/:postName/edit/comment/:commentID", 
+							function($projectID, $projectName, $postID, $postName, $commentID) {
+
+			$this->isAuthorized();
+
+			try {
+				$project = $this->projectHandeler->getProject(+$projectID);
+				$post = $this->postHandeler->getPost(+$postID);
+				$comment = $this->commentHandeler->getComment(+$commentID);
+
+				$editCommentController = new \comment\controller\EditComment($post, $project, $this->user);
+
+				$editCommentController->editComment($comment);
+			}
+
+			catch (\Exception $e) {
+				$this->navigationView->gotoErrorPage();
+			}
+
+		});
+
+		$this->router->delete("project/:projectID/:projectName/post/:postID/:postName/comment/:commentID", 
+							function($projectID, $projectName, $postID, $postName, $commentID) {
+
+			$this->isAuthorized();
+
+			try {
+				$project = $this->projectHandeler->getProject(+$projectID);
+				$post = $this->postHandeler->getPost(+$postID);
+				$comment = $this->commentHandeler->getComment(+$commentID);
+
+				$deleteCommentController = new \comment\controller\DeleteComment($comment, 
+																				 $this->commentHandeler,
+																				 $project,
+																				 $post);
+
+				$deleteCommentController->deleteComment();
+			}
+
+			catch (\Exception $e) {
+				$this->navigationView->gotoErrorPage();
+			}
+
+		});
+
 	}
 
 	private function userRoutes() {

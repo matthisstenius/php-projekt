@@ -148,6 +148,14 @@ class Navigation {
 		return "/php-projekt/project/$projectID/$projectName/post/$postID/$postName/comment";
 	}
 
+	public function getEditCommentSrc($projectID, $projectName, $postID, $postName, $commentID) {
+		return "/php-projekt/project/$projectID/$projectName/post/$postID/$postName/edit/comment/$commentID";
+	}
+
+	public function getDeleteCommentSrc($projectID, $projectName, $postID, $postName, $commentID) {
+		return "/php-projekt/project/$projectID/$projectName/post/$postID/$postName/comment/$commentID";
+	}
+
 	/**
 	 * @return string
 	 */

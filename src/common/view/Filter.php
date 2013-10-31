@@ -36,4 +36,12 @@ class Filter {
 			return $input;
 		}
 	}
+
+	/**
+	 * @param  date $date
+	 * @return date       ex 2013-01-01 20:00 pm
+	 */
+	public static function formatDate($date) {
+		return \Date("Y-m-d H:i a", time($date));
+	}
 }

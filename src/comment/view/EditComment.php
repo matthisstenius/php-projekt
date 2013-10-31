@@ -2,9 +2,9 @@
 
 namespace comment\view;
 
-class NewComment {
+class EditComment {
 	private static $comment = "comment";
-	private static $inputFaultyMessage = "comment::view::newComment::errorMessage";
+	private static $inputFaultyMessage = "comment::view::editComment::errorMessage";
 
 	/**
 	 * @var post\model\Post
@@ -42,29 +42,32 @@ class NewComment {
 		$this->post = $post;
 		$this->project = $project;
 		$this->user = $user;
-
 		$this->commentHandeler = new \comment\model\CommentHandeler();
 		$this->navigationView = new \common\view\Navigation();
 	}
 
 	/**
+	 * @param  comment\model\Comment $comment
 	 * @return string HTML
 	 */
-	public function getNewCommentForm() {
-		$html = "<h1>Add comment</h1>";
+	public function getEditCommentForm(\comment\model\Comment $comment) {
+		$html = "<h1>Edit comment</h1>";
 
-		$commentSrc = $this->navigationView->getCommentSrc($this->project->getProjectID(),
+		$editCommentSrc = $this->navigationView->getEditCommentSrc($this->project->getProjectID(),
 															\common\view\Filter::getCleanUrl($this->project->getName()),
 															$this->post->getPostID(),
-															\common\view\Filter::getCleanUrl($this->post->getTitle()));
+															\common\view\Filter::getCleanUrl($this->post->getTitle()),
+															$comment->getCommentID());
 
 		if (isset($_SESSION[self::$inputFaultyMessage])) {
 			$html .= $_SESSION[self::$inputFaultyMessage];
 			unset($_SESSION[self::$inputFaultyMessage]);
 		}
 
-		$html .= "<form class='pure-form pure-form-stacked' action='$commentSrc' method='POST'>
-	 					<textarea class='comment-input' name='" . self::$comment . "' placeholder='Comment'></textarea>
+		$html .= "<form class='pure-form pure-form-stacked' action='$editCommentSrc' method='POST'>
+						<input type='hidden' name='_method' value='put'>
+	 					<textarea class='comment-input' name='" . self::$comment . "' 
+	 					placeholder='Comment'>" . $comment->getComment() . "</textarea>
 
 	 					<button class='btn btn-add'>Post Comment</button>
 	 			</form>";
@@ -83,16 +86,20 @@ class NewComment {
 		return "";
 	}
 
-	public function addComment() {
+	/**
+	 * @param  comment\model\Comment $comment
+	 * @return void
+	 */
+	public function editComment(\comment\model\Comment $comment) {
 		try {
-			$comment = new \comment\model\Comment(0, 
+			$comment = new \comment\model\Comment($comment->getCommentID(), 
 												$this->getComment(), 
 												$this->post->getPostID(), 
-												\Date('Y-m-d H:i'),
+												$comment->getDateAdded(),
 												$this->user->getUserID(),
 												$this->user->getUsername());
 
-			$this->commentHandeler->addComment($comment);
+			$this->commentHandeler->editComment($comment);
 
 			$this->navigationView->goToPost($this->project->getProjectID(),
 											\common\view\Filter::getCleanUrl($this->project->getName()),

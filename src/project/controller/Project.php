@@ -10,58 +10,41 @@ class Project {
 	 */
 	private $project;
 
-	private $post;
+	/**
+	 * @var array of post\model\Post
+	 */
+	private $posts;
 
+	/**
+	 * @var user\model\User
+	 */
 	private $user;
+
 	/**
 	 * @var project\view\Project
 	 */
 	private $projectView;
 
 	/**
-	 * @var post\model\PostHandeler
-	 */
-	private $postHandeler;
-
-	/**
-	 * @var post\controller\Posts
-	 */
-	private $postsController;
-
-	/**
-	 * @var post\controller\Post
-	 */
-	private $postController;
-
-	/**
 	 * @param project\model\Project $project
+	 * @param array              	$posts   array of post\model\Post
+	 * @param usermodelUser       	$user
 	 */
 	public function __construct(\project\model\Project $project,
-								\post\model\Post $post,
+								$posts,
 								\user\model\User $user) {
 
 		$this->project = $project;
-		$this->post = $post;
+		$this->posts = $posts;
 		$this->user = $user;
 
-		$this->projectView = new \project\view\Project($this->project);
-
-		$this->postHandeler = new \post\model\PostHandeler();
-		$this->postsController = new \post\controller\Posts($this->postHandeler, $this->project);
-		$this->postController = new \post\controller\Post($this->postHandeler, 
-														  $this->project,
-														  $this->post,
-														  $this->user);
+		$this->projectView = new \project\view\Project($this->project, $this->posts);
 	}
 
 	/**
 	 * @return string HTML
 	 */
 	public function showProject() {
-		return $this->projectView->getProjectHTML($this->postsController->showPosts());
-	}
-
-	public function showProjectPost() {
-		return $this->postController->showPost();
+		return $this->projectView->getProjectHTML();
 	}
 }
