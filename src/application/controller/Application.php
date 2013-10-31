@@ -84,6 +84,7 @@ class Application {
 	public function init() {
 		$this->projectRoutes();
 		$this->postRoutes();
+		$this->commentRoutes();
 		$this->loginRoutes();
 		$this->registerRoutes();
 		$this->userRoutes();
@@ -107,6 +108,7 @@ class Application {
 
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
+				$post = $this->postHandeler->getPost();
 
 				$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());
 
@@ -114,7 +116,7 @@ class Application {
 					$this->navigationView->goToProject($project->getProjectID(), $cleanProjectName);
 				}
 
-				$projectController = new \project\controller\Project($project);
+				$projectController = new \project\controller\Project($project, $post, $this->user);
 
 				echo $this->page->getPage("Project title", $projectController->showProject(+$projectID, $projectName));	
 			}
@@ -231,9 +233,9 @@ class Application {
 													$post->getPostID(), $cleanPostTitle);
 				}
 
-				$projectController = new \project\controller\Project($project);
+				$projectController = new \project\controller\Project($project, $post, $this->user);
 
-				echo $this->page->getPage("Post tile", $projectController->showProjectPost($post));	
+				echo $this->page->getPage("Post tile", $projectController->showProjectPost());	
 			}
 
 			catch (\Exception $e) {
@@ -359,6 +361,28 @@ class Application {
 				$this->navigationView->gotoErrorPage();
 			}
 			
+		});
+	}
+
+	private function commentRoutes() {
+		$this->router->post('/project/:projectID/:projectName/post/:postID/:postName/comment', function($projectID, 
+																										$projectName,
+																										$postID,
+																										$postName) {
+			$this->isAuthorized();
+
+			try {
+				$project = $this->projectHandeler->getProject(+$projectID);
+				$post = $this->postHandeler->getPost(+$postID);
+
+				$newCommentController = new \comment\controller\NewComment($post, $project, $this->user);
+
+				$newCommentController->addComment();
+			}
+
+			catch (\Exception $e) {
+				$this->navigationView->gotoErrorPage();
+			}
 		});
 	}
 

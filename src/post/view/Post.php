@@ -14,6 +14,8 @@ class Post {
 	
 	private $project;
 
+	private $post;
+
 	/**
 	 * @var common\view\Navigation
 	 */
@@ -23,35 +25,39 @@ class Post {
 	 * @param post\model\Posts $postsModel
 	 * @param project\model\Project $project
 	 */
-	public function __construct(\post\model\PostHandeler $postHandeler, \project\model\Project $project) {
+	public function __construct(\post\model\PostHandeler $postHandeler, 
+								\project\model\Project $project,
+								\post\model\Post $post) {
+
 		$this->postHandeler = $postHandeler;
 		$this->project = $project;
+		$this->post = $post;
 
 		$this->navigationView = new \common\view\Navigation();
 	}
 
 	/**
-	 * @param  post\model\Post $post
+	 * @param  string HTML
 	 * @return string     HTML
 	 */
-	public function getPostHTML(\post\model\Post $post) {
+	public function getPostHTML($commentForm, $comments) {
 		
-		$cleanPostTitle = \common\view\Filter::getCleanUrl($post->getTitle());
+		$cleanPostTitle = \common\view\Filter::getCleanUrl($this->post->getTitle());
 		$cleanProjectName = \common\view\Filter::getCleanUrl($this->project->getName());
 
 		$html = "<article class='post'>";
 
 		$html .= "<header class='post-header'>";
 		$html .= "<div class='left'>";
-		$html .= "<h1 class='post-title title'>" . $post->getTitle() . "</h1>";
-		$html .= "<span class='created'>Added by: " . $post->getUsername() . " " . $post->getDateAdded() . "</span>";
+		$html .= "<h1 class='post-title title'>" . $this->post->getTitle() . "</h1>";
+		$html .= "<span class='created'>Added by: " . $this->post->getUsername() . " " . $this->post->getDateAdded() . "</span>";
 		$html .= "</div>";
 
 		$html .= "<div class='btn-area right'>";
 
 		$editPostSrc = $this->navigationView->getEditPostSrc($this->project->getProjectID(),
 								 							$cleanProjectName, 
-								 							$post->getPostID(), 
+								 							$this->post->getPostID(), 
 								 							$cleanPostTitle);
 
 		$html .= "<a href='$editPostSrc' class='btn btn-setting right'>
@@ -59,7 +65,7 @@ class Post {
 
 		$deletePostSrc = $this->navigationView->getDeletePostSrc($this->project->getProjectID(), 
 																$cleanProjectName,
-																$post->getPostID());
+																$this->post->getPostID());
 
 		$html .= "<form class='right' action='$deletePostSrc' method='POST'>
 					<input type='hidden' name='_method' value='delete'>
@@ -70,9 +76,12 @@ class Post {
 		$html .= "</header>";
 
 		$html .= "<div class='box pad post-content'>";
-		$html .= "<p class='content'>" . $post->getContent() . "</p>";
+		$html .= "<p class='content'>" . $this->post->getContent() . "</p>";
 		$html .= "</div>";
 
+		$html .= $commentForm;
+
+		$html .= $comments;
 		$html .= "</article>
 				</div>";
 				

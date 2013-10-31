@@ -14,6 +14,7 @@ class DALBase {
 			self::$password = '7scTt8MB';
 		}
 	}
+	
 	/**
 	 * @return PDO
 	 */

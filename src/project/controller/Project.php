@@ -10,6 +10,9 @@ class Project {
 	 */
 	private $project;
 
+	private $post;
+
+	private $user;
 	/**
 	 * @var project\view\Project
 	 */
@@ -33,13 +36,22 @@ class Project {
 	/**
 	 * @param project\model\Project $project
 	 */
-	public function __construct(\project\model\Project $project) {
+	public function __construct(\project\model\Project $project,
+								\post\model\Post $post,
+								\user\model\User $user) {
+
 		$this->project = $project;
+		$this->post = $post;
+		$this->user = $user;
+
 		$this->projectView = new \project\view\Project($this->project);
 
 		$this->postHandeler = new \post\model\PostHandeler();
 		$this->postsController = new \post\controller\Posts($this->postHandeler, $this->project);
-		$this->postController = new \post\controller\Post($this->postHandeler, $this->project);
+		$this->postController = new \post\controller\Post($this->postHandeler, 
+														  $this->project,
+														  $this->post,
+														  $this->user);
 	}
 
 	/**
@@ -49,7 +61,7 @@ class Project {
 		return $this->projectView->getProjectHTML($this->postsController->showPosts());
 	}
 
-	public function showProjectPost(\post\model\Post $post) {
-		return $this->postController->showPost($post);
+	public function showProjectPost() {
+		return $this->postController->showPost();
 	}
 }

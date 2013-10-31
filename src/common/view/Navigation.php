@@ -144,6 +144,10 @@ class Navigation {
 		return "/php-projekt/project/$projectID/$projectName/remove/post/$postID";
 	}
 
+	public function getCommentSrc($projectID, $projectName, $postID, $postName) {
+		return "/php-projekt/project/$projectID/$projectName/post/$postID/$postName/comment";
+	}
+
 	/**
 	 * @return string
 	 */
