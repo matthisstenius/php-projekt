@@ -64,9 +64,9 @@ class EditComment {
 			unset($_SESSION[self::$inputFaultyMessage]);
 		}
 
-		$html .= "<form class='pure-form pure-form-stacked' action='$editCommentSrc' method='POST'>
+		$html .= "<form id='edit-comment' class='pure-form pure-form-stacked comment-form' action='$editCommentSrc' method='POST'>
 						<input type='hidden' name='_method' value='put'>
-	 					<textarea class='comment-input' name='" . self::$comment . "' 
+	 					<textarea class='comment-input pure-input-1' name='" . self::$comment . "' 
 	 					placeholder='Comment'>" . $comment->getComment() . "</textarea>
 
 	 					<button class='btn btn-add'>Post Comment</button>

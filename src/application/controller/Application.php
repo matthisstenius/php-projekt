@@ -406,8 +406,7 @@ class Application {
 				$comments = $this->commentHandeler->getComments($post);
 				$comment = $this->commentHandeler->getComment(+$commentID);
 
-				$postController = new \post\controller\Post($this->postHandeler,
-															$project,
+				$postController = new \post\controller\Post($project,
 															$post,
 															$this->user,
 															$comments);

@@ -3,7 +3,7 @@
 namespace common\model;
 
 class DALBase {
-	private static $dbName = "Blog";
+	private static $dbName = "Blog1";
 	private static $host = "127.0.0.1";
 	private static $username = "root";
 	private static $password = "";

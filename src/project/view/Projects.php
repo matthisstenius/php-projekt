@@ -51,6 +51,7 @@ class Projects {
 	 */
 	public function getProjects() {
 		$html = "<div class='post-thumbs'>";
+		$html .= "<h1 class='title'>" . $this->user->getUsername() . "'s projects</h1>";
 
 		foreach ($this->projectHandeler->getProjects($this->user) as $project) {
 			$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());

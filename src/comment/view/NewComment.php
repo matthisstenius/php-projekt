@@ -51,7 +51,7 @@ class NewComment {
 	 * @return string HTML
 	 */
 	public function getNewCommentForm() {
-		$html = "<h1>Add comment</h1>";
+		$html = "<h2>Add comment</h2>";
 
 		$commentSrc = $this->navigationView->getCommentSrc($this->project->getProjectID(),
 															\common\view\Filter::getCleanUrl($this->project->getName()),
@@ -63,8 +63,8 @@ class NewComment {
 			unset($_SESSION[self::$inputFaultyMessage]);
 		}
 
-		$html .= "<form class='pure-form pure-form-stacked' action='$commentSrc' method='POST'>
-	 					<textarea class='comment-input' name='" . self::$comment . "' placeholder='Comment'></textarea>
+		$html .= "<form class='pure-form pure-form-stacked comment-form' action='$commentSrc' method='POST'>
+	 					<textarea class='comment-input pure-input-1' name='" . self::$comment . "' placeholder='Comment'></textarea>
 
 	 					<button class='btn btn-add'>Post Comment</button>
 	 			</form>";

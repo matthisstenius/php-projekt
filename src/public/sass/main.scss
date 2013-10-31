@@ -12,6 +12,7 @@
 ----------------------------------------
 */
 	$blue: #34AADC;
+	$lightBlue: #D1EEFC;
 	$grey: #EDEDED;
 	$darkGrey: #575D63;
 	$almostWhite: #FCFCFC;
@@ -113,8 +114,11 @@
 		margin: 0 -10px;
 	}
 
-	.btn-area .btn {
-		margin-left: 5px;
+	.btn-area {
+	 	@include clearfix();
+	 	.btn {
+			margin-left: 5px;
+		}
 	}
 
 	.btn-add, .btn-login, .btn-register {
@@ -184,10 +188,21 @@
 
 	.input-content {
 		min-height: 300px;
+	}
+	
+	textarea {
 		resize: vertical;
 	}
 
-	.login-form, .register-form {
+	.comment-form > textarea {
+		min-height: 100px;
+	}
+
+	.login-form, .register-form, .comment-form {
+		.btn {
+			margin-top: 10px;
+		}
+
 		input {
 			width: 100%;
 		}
@@ -269,9 +284,22 @@
 		clear: both;
 	}
 
+
 /*
 ----------------------------------------
- * Login
+ * Comments
 ----------------------------------------
 */
-	
+	.comment {
+		@include clearfix();
+		border-radius: 3px;
+		border: 1px solid #ddd;
+
+		.btn:first-child {
+			margin-left: 0;
+		}
+	}
+
+	.author-comment {
+		background-color: $lightBlue;
+	}

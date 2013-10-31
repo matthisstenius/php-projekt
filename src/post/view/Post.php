@@ -97,8 +97,7 @@ class Post {
 
 		$html .= $this->getComments();
 
-		$html .= "</article>
-				</div>";
+		$html .= "</article>";
 				
 		return $html;
 	}
@@ -107,7 +106,10 @@ class Post {
 	 * @return string HTML
 	 */
 	private function getComments() {
-		$html = "";
+		$commentAmount = count($this->comments);
+		$postTitle = $this->post->getTitle();
+
+		$html = "<h2>$postTitle has $commentAmount comments</h2>";
 
 		foreach ($this->comments as $comment) {
 			$cleanProjectName = \common\view\Filter::getCleanUrl($this->project->getName());
@@ -127,14 +129,27 @@ class Post {
 
 			$commentDate = \common\view\Filter::formatDate($comment->getDateAdded());
 
+			if ($this->post->getUserID() == $comment->getUserID()) {
+				$commentAuthor = "author-comment";
+			}
+
+			else {
+				$commentAuthor = "user-comment";
+			}
+
+			$html .= "<div class='comment $commentAuthor pad'>";
+			$html .= "<span class='created'>Posted by: " . $comment->getUsername() . " $commentDate</span>";
 			$html .= "<p>" . $comment->getComment() . "</p>";
-			$html .= "<p>" . $commentDate . "</p>";
-			$html .= "<p>" . $comment->getUsername() . "</p>";
-			$html .= "<a href='$editCommentSrc' class='btn btn-edit'>Edit Comment</a>";
-			$html .= "<form action='$deleteCommentSrc' method='POST'>
+
+			$html .= "<div class='btn-area'>";
+			$html .= "<a href='$editCommentSrc' class='btn btn-edit left'><span class='icon-pencil'></span>Edit Comment</a>";
+			$html .= "<form class='left' action='$deleteCommentSrc' method='POST'>
 						<input type='hidden' name='_method' value='delete'>
-						<button class='btn btn-remove'>Delete Comment</button>
+						<button class='btn btn-remove'><span class='icon-remove'></span>Delete Comment</button>
 					</form>";
+			$html .= "</div>";
+
+			$html .= "</div>";
 		}
 		
 		return $html;
