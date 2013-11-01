@@ -56,7 +56,7 @@ class NewProject {
 			unset($_SESSION[self::$saveProjectName]);
 		}
 
-		$backToFrontPage = $this->navigationView->getHomeSrc();
+		$backToProjects = $this->navigationView->getProjectsSrc();
 
 		$html .= "<form class='pure-form pure-form-stacked' action='/php-projekt/newProject' method='POST'>
 					<input class='input-wide' id='". self::$projectName . "' type='text' 
@@ -69,7 +69,7 @@ class NewProject {
 					<input id='" . self::$makePrivate . "' type='checkbox' name='" . self::$makePrivate . "'>
 
 					<button class='btn btn-add'>Create Project</button>
-					<a href='$backToFrontPage' class='btn btn-remove'>Cancel</a>
+					<a href='$backToProjects' class='btn btn-remove'>Cancel</a>
 				</form>";
 
 		return $html;
@@ -123,7 +123,6 @@ class NewProject {
 		}
 
 		catch (\Exception $e) {
-			var_dump($e->getMessage());
 			$this->userInputFaulty();
 			$this->saveProjectName();
 			$this->navigationView->gotoNewProject();
@@ -145,7 +144,7 @@ class NewProject {
 		}
 
 		if ($this->getProjectDescription() == "") {
-			$errorMessage .= "<p>Enter a valid description</p>";
+			$errorMessage .= "<p>Enter a description</p>";
 		}
 
 		$_SESSION[self::$inputFaultyMessage] = $errorMessage;

@@ -18,7 +18,7 @@ class Filter {
 	public static function getCleanUrl($input) {
 		$cleanTitle = preg_replace('/\s+/', ' ', $input);
 		$cleanTitle = str_replace(' ', '-', $cleanTitle);
-		$cleanTitle = strtolower($cleanTitle);
+		$cleanTitle = mb_strtolower($cleanTitle, 'UTF-8');
 
 		return $cleanTitle;
 	}

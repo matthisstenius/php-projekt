@@ -104,7 +104,8 @@ class Router {
 		$incomingUri = isset($_GET[self::$uriIndex]) ? $_GET[self::$uriIndex] : "/";;
 		$incomingUri = htmlspecialchars($incomingUri);
 		$incomingUri = trim($incomingUri, '/\//');
-		
+		$incomingUri = mb_strtolower($incomingUri, 'UTF-8');
+
 		$routesByMethod = $this->routes[$this->requestMethod];
 
 		$requestParams = array();
