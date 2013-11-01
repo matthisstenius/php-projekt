@@ -151,6 +151,10 @@ class EditPost {
 			$errorMessage .= "<p>Enter a post name</p>";
 		}
 
+		if (preg_match('/[^\wåäöÅÄÖ]+/', $this->getPostTitle())) {
+			$errorMessage .= "<p>Invalid charachters in post title. Only alphanumeric charachters allowed.</p>";
+		}
+		
 		if ($this->getPostContent() == "") {
 			$errorMessage .= "<p>Enter some content for your post</p>";
 		}

@@ -6,37 +6,37 @@ class Project {
 	/**
 	 * @var int
 	 */
-	protected $projectID;
+	private $projectID;
 
 	/**
 	 * @var string
 	 */
-	protected $name;
+	private $name;
 
 	/**
 	 * @var string
 	 */
-	protected $description;
+	private $description;
 
 	/**
 	 * @var date
 	 */
-	protected $created;
+	private $created;
 
 	/**
 	 * @var string
 	 */
-	protected $username;
+	private $username;
 
 	/**
 	 * @var int
 	 */
-	protected $userID;
+	private $userID;
 
 	/**
 	 * @var boolean
 	 */
-	protected $private;
+	private $private;
 
 	/**
 	 * @param int $projectID
@@ -48,12 +48,12 @@ class Project {
 	 * @param boolean $private
 	 * @throws Exception If validation failes
 	 */
-	public function __construct($projectID, $name, $description, $created, $username, $userID, $private) {
+	public function __construct($projectID = null, $name, $description, $created, $username, $userID, $private) {
 		if (!is_int($projectID)) {
 			throw new \Exception("invalid projectID");
 		}
 
-		if (!is_string($name) || $name == "") {
+		if (!is_string($name) || $name == "" || preg_match('/[^\wåäöÅÄÖ\s()?!]+/', $name)) {
 			throw new \Exception("invalid name");
 		}
 
@@ -133,5 +133,9 @@ class Project {
 	 */
 	public function isPrivate() {
 		return $this->private;
+	}
+
+	public function setProjectID($projectID) {
+		$this->projectID = $projectID;
 	}
 }

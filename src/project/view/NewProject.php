@@ -2,7 +2,6 @@
 
 namespace project\view;
 
-require_once("src/project/model/NewProject.php");
 require_once("src/common/view/Filter.php");
 
 class NewProject {
@@ -57,8 +56,9 @@ class NewProject {
 		}
 
 		$backToProjects = $this->navigationView->getProjectsSrc();
+		$addNewProjectSrc = $this->navigationView->getAddNewProjectSrc();
 
-		$html .= "<form class='pure-form pure-form-stacked' action='/php-projekt/newProject' method='POST'>
+		$html .= "<form class='pure-form pure-form-stacked' action='$addNewProjectSrc' method='POST'>
 					<input class='input-wide' id='". self::$projectName . "' type='text' 
 					name='". self::$projectName . "' placeholder='Project name' value='$projectName'>
 
@@ -113,8 +113,12 @@ class NewProject {
 	 */
 	public function addProject() {
 		try {
-			$project = new \project\model\NewProject($this->getProjectName(), $this->getProjectDescription(),
-													 \Date('y-m-d'), $this->user->getUserID(), $this->getIsPrivate());
+			$project = new \project\model\Project(0, $this->getProjectName(), 
+													 $this->getProjectDescription(),
+													 \Date('y-m-d'),
+													 $this->user->getUsername(),
+													 $this->user->getUserID(),
+													 $this->getIsPrivate());
 
 			$this->projectHandeler->addProject($project);
 
@@ -140,7 +144,11 @@ class NewProject {
 		$errorMessage = "";
 
 		if ($this->getProjectName() == "") {
-			$errorMessage .= "<p>Enter a Project name</p>";
+			$errorMessage .= "<p>Enter a project name</p>";
+		}
+
+		if (preg_match('/[^\wåäöÅÄÖ\s()?!]+/', $this->getProjectName())) {
+			$errorMessage .= "<p>Invalid charachters in project name. Only alphanumeric charachters and ()?! allowed.</p>";
 		}
 
 		if ($this->getProjectDescription() == "") {

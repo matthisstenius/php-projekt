@@ -16,7 +16,8 @@ class Filter {
 	 * @return string        string with dash insetad of space
 	 */
 	public static function getCleanUrl($input) {
-		$cleanTitle = preg_replace('/\s+/', ' ', $input);
+		$cleanTitle = preg_replace('/[()?!]*/', '', $input);
+		$cleanTitle = preg_replace('/\s+/', ' ', $cleanTitle);
 		$cleanTitle = str_replace(' ', '-', $cleanTitle);
 		$cleanTitle = mb_strtolower($cleanTitle, 'UTF-8');
 

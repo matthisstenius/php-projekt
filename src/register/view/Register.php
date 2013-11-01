@@ -147,6 +147,10 @@ class Register {
 			$errorMessage .= "<p>Username to short. Miminum 5 charachters</p>";
 		}
 
+		else if (preg_match('/[^\w+]/', $this->getUsername())) {
+			$errorMessage .= "<p>Invalid charachters in username.</br> Only alphanumeric charachters allowed.</p>";
+		}
+
 		if ($this->getPassword() == "") {
 			$errorMessage .= "<p>Enter a password</p>";
 		}

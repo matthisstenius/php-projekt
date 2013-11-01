@@ -155,6 +155,10 @@ class EditProject {
 			$errorMessage .= "<p>Enter a Project name</p>";
 		}
 
+		if (preg_match('/[^\wåäöÅÄÖ]+/', $this->getProjectName())) {
+			$errorMessage .= "<p>Invalid charachters in project name. Only alphanumeric charachters allowed.</p>";
+		}
+		
 		if ($this->getProjectDescription() == "") {
 			$errorMessage .= "<p>Enter a valid description</p>";
 		}

@@ -2,8 +2,6 @@
 
 namespace post\view;
 
-require_once("src/post/model/NewPost.php");
-
 class NewPost {
 	private static $title = "title";
 	private static $content = "content";
@@ -19,6 +17,11 @@ class NewPost {
 	 * @var project\model\Project
 	 */
 	private $project;
+
+	/**
+	 * @var user\model\User
+	 */
+	private $user;
 	
 	/**
 	 * @var common\view\Navigation
@@ -29,9 +32,13 @@ class NewPost {
 	 * @param post\model\PostHandeler $postHandeler
 	 * @param project\model\Project $project
 	 */
-	public function __construct(\post\model\PostHandeler $postHandeler, \project\model\Project $project) {
+	public function __construct(\post\model\PostHandeler $postHandeler, 
+								\project\model\Project $project,
+								\user\model\User $user) {
+
 		$this->postHandeler = $postHandeler;
 		$this->project = $project;
+		$this->user = $user;
 
 		$this->navigationView = new \common\view\Navigation();
 	}
@@ -103,9 +110,10 @@ class NewPost {
 	 */
 	public function addPost() {
 		try {
-			$post = new \post\model\NewPost($this->getPostTitle(), 
+			$post = new \post\model\Post(0, $this->getPostTitle(), 
 											$this->getPostContent(),
 											$this->project->getUserID(),
+											$this->user->getUsername(),
 											\Date('y-m-d'),
 											$this->project->getProjectID()
 											);
@@ -138,6 +146,10 @@ class NewPost {
 
 		if ($this->getPostTitle() == "") {
 			$errorMessage .= "<p>Enter a post name</p>";
+		}
+
+		if (preg_match('/[^\wåäöÅÄÖ\s()?!]+/', $this->getPostTitle())) {
+			$errorMessage .= "<p>Invalid charachters in post title. Only alphanumeric charachters and ()?! allowed.</p>";
 		}
 
 		if ($this->getPostContent() == "") {

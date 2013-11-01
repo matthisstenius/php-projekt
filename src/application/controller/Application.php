@@ -139,7 +139,7 @@ class Application {
 		/**
 	 	* GET Add new project
 	 	*/
-		$this->router->get('/newProject', function() {
+		$this->router->get('/new/project', function() {
 			$this->isAuthorized();
 			$newProjectController = new \project\controller\NewProject($this->projectHandeler, $this->user);
 
@@ -149,7 +149,7 @@ class Application {
 		/**
 	 	* POST Add new project
 	 	*/
-		$this->router->post('/newProject', function() {
+		$this->router->post('/new/project', function() {
 			$this->isAuthorized();
 			$newProjectController = new \project\controller\NewProject($this->projectHandeler, $this->user);
 
@@ -264,7 +264,7 @@ class Application {
 		/**
 	 	* GET add new post in project
 	 	*/
-		$this->router->get('/project/:projectID/:projectName/newPost', function($projectID, $projectName) {
+		$this->router->get('/project/:projectID/:projectName/new/post', function($projectID, $projectName) {
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
 
@@ -276,7 +276,7 @@ class Application {
 					$this->navigationView->gotoNewPost($project->getProjectID(), $cleanProjectName);
 				}
 
-				$newPostController = new \post\controller\NewPost($this->postHandeler, $project);
+				$newPostController = new \post\controller\NewPost($this->postHandeler, $project, $this->user);
 
 				echo $this->page->getPage("Add new post", $newPostController->showNewPostForm());
 			}
@@ -290,13 +290,13 @@ class Application {
 		/**
 	 	* POST add new post in project
 	 	*/
-		$this->router->post('/project/:projectID/:projectName/newPost', function($projectID, $projectName) {
+		$this->router->post('/project/:projectID/:projectName/new/post', function($projectID, $projectName) {
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
 
 				$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
 
-				$newPostController = new \post\controller\NewPost($this->postHandeler, $project);
+				$newPostController = new \post\controller\NewPost($this->postHandeler, $project, $this->user);
 
 				$newPostController->addPost();
 			}

@@ -6,37 +6,37 @@ class Post {
 	/**
 	 * @var int
 	 */
-	protected $postID;
+	private $postID;
 
 	/**
 	 * @var string
 	 */
-	protected $title;
+	private $title;
 
 	/**
 	 * @var string
 	 */
-	protected $content;
+	private $content;
 
 	/**
 	 * @var date
 	 */
-	protected $added;
+	private $added;
 
 	/**
 	 * @var string
 	 */
-	protected $username;
+	private $username;
 
 	/**
 	 * @var string
 	 */
-	protected $projectID;
+	private $projectID;
 
 	/**
 	 * @var string
 	 */
-	protected $userID;
+	private $userID;
 
 	/**
 	 * @param int $postID
@@ -48,12 +48,12 @@ class Post {
 	 * @param int $projectID
 	 * @throws Exception If validation failes
 	 */
-	public function __construct($postID, $title, $content, $userID, $username, $added, $projectID) {
+	public function __construct($postID = null, $title, $content, $userID, $username, $added, $projectID) {
 		if (!is_int($postID)) {
 			throw new \Exception("invalid postID");
 		}
 
-		if (!is_string($title) || $title == "") {
+		if (!is_string($title) || $title == "" || preg_match('/[^\wåäöÅÄÖ\s()?!]+/', $title)) {
 			throw new \Exception("invalid title");
 		}
 
@@ -134,5 +134,12 @@ class Post {
 	 */
 	public function getUserID() {
 		return $this->userID;
+	}
+
+	/**
+	 * @param int $postID
+	 */
+	public function setPostID($postID) {
+		$this->postID = $postID;
 	}
 }

@@ -28,7 +28,7 @@ class Navigation {
 	 * @return void
 	 */
 	public function gotoNewPost($projectID, $projectName) {
-		header("Location: /php-projekt/project/$projectID/$projectName/newPost");
+		header("Location: /php-projekt/project/$projectID/$projectName/new/post");
 	}
 
 	public function gotoProjects() {
@@ -45,7 +45,7 @@ class Navigation {
 	}
 
 	public function gotoNewProject() {
-		header("Location: /php-projekt/newProject");
+		header("Location: /php-projekt/new/project");
 	}
 
 	public function gotoEditProject($projectID, $projectName) {
@@ -119,7 +119,7 @@ class Navigation {
 	 * @return string
 	 */
 	public function getAddNewProjectSrc() {
-		return "/php-projekt/newProject";
+		return "/php-projekt/new/project";
 	}
 
 	/**
@@ -127,7 +127,7 @@ class Navigation {
 	 * @return string
 	 */
 	public function getNewPostSrc($projectID, $projectName) {
-		return "/php-projekt/project/$projectID/$projectName/newPost";
+		return "/php-projekt/project/$projectID/$projectName/new/post";
 	}
 
 	/**
