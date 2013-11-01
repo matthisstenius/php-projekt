@@ -45,8 +45,16 @@ class Project {
 
 		$html = "<header class='project-header'>";
 
+		if ($project->isPrivate()) {
+			$lockIcon = "<span title='Private Project' class='private icon-locked'></span>";
+		}
+
+		else {
+			$lockIcon = "";
+		}
+
 		$html .= "<div class='title-area left'>";
-		$html .= "<h1 class='title'>" . $project->getName() . "</h1>";
+		$html .= "<h1 class='title'>$lockIcon" . $project->getName() . "</h1>";
 		$html .= "<span class='created'>Created by: " . $project->getUsername() . " " . 
 				 $project->getDateCreated() . "</span>";
 		$html .= "</div>";
