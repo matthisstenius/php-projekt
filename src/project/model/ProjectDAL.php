@@ -13,7 +13,7 @@ class ProjectDAL extends \common\model\DALBase {
 		$result = array();
 
 		$stm = self::getDBConnection()->prepare("SELECT idProject, name, description, created, User.username, 
-												idUser_User AS userID FROM Project
+												idUser_User AS userID, private FROM Project
 												INNER JOIN User ON User.idUser = idUser_User
 												WHERE idUser_User = :userID");
 
@@ -35,7 +35,8 @@ class ProjectDAL extends \common\model\DALBase {
 	 * @return array 
 	 */
 	public function getProject($id) {
-		$stm = self::getDBConnection()->prepare("SELECT idProject, name, description, created, User.username, idUser_User AS userID FROM Project
+		$stm = self::getDBConnection()->prepare("SELECT idProject, name, description, created, User.username, 
+												 idUser_User AS userID, private FROM Project
 												 INNER JOIN User ON User.idUser = idUser_User
 												 WHERE idProject=:id");
 
@@ -56,18 +57,20 @@ class ProjectDAL extends \common\model\DALBase {
 		try {
 			$pdo = self::getDBConnection();
 
-			$stm = $pdo->prepare("INSERT INTO Project (name, description, created, idUser_User)
-												 VALUES(:name, :description, :created, :userID)");
+			$stm = $pdo->prepare("INSERT INTO Project (name, description, created, idUser_User, private)
+												 VALUES(:name, :description, :created, :userID, :private)");
 
 			$name = $project->getName();
 			$description = $project->getDescription();
 			$created = $project->getDateCreated();
 			$userID = $project->getUserID();
+			$private = (int) $project->isPrivate();
 
 			$stm->bindParam(':name', $name);
 			$stm->bindParam(':description', $description);
 			$stm->bindParam(':created', $created);
 			$stm->bindParam(':userID', $userID);
+			$stm->bindParam(':private', $private);
 
 			$stm->execute();
 
@@ -75,7 +78,7 @@ class ProjectDAL extends \common\model\DALBase {
 		}
 
 		catch (\Exception $e) {
-			//var_dump($e->getMessage());
+			var_dump($e->getMessage());
 		}
 	}
 
@@ -86,16 +89,18 @@ class ProjectDAL extends \common\model\DALBase {
 	public function editProject(\project\model\Project $project) {
 		$pdo = self::getDBConnection();
 
-		$stm = $pdo->prepare("UPDATE Project SET name = :name, description = :description
+		$stm = $pdo->prepare("UPDATE Project SET name = :name, description = :description, private = :private
 												 WHERE idProject = :projectID");
 
 		$name = $project->getName();
 		$description = $project->getDescription();
 		$projectID = $project->getProjectID();
+		$private = (int) $project->isPrivate();
 
-		$stm->bindParam(':name', $name, \PDO::PARAM_STR);
-		$stm->bindParam(':description', $description, \PDO::PARAM_STR);
-		$stm->bindParam(':projectID', $projectID, \PDO::PARAM_INT);
+		$stm->bindParam(':name', $name);
+		$stm->bindParam(':description', $description);
+		$stm->bindParam(':projectID', $projectID);
+		$stm->bindParam(':private', $private);
 
 		$stm->execute();
 	}

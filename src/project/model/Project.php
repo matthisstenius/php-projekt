@@ -34,15 +34,21 @@ class Project {
 	protected $userID;
 
 	/**
+	 * @var boolean
+	 */
+	protected $private;
+
+	/**
 	 * @param int $projectID
 	 * @param string $name
 	 * @param string $description
 	 * @param date $created
 	 * @param string $username
 	 * @param int $userID
+	 * @param boolean $private
 	 * @throws Exception If validation failes
 	 */
-	public function __construct($projectID, $name, $description, $created, $username, $userID) {
+	public function __construct($projectID, $name, $description, $created, $username, $userID, $private) {
 		if (!is_int($projectID)) {
 			throw new \Exception("invalid projectID");
 		}
@@ -67,12 +73,17 @@ class Project {
 			throw new \Exception("invalid userID");
 		}
 
+		if (!is_bool($private)) {
+			throw new \Exception("invalid private param");
+		}
+
 		$this->projectID  = $projectID;
 		$this->name   = $name;
 		$this->description = $description;
 		$this->created   = $created;
 		$this->username    = $username;
 		$this->userID = $userID;
+		$this->private = $private;
 	}
 
 	/**
@@ -115,5 +126,12 @@ class Project {
 	 */
 	public function getUserID() {
 		return $this->userID;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isPrivate() {
+		return $this->private;
 	}
 }

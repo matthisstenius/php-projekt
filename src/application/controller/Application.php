@@ -18,6 +18,7 @@ require_once("src/post/controller/EditPost.php");
 require_once("src/post/controller/DeletePost.php");
 require_once("src/login/controller/Login.php");
 require_once("src/user/model/UserHandeler.php");
+require_once("src/user/model/SimpleUser.php");
 require_once("src/login/model/Login.php");
 require_once("src/login/controller/Logout.php");
 require_once("src/register/controller/Register.php");
@@ -109,10 +110,13 @@ class Application {
 	 	* GET Project
 	 	*/
 		$this->router->get('/project/:projectID/:projectName', function($projectID, $projectName) {
-			$this->isAuthorized();
-
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
+
+				if ($project->isPrivate()) {
+					$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
+				}
+
 				$posts = $this->postHandeler->getPosts($project);
 
 				$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());
@@ -157,10 +161,10 @@ class Application {
 	 	* GET Edit project
 	 	*/
 		$this->router->get('/edit/project/:projectID/:projectName', function($projectID, $projectName) {
-			$this->isAuthorized();
-
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
+
+				$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
 
 				$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());
 
@@ -183,10 +187,10 @@ class Application {
 	 	* PUT Edit project
 	 	*/
 		$this->router->put('/edit/project/:projectID/:projectName', function($projectID, $projectName) {
-			$this->isAuthorized();
-
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
+
+				$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
 
 				$editProjectController = new \project\controller\EditProject($this->projectHandeler, $project);
 
@@ -203,10 +207,10 @@ class Application {
 	 	* DELETE remove project
 	 	*/
 		$this->router->delete('/remove/project/:projectID', function($projectID) {
-			$this->isAuthorized();
-
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
+
+				$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
 
 				$deleteProjectController = new \project\controller\DeleteProject($this->projectHandeler, $project);
 				$deleteProjectController->deleteProject();
@@ -224,10 +228,13 @@ class Application {
 	 	* GET Post in Project
 	 	*/
 		$this->router->get('/project/:projectID/:projectName/post/:postID/:title', function($projectID, $projectName, $postID, $postTitle) {
-			$this->isAuthorized();
-
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
+
+				if ($project->isPrivate()) {
+					$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
+				}
+
 				$post = $this->postHandeler->getPost(+$postID);
 				$comments = $this->commentHandeler->getComments($post);
 
@@ -258,10 +265,10 @@ class Application {
 	 	* GET add new post in project
 	 	*/
 		$this->router->get('/project/:projectID/:projectName/newPost', function($projectID, $projectName) {
-			$this->isAuthorized();
-
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
+
+				$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
 
 				$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());
 
@@ -284,10 +291,10 @@ class Application {
 	 	* POST add new post in project
 	 	*/
 		$this->router->post('/project/:projectID/:projectName/newPost', function($projectID, $projectName) {
-			$this->isAuthorized();
-
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
+
+				$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
 
 				$newPostController = new \post\controller\NewPost($this->postHandeler, $project);
 
@@ -305,10 +312,11 @@ class Application {
 	 	*/
 		$this->router->get('/project/:projectID/:projectName/edit/post/:postID/:postName', function($projectID, $projectName,
 																								$postID, $postTitle) {
-			$this->isAuthorized();
-
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
+
+				$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
+
 				$post = $this->postHandeler->getPost(+$postID);
 
 				$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());
@@ -334,10 +342,12 @@ class Application {
 	 	*/
 		$this->router->put('/project/:projectID/:projectName/edit/post/:postID/:postName', function($projectID, $projectName,
 																									$postID, $postName) {
-			$this->isAuthorized();
 
 			try {
 				$project = $this->projectHandeler->getproject(+$projectID);
+
+				$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
+
 				$post = $this->postHandeler->getPost(+$postID);
 
 				$editPostController = new \post\controller\EditPost($this->postHandeler, $post, $project);
@@ -356,10 +366,11 @@ class Application {
 		 */
 		$this->router->delete('/project/:projectID/:projectName/remove/post/:postID', function($projectID, $projectName,
 																								$postID) {
-			$this->isAuthorized();
-
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
+
+				$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
+
 				$post = $this->postHandeler->getPost(+$postID);
 
 				$deletePostController = new \post\controller\DeletePost($this->postHandeler, $post, $project);
@@ -379,10 +390,11 @@ class Application {
 																										$projectName,
 																										$postID,
 																										$postName) {
-			$this->isAuthorized();
-
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
+
+				$this->isAuthorized();
+
 				$post = $this->postHandeler->getPost(+$postID);
 
 				$newCommentController = new \comment\controller\NewComment($post, $project, $this->user);
@@ -398,13 +410,14 @@ class Application {
 		$this->router->get("project/:projectID/:projectName/post/:postID/:postName/edit/comment/:commentID", 
 							function($projectID, $projectName, $postID, $postName, $commentID) {
 
-			$this->isAuthorized();
-
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
+
 				$post = $this->postHandeler->getPost(+$postID);
 				$comments = $this->commentHandeler->getComments($post);
 				$comment = $this->commentHandeler->getComment(+$commentID);
+
+				$this->isAuthorized(new \user\model\SimpleUser($comment->getUserID(), $comment->getUsername()));
 
 				$postController = new \post\controller\Post($project,
 															$post,
@@ -423,12 +436,13 @@ class Application {
 		$this->router->put("project/:projectID/:projectName/post/:postID/:postName/edit/comment/:commentID", 
 							function($projectID, $projectName, $postID, $postName, $commentID) {
 
-			$this->isAuthorized();
-
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
+
 				$post = $this->postHandeler->getPost(+$postID);
 				$comment = $this->commentHandeler->getComment(+$commentID);
+
+				$this->isAuthorized(new \user\model\SimpleUser($comment->getUserID(), $comment->getUsername()));
 
 				$editCommentController = new \comment\controller\EditComment($post, $project, $this->user);
 
@@ -444,12 +458,13 @@ class Application {
 		$this->router->delete("project/:projectID/:projectName/post/:postID/:postName/comment/:commentID", 
 							function($projectID, $projectName, $postID, $postName, $commentID) {
 
-			$this->isAuthorized();
-
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
+
 				$post = $this->postHandeler->getPost(+$postID);
 				$comment = $this->commentHandeler->getComment(+$commentID);
+
+				$this->isAuthorized(new \user\model\SimpleUser($comment->getUserID(), $comment->getUsername()));
 
 				$deleteCommentController = new \comment\controller\DeleteComment($comment, 
 																				 $this->commentHandeler,
@@ -530,7 +545,6 @@ class Application {
 	 	* GET FrontPage
 	 	*/
 		$this->router->get('/', function() {
-			$this->isAuthorized();
 			echo $this->page->getPage("Hello Blog!", "<h1>Hello world</h1>");
 		});
 
@@ -551,11 +565,24 @@ class Application {
 		});
 	}
 
-	private function isAuthorized() {
+	/**
+	 * @param  user\model\User  $user
+	 * @return void
+	 */
+	private function isAuthorized(\user\model\User $user = null) {
 		$this->loginController->loginWithToken();
+
+		if ($user != null) {
+			if (!$this->loginHandeler->isSameUser($user)) {
+				$this->navigationView->gotoProjects();
+				exit;
+			}	
+		}
+		
 
 		if (!$this->loginHandeler->isUserLoggedIn()) {
 			$this->navigationView->gotoLoginPage();
+			exit;
 		}
 	}
 }

@@ -54,6 +54,18 @@ class Login {
 		return isset($_SESSION[self::$user]);
 	}
 
+	/**
+	 * @param  user\model\User $otherUser
+	 * @return boolean
+	 */
+	public function isSameUser(\user\model\User $otherUser) {
+		if ($otherUser->getUserID() == $this->getLoggedInUser()->getUserID()) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public function getLoggedInUser() {
 		if ($this->isUserLoggedIn()) {
 			return $_SESSION[self::$user];

@@ -7,6 +7,7 @@ require_once("src/common/view/Filter.php");
 class EditProject {
 	private static $projectName = "projectName";
 	private static $projectDescription = "projectDescription";
+	private static $makePrivate = "private";
 	private static $errorMessage = "project::view::edit::errorMessage";
 	
 	/**
@@ -64,8 +65,18 @@ class EditProject {
 
 					<textarea class='input-wide input-content' 
 					name='". self::$projectDescription . "'>" . $this->project->getDescription() . "</textarea>
+					
+					<label for='" . self::$makePrivate . "'>Make this project private</label>";
 
-					<button class='btn btn-add'>Save Project</button>
+					if ($this->project->isPrivate()) {
+						$html .= "<input id='" . self::$makePrivate . "' type='checkbox' checked name='" . self::$makePrivate . "'>";
+					}
+					
+					else {
+						$html .= "<input id='" . self::$makePrivate . "' type='checkbox' name='" . self::$makePrivate . "'>";
+					}
+
+					$html .= "<button class='btn btn-add'>Save Project</button>
 					<a href='$backToProjectSrc' class='btn btn-remove'>Cancel</a>
 				</form>";
 
@@ -95,6 +106,17 @@ class EditProject {
 	}
 
 	/**
+	 * @return boolean
+	 */
+	private function getIsPrivate() {
+		if (isset($_POST[self::$makePrivate])) {
+			return (bool) $_POST[self::$makePrivate];
+		}
+
+		return false;
+	}
+
+	/**
 	 * @return void
 	 */
 	public function saveProject() {
@@ -103,7 +125,8 @@ class EditProject {
 															$this->getProjectDescription(),
 														 	$this->project->getDateCreated(),
 														 	$this->project->getUsername(), 
-														 	$this->project->getUserID());
+														 	$this->project->getUserID(),
+														 	$this->getIsPrivate());
 			
 			$this->projectHandeler->editProject($newProject);
 

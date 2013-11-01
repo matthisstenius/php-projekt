@@ -8,6 +8,7 @@ require_once("src/common/view/Filter.php");
 class NewProject {
 	private static $projectName = "projectName";
 	private static $projectDescription = "projectDescription";
+	private static $makePrivate = "private";
 	private static $inputFaultyMessage = "project::view::inputFaultyMessage";
 	private static $saveProjectName = "project::view::saveProjectName";
 
@@ -63,6 +64,9 @@ class NewProject {
 
 					<textarea class='input-wide input-content' 
 					name='". self::$projectDescription . "' placeholder='Project description'></textarea>
+					
+					<label for='" . self::$makePrivate . "'>Make this project private</label>
+					<input id='" . self::$makePrivate . "' type='checkbox' name='" . self::$makePrivate . "'>
 
 					<button class='btn btn-add'>Create Project</button>
 					<a href='$backToFrontPage' class='btn btn-remove'>Cancel</a>
@@ -94,20 +98,32 @@ class NewProject {
 	}
 
 	/**
+	 * @return boolean
+	 */
+	private function getIsPrivate() {
+		if (isset($_POST[self::$makePrivate])) {
+			return (bool) $_POST[self::$makePrivate];
+		}
+
+		return false;
+	}
+
+	/**
 	 * @return void
 	 */
 	public function addProject() {
 		try {
 			$project = new \project\model\NewProject($this->getProjectName(), $this->getProjectDescription(),
-													 \Date('y-m-d'), $this->user->getUserID());
+													 \Date('y-m-d'), $this->user->getUserID(), $this->getIsPrivate());
 
 			$this->projectHandeler->addProject($project);
-			
+
 			$this->navigationView->goToProject($project->getProjectID(), \common\view\Filter::getCleanUrl($project->getName()), 
 												$project->getName());
 		}
 
 		catch (\Exception $e) {
+			var_dump($e->getMessage());
 			$this->userInputFaulty();
 			$this->saveProjectName();
 			$this->navigationView->gotoNewProject();

@@ -6,7 +6,7 @@ class User {
 	/**
 	 * @var int
 	 */
-	private $userID;
+	protected $userID;
 
 	/**
 	 * @var string

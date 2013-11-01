@@ -13,7 +13,7 @@ class NewProject extends Project {
 	 * @param int $userID
 	 * @throws Ecxeption If validation failes
 	 */
-	public function __construct($name, $description, $created, $userID) {
+	public function __construct($name, $description, $created, $userID, $private) {
 		if (!is_string($name) || $name == "") {
 			throw new \Exception("invalid name");
 		}
@@ -30,10 +30,15 @@ class NewProject extends Project {
 			throw new \Exception("invalid userID");
 		}
 
+		if (!is_bool($private)) {
+			throw new \Exception("invalid private param");
+		}
+
 		$this->name        = $name;
 		$this->description = $description;
 		$this->created     = $created;
 		$this->userID      = $userID;
+		$this->private      = $private;
 	}
 
 	public function setProjectID($projectID) {
