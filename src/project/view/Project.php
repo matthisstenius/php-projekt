@@ -79,7 +79,7 @@ class Project {
 			$html .= "</div>";
 		}
 		$html .= "</header>";
-		$html .= "<p class='content'>" . $project->getDescription() . "</p>";
+		$html .= \common\view\Filter::newlineToParagraph($project->getDescription());;
 		
 		$html .= $this->getPosts();
 		

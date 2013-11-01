@@ -96,7 +96,8 @@ class Post {
 		$html .= "</header>";
 
 		$html .= "<div class='box pad post-content'>";
-		$html .= "<p class='content'>" . $this->post->getContent() . "</p>";
+
+		$html .= \common\view\Filter::newlineToParagraph($this->post->getContent());
 		$html .= "</div>";
 
 		$html .= $this->getComments();
@@ -145,7 +146,7 @@ class Post {
 
 			$html .= "<div class='comment $commentAuthor pad'>";
 			$html .= "<span class='created'>Posted by: " . $comment->getUsername() . " $commentDate</span>";
-			$html .= "<p>" . $comment->getComment() . "</p>";
+			$html .= \common\view\Filter::newlineToParagraph($comment->getComment());
 
 			if ($this->loginHandeler->isSameUser(new \user\model\SimpleUser($comment->getUserID(), 
 																		$comment->getUsername()))) {

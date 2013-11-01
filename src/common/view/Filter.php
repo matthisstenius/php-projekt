@@ -45,4 +45,14 @@ class Filter {
 	public static function formatDate($date) {
 		return \Date("Y-m-d H:i a", time($date));
 	}
+
+	public static function newlineToParagraph($input) {
+		$ret = "";
+
+		foreach (explode('<br />', nl2br($input)) as $line) {
+			$ret .= "<p>" . trim($line) . "</p>";
+		}
+
+		return $ret;
+	}
 }
