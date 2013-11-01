@@ -18,6 +18,7 @@
 	$almostWhite: #FCFCFC;
 	$eggShell: #EFEFEF;
 	$green: #4CD964;
+	$lightGreen: #E0F8D8;
 	$red: #B72D16;
 	$salmon: #E74C3C;
 
@@ -126,11 +127,11 @@
 	}
 
 	.btn-edit {
-		background-color: #34AADC;
+		background-color: $blue;
 	}
 
 	.btn-remove {
-		background-color: #FF3B30;
+		@include linear-gradient(#FB2B69, #FF5B37);
 	}
 
 	button:hover {
@@ -302,4 +303,46 @@
 
 	.author-comment {
 		background-color: $lightBlue;
+		float: right;
+		clear: right;
+		position: relative;
+
+		
+	}
+	
+	.ribbon-wrapper {
+		position: absolute;
+		width: 98px;
+		height: 88px;
+		top: 17px;
+		right: -22px;
+	}
+	
+	.ribbon {
+		text-align: center;
+		font-size: .9em;
+		@include linear-gradient(#FB2B69, #FF5B37);
+		color: white;
+		-webkit-transform: rotate(45deg);
+	}
+
+	.ribbon:before, .ribbon:after {
+	  	content: "";
+	  	position: absolute;
+	}
+	
+	.ribbon:before {
+		@include triangle(24px, $grey, up-left);
+		bottom: -4px;
+		right: 74px;
+	}
+	
+	.ribbon:after {
+		@include triangle(24px, $grey, up-right);
+		bottom: -4px;
+		right: -2px;
+	}
+
+	.user-comment {
+		background-color: $lightGreen;
 	}

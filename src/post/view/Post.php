@@ -4,11 +4,6 @@ namespace post\view;
 
 class Post {
 	/**
-	 * @var post\model\PostHandeler
-	 */
-	private $postHandeler;
-
-	/**
 	 * @var project\model\Project
 	 */
 	private $project;
@@ -27,6 +22,11 @@ class Post {
 	 * @var user\model\User
 	 */
 	private $user;
+
+	/**
+	 * @var login\model\Login
+	 */
+	private $loginHandeler;
 
 	/**
 	 * @var common\view\Navigation
@@ -49,7 +49,7 @@ class Post {
 		$this->comments = $comments;
 		$this->user = $user;
 
-		$this->postHandeler = new \post\model\PostHandeler();
+		$this->loginHandeler = new \login\model\Login();
 		$this->navigationView = new \common\view\Navigation();
 	}
 
@@ -69,26 +69,30 @@ class Post {
 		$html .= "<span class='created'>Added by: " . $this->post->getUsername() . " " . $this->post->getDateAdded() . "</span>";
 		$html .= "</div>";
 
-		$html .= "<div class='btn-area right'>";
+		if ($this->loginHandeler->isSameUser(new \user\model\SimpleUser($this->project->getUserID(), 
+																		$this->project->getUsername()))) {
+			$html .= "<div class='btn-area right'>";
 
-		$editPostSrc = $this->navigationView->getEditPostSrc($this->project->getProjectID(),
-								 							$cleanProjectName, 
-								 							$this->post->getPostID(), 
-								 							$cleanPostTitle);
+			$editPostSrc = $this->navigationView->getEditPostSrc($this->project->getProjectID(),
+									 							$cleanProjectName, 
+									 							$this->post->getPostID(), 
+									 							$cleanPostTitle);
 
-		$html .= "<a href='$editPostSrc' class='btn btn-setting right'>
-					<span class='icon-pencil'></span>Edit Post</a>";
+			$html .= "<a href='$editPostSrc' class='btn btn-setting right'>
+						<span class='icon-pencil'></span>Edit Post</a>";
 
-		$deletePostSrc = $this->navigationView->getDeletePostSrc($this->project->getProjectID(), 
-																$cleanProjectName,
-																$this->post->getPostID());
+			$deletePostSrc = $this->navigationView->getDeletePostSrc($this->project->getProjectID(), 
+																	$cleanProjectName,
+																	$this->post->getPostID());
 
-		$html .= "<form class='right' action='$deletePostSrc' method='POST'>
-					<input type='hidden' name='_method' value='delete'>
-					<button class='btn btn-setting'><span class='icon-remove'></span>Delete Post</button>
-				</form>";
+			$html .= "<form class='right' action='$deletePostSrc' method='POST'>
+						<input type='hidden' name='_method' value='delete'>
+						<button class='btn btn-setting'><span class='icon-remove'></span>Delete Post</button>
+					</form>";
 
-		$html .= "</div>";
+			$html .= "</div>";
+		}
+
 		$html .= "</header>";
 
 		$html .= "<div class='box pad post-content'>";
@@ -131,24 +135,30 @@ class Post {
 
 			if ($this->post->getUserID() == $comment->getUserID()) {
 				$commentAuthor = "author-comment";
+				$ribbon = "<div class='ribbon-wrapper'><div class='ribbon'>Author</div></div>";
 			}
 
 			else {
 				$commentAuthor = "user-comment";
+				$ribbon = "";
 			}
 
 			$html .= "<div class='comment $commentAuthor pad'>";
 			$html .= "<span class='created'>Posted by: " . $comment->getUsername() . " $commentDate</span>";
 			$html .= "<p>" . $comment->getComment() . "</p>";
 
-			$html .= "<div class='btn-area'>";
-			$html .= "<a href='$editCommentSrc' class='btn btn-edit left'><span class='icon-pencil'></span>Edit Comment</a>";
-			$html .= "<form class='left' action='$deleteCommentSrc' method='POST'>
-						<input type='hidden' name='_method' value='delete'>
-						<button class='btn btn-remove'><span class='icon-remove'></span>Delete Comment</button>
-					</form>";
-			$html .= "</div>";
+			if ($this->loginHandeler->isSameUser(new \user\model\SimpleUser($comment->getUserID(), 
+																		$comment->getUsername()))) {
+				$html .= "<div class='btn-area'>";
+				$html .= "<a href='$editCommentSrc' class='btn btn-edit left'><span class='icon-pencil'></span>Edit Comment</a>";
+				$html .= "<form class='left' action='$deleteCommentSrc' method='POST'>
+							<input type='hidden' name='_method' value='delete'>
+							<button class='btn btn-remove'><span class='icon-remove'></span>Delete Comment</button>
+						</form>";
+				$html .= "</div>";
+			}
 
+			$html .= $ribbon;
 			$html .= "</div>";
 		}
 		

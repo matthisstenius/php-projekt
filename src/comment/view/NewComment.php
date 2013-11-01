@@ -27,6 +27,11 @@ class NewComment {
 	private $commentHandeler;
 
 	/**
+	 * @var login\model\Login
+	 */
+	private $loginHandeler;
+
+	/**
 	 * @var common\view\Navigation
 	 */
 	private $navigationView;
@@ -44,6 +49,7 @@ class NewComment {
 		$this->user = $user;
 
 		$this->commentHandeler = new \comment\model\CommentHandeler();
+		$this->loginHandeler = new \login\model\Login();
 		$this->navigationView = new \common\view\Navigation();
 	}
 
@@ -63,11 +69,21 @@ class NewComment {
 			unset($_SESSION[self::$inputFaultyMessage]);
 		}
 
-		$html .= "<form class='pure-form pure-form-stacked comment-form' action='$commentSrc' method='POST'>
-	 					<textarea class='comment-input pure-input-1' name='" . self::$comment . "' placeholder='Comment'></textarea>
+		if ($this->loginHandeler->isUserLoggedIn()) {
+			$html .= "<form class='pure-form pure-form-stacked comment-form' action='$commentSrc' method='POST'>
+		 					<textarea class='comment-input pure-input-1'
+		 					name='" . self::$comment . "' placeholder='Comment'></textarea>
 
-	 					<button class='btn btn-add'>Post Comment</button>
-	 			</form>";
+		 					<button class='btn btn-add'>Post Comment</button>
+		 			</form>";
+	 	}
+
+	 	else {
+	 		$html .= "<form class='pure-form pure-form-stacked comment-form'>
+		 					<textarea disabled class='comment-input pure-input-1'
+		 					placeholder='You have to log in to post comments'></textarea>
+		 			</form>";
+	 	}
 
 		return $html;
 	}

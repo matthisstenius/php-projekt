@@ -14,6 +14,11 @@ class Project {
 	private $post;
 
 	/**
+	 * @var login\model\Login
+	 */
+	private $loginHandeler;
+
+	/**
 	 * @var common\view\Navigation
 	 */
 	private $navigationView;
@@ -21,11 +26,13 @@ class Project {
 	/**
 	 * @param project\model\Project $project
 	 * @param array              	$posts   array of post\model\Post
+	 * @param login\model\Login 	$loginHandeler
 	 */
 	public function __construct(\project\model\Project $project, $posts) {
 		$this->project = $project;
 		$this->posts = $posts;
 
+		$this->loginHandeler = new \login\model\Login();
 		$this->navigationView = new \common\view\Navigation();
 	}
 
@@ -44,23 +51,25 @@ class Project {
 				 $project->getDateCreated() . "</span>";
 		$html .= "</div>";
 
-		$html .= "<div class='btn-area right'>";
-		$newPostSrc = $this->navigationView->getNewPostSrc($project->getProjectID(), $cleanProjectName);
+		if ($this->loginHandeler->isSameUser(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()))) {
+			$html .= "<div class='btn-area right'>";
+			$newPostSrc = $this->navigationView->getNewPostSrc($project->getProjectID(), $cleanProjectName);
 
-		$html .= "<a class='btn btn-setting right' href='$newPostSrc'>
-					<span class='icon-plus'></span>Add new post</a>";
+			$html .= "<a class='btn btn-setting right' href='$newPostSrc'>
+						<span class='icon-plus'></span>Add new post</a>";
 
-		$editProjectSrc = $this->navigationView->getEditProjectSrc($project->getProjectID(), $cleanProjectName);
-		$html .= "<a href='$editProjectSrc' class ='btn btn-setting right'>
-					<span class='icon-pencil'></span>Edit Project</a>";
-		
-		$deleteProjectSrc = $this->navigationView->getDeleteProjectSrc($project->getProjectID());
-		$html .= "<form class='right' action='$deleteProjectSrc' method='POST'>
-					<input name='_method' type='hidden' value='delete'>
-					<button class='btn btn-setting'><span class='icon-remove'></span>Delete Project</button>
-				</form>";
+			$editProjectSrc = $this->navigationView->getEditProjectSrc($project->getProjectID(), $cleanProjectName);
+			$html .= "<a href='$editProjectSrc' class ='btn btn-setting right'>
+						<span class='icon-pencil'></span>Edit Project</a>";
+			
+			$deleteProjectSrc = $this->navigationView->getDeleteProjectSrc($project->getProjectID());
+			$html .= "<form class='right' action='$deleteProjectSrc' method='POST'>
+						<input name='_method' type='hidden' value='delete'>
+						<button class='btn btn-setting'><span class='icon-remove'></span>Delete Project</button>
+					</form>";
 
-		$html .= "</div>";
+			$html .= "</div>";
+		}
 		$html .= "</header>";
 		$html .= "<p class='content'>" . $project->getDescription() . "</p>";
 		

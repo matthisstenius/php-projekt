@@ -18,14 +18,14 @@ class EditPost {
 	private $post;
 
 	/**
-	 * @var common\view\Navigation
-	 */
-	private $navigationView;
-
-	/**
 	 * @var project\model\Project
 	 */
 	private $project;
+
+	/**
+	 * @var common\view\Navigation
+	 */
+	private $navigationView;
 
 	/**
 	 * @param post\model\PostHandeler $postHandeler
