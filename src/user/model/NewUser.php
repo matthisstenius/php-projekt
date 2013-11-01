@@ -20,6 +20,6 @@ class NewUser extends User {
 		}
 
 		$this->username = $username;
-		$this->password = $password;
+		$this->password = crypt($password);
 	}
 }

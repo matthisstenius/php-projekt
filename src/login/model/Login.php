@@ -16,7 +16,7 @@ class Login {
 	public function isLoginOk($users, LoginCredentials $loginCredentials) {
 		foreach ($users as $user) {
 			$usernamesAreEqual = $loginCredentials->getUsername() == $user->getUsername();
-			$passwordsAreEqual = $loginCredentials->getPassword() == $user->getPassword();
+			$passwordsAreEqual = crypt($loginCredentials->getPassword(), $user->getPassword()) == $user->getPassword();
 			
 
 			if ($usernamesAreEqual && $passwordsAreEqual) {
