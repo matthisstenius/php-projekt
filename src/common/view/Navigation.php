@@ -25,6 +25,7 @@ class Navigation {
 
 	/**
 	 * @param  int $projectID
+	 * @param  string $projectName
 	 * @return void
 	 */
 	public function gotoNewPost($projectID, $projectName) {
@@ -48,26 +49,52 @@ class Navigation {
 		header("Location: /php-projekt/new/project");
 	}
 
+	/**
+	 * Redirect to project
+	 * @param  int $projectID
+	 * @param  string $projectName
+	 */
 	public function gotoEditProject($projectID, $projectName) {
 		header("Location: /php-projekt/edit/project/$projectID/$projectName");
 	}
 	
+	/**
+	 * Redirect to post
+	 * @param  int $projectID
+	 * @param  string $projectName
+	 * @param  int $postID
+	 * @param  string $postName
+	 */
 	public function gotoEditPost($projectID, $projectName, $postID, $postName) {
 		header("Location: /php-projekt/project/$projectID/$projectName/edit/post/$postID/$postName");
 	}
 
+	/**
+	 * Redirect to collaborators
+	 * @param  int $projectID   
+	 * @param  string $projectName 
+	 */
 	public function gotoCollaborators($projectID, $projectName) {
 		header("Location: /php-projekt/project/$projectID/$projectName/collaborators");
 	}
 
+	/**
+	 * Redirect to loginpage
+	 */
 	public function gotoLoginPage() {
 		header("Location: /php-projekt/login");
 	}
 
+	/**
+	 * Redirect registerpage
+	 */
 	public function gotoRegisterPage() {
 		header("Location: /php-projekt/register");
 	}
 
+	/**
+	 * Redirect to error page
+	 */
 	public function gotoErrorPage() {
 		header("Location: /php-projekt/500");
 	}
@@ -79,6 +106,9 @@ class Navigation {
 		return "/php-projekt";
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getProjectsSrc() {
 		return "/php-projekt/projects";
 	}
@@ -109,10 +139,21 @@ class Navigation {
 		return "/php-projekt/remove/project/$projectID";
 	}
 
+	/**
+	 * @param  int $projectID
+	 * @param  string $projectName
+	 * @return string
+	 */
 	public function getCollaboratorsSrc($projectID, $projectName) {
 		return "/php-projekt/project/$projectID/$projectName/collaborators";
 	}
 
+	/**
+	 * @param  int $projectID
+	 * @param  string $projectName
+	 * @param  int $collaboratorID
+	 * @return string
+	 */
 	public function getRemoveCollaboratorSrc($projectID, $projectName, $collaboratorID) {
 		return "/php-projekt/project/$projectID/$projectName/remove/collaborator/$collaboratorID";
 	}
@@ -136,6 +177,7 @@ class Navigation {
 
 	/**
 	 * @param  int $projectID
+	 * @param string $projectName
 	 * @return string
 	 */
 	public function getNewPostSrc($projectID, $projectName) {
@@ -143,6 +185,10 @@ class Navigation {
 	}
 
 	/**
+	 * @param  int $projectID
+	 * @param  string $projectName
+	 * @param  int $postID
+	 * @param  string $postName
 	 * @return string
 	 */
 	public function getEditPostSrc($projectID, $projectName, $postID, $postName) {
@@ -150,20 +196,46 @@ class Navigation {
 	}
 
 	/**
+	 * @param  int $projectID
+	 * @param  string $projectName
+	 * @param  int $postID
 	 * @return string
 	 */
 	public function getDeletePostSrc($projectID, $projectName, $postID) {
 		return "/php-projekt/project/$projectID/$projectName/remove/post/$postID";
 	}
 
+	/**
+	 * @param  int $projectID
+	 * @param  string $projectName
+	 * @param  int $postID
+	 * @param  string $postName
+	 * @return string
+	 */
 	public function getCommentSrc($projectID, $projectName, $postID, $postName) {
 		return "/php-projekt/project/$projectID/$projectName/post/$postID/$postName/comment";
 	}
 
+	/**
+	 * @param  int $projectID
+	 * @param  string $projectName
+	 * @param  int $postID
+	 * @param  string $postName
+	 * @param  int $commentID
+	 * @return string
+	 */
 	public function getEditCommentSrc($projectID, $projectName, $postID, $postName, $commentID) {
 		return "/php-projekt/project/$projectID/$projectName/post/$postID/$postName/edit/comment/$commentID";
 	}
 
+	/**
+	 * @param  int $projectID
+	 * @param  string $projectName
+	 * @param  int $postID
+	 * @param  string $postName
+	 * @param  int $commentID
+	 * @return string
+	 */
 	public function getDeleteCommentSrc($projectID, $projectName, $postID, $postName, $commentID) {
 		return "/php-projekt/project/$projectID/$projectName/post/$postID/$postName/comment/$commentID";
 	}
@@ -190,12 +262,19 @@ class Navigation {
 	}
 
 	/**
+	 * @param  int $userID
+	 * @param  string $username
 	 * @return string
 	 */
 	public function getUserPageSrc($userID, $username) {
 		return "/php-projekt/user/$userID/$username";
 	}
 
+	/**
+	 * @param  int $userID
+	 * @param  string $username
+	 * @return string
+	 */
 	public function getDeleteAccountSrc($userID, $username) {
 		return "/php-projekt/remove/user/$userID/$username";
 	}
