@@ -28,11 +28,13 @@ class UserProfile {
 		$deleteAccountSrc = $this->navigationView->getDeleteAccountSrc($this->user->getUserID(),
 																		$this->user->getUsername());
 
-		$html = "<h1>" . $this->user->getUsername() . "'s Profile</h1>";
+		$html = "<div class='centered'>";
+		$html .= "<h1>" . $this->user->getUsername() . "'s Profile</h1>";
 		$html .= "<form action='$deleteAccountSrc' method='POST'>
 					<input type='hidden' name='_method' value='delete'>
-					<button class='btn btn-delete'>Delete Account</button>
+					<button class='btn btn-remove'>Delete Account</button>
 				</form>";
+		$html .= "<div>";
 
 		return $html;
 	}

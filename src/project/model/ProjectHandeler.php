@@ -23,8 +23,14 @@ class ProjectHandeler {
 		$projects = array();
 
 		foreach ($this->projectDAL->getProjects($user) as $row) {
-			$projects[] = new Project(+$row['idProject'], $row['name'], $row['description'], 
+			try {
+				$projects[] = new Project(+$row['idProject'], $row['name'], $row['description'], 
 										Date($row['created']), $row['username'], +$row['userID'], (bool)$row['private']);
+			}
+
+			catch (\Exception $e) {
+				
+			}
 		}
 		
 		return $projects;

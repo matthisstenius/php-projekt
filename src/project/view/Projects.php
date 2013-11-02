@@ -50,8 +50,8 @@ class Projects {
 	 * @return string HTML
 	 */
 	public function getProjects() {
-		$html = "<div class='post-thumbs'>";
-		$html .= "<h1 class='title'>" . $this->user->getUsername() . "'s projects</h1>";
+		$html = "<h1 class='projects-title title'>" . $this->user->getUsername() . "'s projects</h1>";
+		$html .= "<div class='post-thumbs'>";
 
 		foreach ($this->projectHandeler->getProjects($this->user) as $project) {
 			$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());

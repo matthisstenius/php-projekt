@@ -17,10 +17,11 @@
 	$darkGrey: #575D63;
 	$almostWhite: #FCFCFC;
 	$eggShell: #EFEFEF;
-	$green: #4CD964;
+	$green: #74B152;
 	$lightGreen: #E0F8D8;
 	$red: #B72D16;
 	$salmon: #E74C3C;
+	$gold: #F58F09;
 
 /*
 ----------------------------------------
@@ -84,6 +85,11 @@
 		padding: 5px 10px;
 	}
 	
+	.btn-empty {
+		background: none;
+		border: none;
+	}
+
 	.btn-attention {
 		font-size: .9em;
 		display: block;
@@ -131,7 +137,7 @@
 	}
 
 	.btn-remove {
-		@include linear-gradient(#FB2B69, #FF5B37);
+		background-color: $red;
 	}
 
 	button:hover {
@@ -145,10 +151,12 @@
 */
 	h1, h2, h3 {
 		font-family: $headings;
+		color: #556270;
+		text-shadow: 1px 1px 0 #eee;
 	}
 	
 	h1 {
-		font-size: 2em;
+		font-size: 2.5em;
 	}
 
 	h2 {
@@ -230,6 +238,7 @@
 		
 		.logo, h3 {
 			color: $darkGrey;
+			text-shadow: none;
 		}	
 
 		p {
@@ -257,6 +266,8 @@
 
 	.post-title {
 		margin-top: 0;
+		text-shadow: none;
+		color: black;
 	}
 
 	.post-content {
@@ -280,11 +291,18 @@
 	.project-header {
 		@include clearfix();
 	}
+	
+	.projects-title {
+		margin-bottom: 20px;
+	}
 
 	.content {
 		clear: both;
 	}
-
+	
+	.private {
+		color: $gold;
+	}
 /*
 ----------------------------------------
  * Comments
@@ -341,4 +359,37 @@
 
 	.user-comment {
 		background-color: $lightGreen;
+	}
+
+/*
+----------------------------------------
+ * Collaborators
+----------------------------------------
+*/
+	.collaborators-list {
+		li {
+			@include clearfix();
+			background-color: $lightBlue;
+			border: 1px solid $blue;
+			border-radius: 3px;
+			padding: 3px;
+			font-style: bold; 
+			margin-bottom: 10px;
+		}
+
+		.collaborator {
+			float: left;
+		}
+	}
+	
+	.collaborator-input {
+		width: 84%;
+	}
+
+	.remove-collaborator {
+		float: right;
+
+		button {
+			color: $red;
+		}
 	}

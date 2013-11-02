@@ -109,7 +109,14 @@ class Application {
 		$this->router->get('/projects', function() {
 			$this->isAuthorized();
 
-			echo $this->page->getPage("Projects", $this->projectsController->showProjects());
+			try {
+				echo $this->page->getPage("Projects", $this->projectsController->showProjects());	
+			}
+
+			catch (\Exception $e) {
+				$this->navigationView->gotoErrorPage();
+			}
+			
 		});
 
 		/**
