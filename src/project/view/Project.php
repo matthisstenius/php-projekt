@@ -126,9 +126,13 @@ class Project {
 			$postExcerpt = \common\view\Filter::getExcerpt($post->getContent());
 
 			$html .= "<span class='created'>Added by: " . $post->getUsername() . " " . $post->getDateAdded() . "</span>";
-			$html .= "<p class='post-excerpt'>$postExcerpt...</p>";
+			$html .= "<p class='post-excerpt'>$postExcerpt</p>";
 			$html .= "<a class='btn-attention' href='$postSrc'>Read More</a>";
 			$html .= "</div>";
+		}
+
+		if (count($this->posts) == 0) {
+			$html .= "<p class='nothing-found'>No posts in this project</p>";
 		}
 
 		$html .= "</div>";

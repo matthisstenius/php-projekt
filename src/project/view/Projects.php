@@ -50,10 +50,19 @@ class Projects {
 	 * @return string HTML
 	 */
 	public function getProjects() {
-		$html = "<h1 class='projects-title title'>" . $this->user->getUsername() . "'s projects</h1>";
+		$html = "<header class='projects-header'>";
+		$html .= "<h1 class='projects-title title left'>" . $this->user->getUsername() . "'s projects</h1>";
+		
+		$newProjectSrc = $this->navigationView->getAddNewProjectSrc();
+		$html .= "<a href='$newProjectSrc' class='btn btn-setting right'><span class='icon-plus'></span>Add Project</a>";
+
+		$html .= "</header>";
+
 		$html .= "<div class='post-thumbs'>";
 
-		foreach ($this->projectHandeler->getProjects($this->user) as $project) {
+		$projects = $this->projectHandeler->getProjects($this->user);
+
+		foreach ($projects as $project) {
 			$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());
 
 			$projectSrc = $this->navigationView->getProjectSrc($project->getProjectID(), 
@@ -67,11 +76,14 @@ class Projects {
 			$projectExcerpt = \common\view\Filter::getExcerpt($project->getDescription());
 
 			$html .= "<span class='created'>Added by: " . $project->getUsername() . " " . $project->getDateCreated() . "</span>";
-			$html .= "<p class='post-excerpt'>$projectExcerpt...</p>";
+			$html .= "<p class='post-excerpt'>$projectExcerpt</p>";
 			$html .= "<a class='btn-attention' href='$projectSrc'>Read More</a>";
 			$html .= "</div>";
 		}
 
+		if (count($projects) == 0) {
+			$html .= "<p class='nothing-found'>You dont have any projects</p>";
+		}
 		$html .= "</div>";
 
 		return $html;

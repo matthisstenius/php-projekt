@@ -30,7 +30,7 @@ class Filter {
 	 */
 	public static function getExcerpt($input) {
 		if (strlen($input) > 200) {
-			return substr($input, 0, 200);
+			return substr($input, 0, 200) . "...";
 		}
 
 		else {

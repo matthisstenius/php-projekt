@@ -34,6 +34,6 @@ class DeleteProject {
 	 */
 	public function deleteProject() {
 		$this->projectHandeler->deleteProject($this->project);
-		$this->navigationView->gotoFrontPage();
+		$this->navigationView->gotoProjects();
 	}
 }
