@@ -65,7 +65,7 @@ class Project {
 		if ($this->loginHandeler->isSameUser(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()))) {
 			$collaboratorsSrc = $this->navigationView->getCollaboratorsSrc($project->getProjectID(), $cleanProjectName);
 
-			$html .= "<a href='$collaboratorsSrc' class='btn btn-setting right'>Add Collaborators</a>";
+			$html .= "<a href='$collaboratorsSrc' class='btn btn-setting right'>Collaborators</a>";
 
 			$newPostSrc = $this->navigationView->getNewPostSrc($project->getProjectID(), $cleanProjectName);
 
@@ -84,7 +84,6 @@ class Project {
 		}
 
 		else if ($project->isCollaborator($this->collaborators)) {
-			var_dump($this->collaborators);
 			$newPostSrc = $this->navigationView->getNewPostSrc($project->getProjectID(), $cleanProjectName);
 
 			$html .= "<a class='btn btn-setting right' href='$newPostSrc'>

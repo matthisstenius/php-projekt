@@ -56,6 +56,10 @@ class Navigation {
 		header("Location: /php-projekt/project/$projectID/$projectName/edit/post/$postID/$postName");
 	}
 
+	public function gotoCollaborators($projectID, $projectName) {
+		header("Location: /php-projekt/project/$projectID/$projectName/collaborators");
+	}
+
 	public function gotoLoginPage() {
 		header("Location: /php-projekt/login");
 	}
@@ -107,6 +111,10 @@ class Navigation {
 
 	public function getCollaboratorsSrc($projectID, $projectName) {
 		return "/php-projekt/project/$projectID/$projectName/collaborators";
+	}
+
+	public function getRemoveCollaboratorSrc($projectID, $projectName, $collaboratorID) {
+		return "/php-projekt/project/$projectID/$projectName/remove/collaborator/$collaboratorID";
 	}
 
 	/**

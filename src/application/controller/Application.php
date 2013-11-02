@@ -29,6 +29,8 @@ require_once("src/comment/controller/NewComment.php");
 require_once("src/comment/controller/EditComment.php");
 require_once("src/comment/controller/DeleteComment.php");
 require_once("src/collaborator/controller/Collaborators.php");
+require_once("src/collaborator/controller/DeleteCollaborator.php");
+require_once("src/collaborator/model/SimpleCollaborator.php");
 
 class Application {
 	/**
@@ -495,11 +497,13 @@ class Application {
 		$this->router->get('/project/:projectID/:projectName/collaborators', function($projectID, $projectName) {
 			try {
 				$project = $this->projectHandeler->getproject(+$projectID);
+				$users = $this->userHandeler->getUsers();
 				$collaborators = $this->collaboratorHandeler->getCollaborators($project);
 
 				$collaboratorsController = new \collaborator\controller\Collaborators($collaborators,
 																						$project,
-																						$this->collaboratorHandeler);
+																						$this->collaboratorHandeler,
+																						$users);
 
 				echo $this->page->getPage("collaborators", $collaboratorsController->showCollaborators());
 			}
@@ -507,6 +511,37 @@ class Application {
 			catch (\Exception $e) {
 				var_dump($e->getMessage());
 			}
+		});
+
+		$this->router->post('/project/:projectID/:projectName/collaborators', function($projectID, $projectName) {
+			try {
+				$project = $this->projectHandeler->getproject(+$projectID);
+				$users = $this->userHandeler->getUsers();
+				$collaborators = $this->collaboratorHandeler->getCollaborators($project);
+
+				$collaboratorsController = new \collaborator\controller\Collaborators($collaborators,
+																						$project,
+																						$this->collaboratorHandeler,
+																						$users);
+				$collaboratorsController->addCollaborator();
+			}
+
+			catch (\Exception $e) {
+				var_dump($e->getMessage());
+			}
+		});
+
+		$this->router->delete('/project/:projectID/:projectName/remove/collaborator/:collaboratorID', function($projectID,
+																												$projectName,
+																												$collaboratorID) {
+
+			$project = $this->projectHandeler->getProject(+$projectID);
+			$collaborator = new \collaborator\model\SimpleCollaborator(+$collaboratorID);
+
+			$deleteCollaboratorController = new \collaborator\controller\DeleteCollaborator($collaborator,
+																							$this->collaboratorHandeler,
+																							$project);
+			$deleteCollaboratorController->DeleteCollaborator();
 		});
 	}
 

@@ -38,7 +38,7 @@ class Login {
 	 * @return string HTML
 	 */
 	public function getLoginForm() {
-		$html = "<div class='login-box'>
+		$html = "<div class='login-box centered'>
 					<h1>Log in</h1>";
 
 		$loginSrc = $this->navigationView->getLoginSrc();

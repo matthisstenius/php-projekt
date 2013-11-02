@@ -16,7 +16,8 @@ class CollaboratorHandeler {
 	}
 
 	/**
-	 * @return array of Users
+	 * @param project\model\Project $project
+	 * @return array of Collaborator
 	 */
 	public function getCollaborators(\project\model\Project $project) {
 		$rows = $this->collaboratorDAL->getCollaborators($project);
@@ -30,7 +31,7 @@ class CollaboratorHandeler {
 	}
 
 	/**
-	 * @param User $user
+	 * @param Collaborator $collaborator
 	 */
 	public function addCollaborator(Collaborator $collaborator) {
 		$collaboratorID = $this->collaboratorDAL->addCollaborator($collaborator);
@@ -38,10 +39,10 @@ class CollaboratorHandeler {
 	}
 
 	/**
-	 * @param  User   $user
+	 * @param  Collaborator   $collaborator
 	 * @return void
 	 */
-	public function deleteUser(Collaborator $collaborator) {
+	public function deleteCollaboratorController(Collaborator $collaborator) {
 		$this->collaboratorDAL->deleteCollaborator($collaborator);
 	}
 }

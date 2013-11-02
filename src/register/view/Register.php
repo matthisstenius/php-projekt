@@ -28,7 +28,7 @@ class Register {
 	 * @return string HTML
 	 */
 	public function getRegisterForm() {
-		$html = "<div class='register-box'>
+		$html = "<div class='register-box centered'>
 					<h1>Register account</h1>";
 
 		$registerSrc = $this->navigationView->getRegisterSrc();

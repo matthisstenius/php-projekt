@@ -5,6 +5,7 @@ namespace collaborator\model;
 class CollaboratorDAL extends \common\model\DALBase {
 	
 	/**
+	 * @param project\model\Project $project
 	 * @return array of Collaboratorrows
 	 */
 	public function getCollaborators(\project\model\Project $project) {
@@ -30,8 +31,8 @@ class CollaboratorDAL extends \common\model\DALBase {
 	}
 
 	/**
-	 * @param  User $user
-	 * @return int UserID
+	 * @param  Collaborator $collaborator
+	 * @return int CollaboratorID
 	 */
 	public function addCollaborator(Collaborator $collaborator) {
 
@@ -52,15 +53,15 @@ class CollaboratorDAL extends \common\model\DALBase {
 	}
 
 	/**
-	 * @param  User $user
+	 * @param  Collaborator $collaborator
 	 * @return void
 	 */
-	public function deleteCollaborator(Collaborator $vollaborator) {
+	public function deleteCollaborator(Collaborator $collaborator) {
 		$stm = self::getDBConnection()->prepare('DELETE FROM Collaborator WHERE idCollaborator =  :collaboratorID');
 
 		$collaboratorID = $collaborator->getCollaboratorID();
 
-		$stm->bindParam(':idCollaborator', $collaboratorID);
+		$stm->bindParam(':collaboratorID', $collaboratorID);
 
 		$stm->execute();
 	}
