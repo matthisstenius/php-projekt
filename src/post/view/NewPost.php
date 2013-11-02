@@ -127,7 +127,6 @@ class NewPost {
 		}
 
 		catch (\Exception $e) {
-			var_dump($e->getMessage());
 			$this->userInputFaulty();
 			$this->savePostTitle();
 			$this->navigationView->gotoNewPost($this->project->getProjectID(),

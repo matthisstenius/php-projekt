@@ -64,18 +64,24 @@ class Collaborators {
 			unset($_SESSION[self::$errorMessage]);
 		}
 
+		$html .= "<ul class='collaborators-list'>";
+
 		foreach ($this->collaborators as $collaborator) {
 			$removeCollaboratorSrc = $this->navigationView->getRemoveCollaboratorSrc($this->project->getProjectID(),
 																					\common\view\Filter::getCleanUrl($this->project->getName()),
 																					$collaborator->getCollaboratorID());
-			$html .= "<p>" . $collaborator->getUsername() . "</p>";
+			
+			$html .= "<li>";
+			$html .= "<span class='collaborator'>" . $collaborator->getUsername() . "</span>";
 
-			$html .= "<form action='$removeCollaboratorSrc' method='POST'>
+			$html .= "<form class='remove-collaborator' action='$removeCollaboratorSrc' method='POST'>
 						<input type='hidden' name='_method' value='delete'>
-						<button class='btn btn-remove'><span class='icon-remove'></span>Remove Collaborators</button>
+						<button class='btn-empty'>(remove)</button>
 					</form>";
+			$html .= "</li>";
 		}
 
+		$html .= "</ul>";
 		$html .= "</div>";
 		$html .= "</div>";
 		return $html;
@@ -89,8 +95,8 @@ class Collaborators {
 																		\common\view\Filter::getCleanUrl($this->project->getName()));
 
 		$html = "<form class='pure-form' action='$collaboratorsSrc' method='POST'>
-					<input typr='text' name='" . self::$collaborator . "'>
-					<button class='btn btn-add'>Add Collaborator</button>
+					<input class='collaborator-input' type='text' name='" . self::$collaborator . "' placeholder='Enter user'>
+					<button class='btn btn-add'>Add</button>
 				</form>";
 
 		return $html;
@@ -135,6 +141,6 @@ class Collaborators {
 	}
 
 	private function userInputFaulty() {
-		$errorMessage = $_SESSION[self::$errorMessage] = "<p>User not found</p>";
+		$errorMessage = $_SESSION[self::$errorMessage] = "<p>Could not find user</p>";
 	}
 }

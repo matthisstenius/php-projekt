@@ -54,13 +54,7 @@ class Project {
 			$lockIcon = "";
 		}
 
-		$html .= "<div class='title-area left'>";
-		$html .= "<h1 class='title'>$lockIcon" . $project->getName() . "</h1>";
-		$html .= "<span class='created'>Created by: " . $project->getUsername() . " " . 
-				 $project->getDateCreated() . "</span>";
-		$html .= "</div>";
-
-		$html .= "<div class='btn-area right'>";
+		$html .= "<div class='btn-area'>";
 
 		if ($this->loginHandeler->isAdmin($project)) {
 			$collaboratorsSrc = $this->navigationView->getCollaboratorsSrc($project->getProjectID(), $cleanProjectName);
@@ -89,8 +83,14 @@ class Project {
 			$html .= "<a class='btn btn-setting right' href='$newPostSrc'>
 						<span class='icon-plus'></span>Add new post</a>";
 		}
-
 		$html .= "</div>";
+		
+		$html .= "<div class='title-area'>";
+		$html .= "<h1 class='title'>$lockIcon" . $project->getName() . "</h1>";
+		$html .= "<span class='created'>Created by: " . $project->getUsername() . " " . 
+				 $project->getDateCreated() . "</span>";
+		$html .= "</div>";
+
 		$html .= "</header>";
 		$html .= \common\view\Filter::newlineToParagraph($project->getDescription());;
 		

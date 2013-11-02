@@ -68,14 +68,10 @@ class Post {
 		$html .= "<a href='$backToProject'>Back to project</a>";
 
 		$html .= "<header class='post-header'>";
-		$html .= "<div class='left'>";
-		$html .= "<h1 class='post-title title'>" . $this->post->getTitle() . "</h1>";
-		$html .= "<span class='created'>Added by: " . $this->post->getUsername() . " " . $this->post->getDateAdded() . "</span>";
-		$html .= "</div>";
 
 		if ($this->loginHandeler->isSameUser(new \user\model\SimpleUser($this->post->getUserID(), 
 																		$this->post->getUsername()))) {
-			$html .= "<div class='btn-area right'>";
+			$html .= "<div class='btn-area'>";
 
 			$editPostSrc = $this->navigationView->getEditPostSrc($this->project->getProjectID(),
 									 							$cleanProjectName, 
@@ -96,6 +92,13 @@ class Post {
 
 			$html .= "</div>";
 		}
+
+		$html .= "<div>";
+		$html .= "<h1 class='title'>" . $this->post->getTitle() . "</h1>";
+		$html .= "<span class='created'>Added by: " . $this->post->getUsername() . " " . $this->post->getDateAdded() . "</span>";
+		$html .= "</div>";
+
+		
 
 		$html .= "</header>";
 
@@ -118,7 +121,7 @@ class Post {
 		$commentAmount = count($this->comments);
 		$postTitle = $this->post->getTitle();
 
-		$html = "<h2>$postTitle has $commentAmount comments</h2>";
+		$html = "<h2>$commentAmount comments</h2>";
 
 		foreach ($this->comments as $comment) {
 			$cleanProjectName = \common\view\Filter::getCleanUrl($this->project->getName());
