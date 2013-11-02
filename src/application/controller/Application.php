@@ -500,6 +500,8 @@ class Application {
 				$users = $this->userHandeler->getUsers();
 				$collaborators = $this->collaboratorHandeler->getCollaborators($project);
 
+				$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
+
 				$collaboratorsController = new \collaborator\controller\Collaborators($collaborators,
 																						$project,
 																						$this->collaboratorHandeler,
@@ -519,6 +521,8 @@ class Application {
 				$users = $this->userHandeler->getUsers();
 				$collaborators = $this->collaboratorHandeler->getCollaborators($project);
 
+				$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
+
 				$collaboratorsController = new \collaborator\controller\Collaborators($collaborators,
 																						$project,
 																						$this->collaboratorHandeler,
@@ -537,6 +541,8 @@ class Application {
 
 			$project = $this->projectHandeler->getProject(+$projectID);
 			$collaborator = new \collaborator\model\SimpleCollaborator(+$collaboratorID);
+
+			$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
 
 			$deleteCollaboratorController = new \collaborator\controller\DeleteCollaborator($collaborator,
 																							$this->collaboratorHandeler,
