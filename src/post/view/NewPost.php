@@ -112,7 +112,7 @@ class NewPost {
 		try {
 			$post = new \post\model\Post(0, $this->getPostTitle(), 
 											$this->getPostContent(),
-											$this->project->getUserID(),
+											$this->user->getUserID(),
 											$this->user->getUsername(),
 											\Date('y-m-d'),
 											$this->project->getProjectID()

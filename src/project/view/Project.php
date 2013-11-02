@@ -9,9 +9,9 @@ class Project {
 	private $project;
 
 	/**
-	 * @var post\model\Post
+	 * @var array of post\model\Post
 	 */
-	private $post;
+	private $posts;
 
 	/**
 	 * @var login\model\Login
@@ -28,9 +28,10 @@ class Project {
 	 * @param array              	$posts   array of post\model\Post
 	 * @param login\model\Login 	$loginHandeler
 	 */
-	public function __construct(\project\model\Project $project, $posts) {
+	public function __construct(\project\model\Project $project, $posts, $collaborators) {
 		$this->project = $project;
 		$this->posts = $posts;
+		$this->collaborators = $collaborators;
 
 		$this->loginHandeler = new \login\model\Login();
 		$this->navigationView = new \common\view\Navigation();
@@ -59,8 +60,13 @@ class Project {
 				 $project->getDateCreated() . "</span>";
 		$html .= "</div>";
 
+		$html .= "<div class='btn-area right'>";
+
 		if ($this->loginHandeler->isSameUser(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()))) {
-			$html .= "<div class='btn-area right'>";
+			$collaboratorsSrc = $this->navigationView->getCollaboratorsSrc($project->getProjectID(), $cleanProjectName);
+
+			$html .= "<a href='$collaboratorsSrc' class='btn btn-setting right'>Add Collaborators</a>";
+
 			$newPostSrc = $this->navigationView->getNewPostSrc($project->getProjectID(), $cleanProjectName);
 
 			$html .= "<a class='btn btn-setting right' href='$newPostSrc'>
@@ -75,9 +81,17 @@ class Project {
 						<input name='_method' type='hidden' value='delete'>
 						<button class='btn btn-setting'><span class='icon-remove'></span>Delete Project</button>
 					</form>";
-
-			$html .= "</div>";
 		}
+
+		else if ($project->isCollaborator($this->collaborators)) {
+			var_dump($this->collaborators);
+			$newPostSrc = $this->navigationView->getNewPostSrc($project->getProjectID(), $cleanProjectName);
+
+			$html .= "<a class='btn btn-setting right' href='$newPostSrc'>
+						<span class='icon-plus'></span>Add new post</a>";
+		}
+
+		$html .= "</div>";
 		$html .= "</header>";
 		$html .= \common\view\Filter::newlineToParagraph($project->getDescription());;
 		

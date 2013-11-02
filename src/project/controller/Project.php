@@ -32,13 +32,15 @@ class Project {
 	 */
 	public function __construct(\project\model\Project $project,
 								$posts,
-								\user\model\User $user) {
+								\user\model\User $user,
+								$collaborators) {
 
 		$this->project = $project;
 		$this->posts = $posts;
 		$this->user = $user;
+		$this->collaborators = $collaborators;
 
-		$this->projectView = new \project\view\Project($this->project, $this->posts);
+		$this->projectView = new \project\view\Project($this->project, $this->posts, $this->collaborators);
 	}
 
 	/**

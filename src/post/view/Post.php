@@ -69,8 +69,8 @@ class Post {
 		$html .= "<span class='created'>Added by: " . $this->post->getUsername() . " " . $this->post->getDateAdded() . "</span>";
 		$html .= "</div>";
 
-		if ($this->loginHandeler->isSameUser(new \user\model\SimpleUser($this->project->getUserID(), 
-																		$this->project->getUsername()))) {
+		if ($this->loginHandeler->isSameUser(new \user\model\SimpleUser($this->post->getUserID(), 
+																		$this->post->getUsername()))) {
 			$html .= "<div class='btn-area right'>";
 
 			$editPostSrc = $this->navigationView->getEditPostSrc($this->project->getProjectID(),

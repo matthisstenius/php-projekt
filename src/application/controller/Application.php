@@ -7,6 +7,7 @@ require_once("src/common/view/Navigation.php");
 require_once("src/project/model/ProjectHandeler.php");
 require_once("src/post/model/PostHandeler.php");
 require_once("src/comment/model/CommentHandeler.php");
+require_once("src/collaborator/model/CollaboratorHandeler.php");
 require_once("src/project/controller/Projects.php");
 require_once("src/project/controller/Project.php");
 require_once("src/project/controller/NewProject.php");
@@ -27,6 +28,7 @@ require_once("src/user/controller/DeleteUser.php");
 require_once("src/comment/controller/NewComment.php");
 require_once("src/comment/controller/EditComment.php");
 require_once("src/comment/controller/DeleteComment.php");
+require_once("src/collaborator/controller/Collaborators.php");
 
 class Application {
 	/**
@@ -72,6 +74,7 @@ class Application {
 		$this->userHandeler = new \user\model\UserHandeler();
 		$this->commentHandeler = new \comment\model\CommentHandeler();
 		$this->loginHandeler = new \login\model\Login();
+		$this->collaboratorHandeler = new \collaborator\model\CollaboratorHandeler();
 
 		$this->user = $this->loginHandeler->getLoggedInUser();
 
@@ -91,6 +94,7 @@ class Application {
 		$this->projectRoutes();
 		$this->postRoutes();
 		$this->commentRoutes();
+		$this->collaboratorRoutes();
 		$this->loginRoutes();
 		$this->registerRoutes();
 		$this->userRoutes();
@@ -112,8 +116,9 @@ class Application {
 		$this->router->get('/project/:projectID/:projectName', function($projectID, $projectName) {
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
+				$collaborators = $this->collaboratorHandeler->getCollaborators($project);
 
-				if ($project->isPrivate()) {
+				if ($project->isPrivate() && !$project->isCollaborator($collaborators)) {	
 					$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
 				}
 
@@ -125,7 +130,7 @@ class Application {
 					$this->navigationView->goToProject($project->getProjectID(), $cleanProjectName);
 				}
 
-				$projectController = new \project\controller\Project($project, $posts, $this->user);
+				$projectController = new \project\controller\Project($project, $posts, $this->user, $collaborators);
 
 				echo $this->page->getPage("Project title", $projectController->showProject());	
 			}
@@ -230,8 +235,9 @@ class Application {
 		$this->router->get('/project/:projectID/:projectName/post/:postID/:title', function($projectID, $projectName, $postID, $postTitle) {
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
+				$collaborators = $this->collaboratorHandeler->getCollaborators($project);
 
-				if ($project->isPrivate()) {
+				if ($project->isPrivate() && !$project->isCollaborator($collaborators)) {
 					$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
 				}
 
@@ -267,8 +273,11 @@ class Application {
 		$this->router->get('/project/:projectID/:projectName/new/post', function($projectID, $projectName) {
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
+				$collaborators = $this->collaboratorHandeler->getCollaborators($project);
 
-				$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
+				if (!$project->isCollaborator($collaborators)) {
+					$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
+				}
 
 				$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());
 
@@ -293,8 +302,11 @@ class Application {
 		$this->router->post('/project/:projectID/:projectName/new/post', function($projectID, $projectName) {
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
+				$collaborators = $this->collaboratorHandeler->getCollaborators($project);
 
-				$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
+				if (!$project->isCollaborator($collaborators)) {
+					$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
+				}
 
 				$newPostController = new \post\controller\NewPost($this->postHandeler, $project, $this->user);
 
@@ -314,10 +326,9 @@ class Application {
 																								$postID, $postTitle) {
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
-
-				$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
-
 				$post = $this->postHandeler->getPost(+$postID);
+
+				$this->isAuthorized(new \user\model\SimpleUser($post->getUserID(), $post->getUsername()));
 
 				$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());
 				$cleanPostTitle = \common\view\Filter::getCleanUrl($post->getTitle());
@@ -345,10 +356,9 @@ class Application {
 
 			try {
 				$project = $this->projectHandeler->getproject(+$projectID);
-
-				$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
-
 				$post = $this->postHandeler->getPost(+$postID);
+
+				$this->isAuthorized(new \user\model\SimpleUser($post->getUserID(), $post->getUsername()));
 
 				$editPostController = new \post\controller\EditPost($this->postHandeler, $post, $project);
 				$editPostController->editPost();
@@ -368,10 +378,9 @@ class Application {
 																								$postID) {
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
-
-				$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
-
 				$post = $this->postHandeler->getPost(+$postID);
+
+				$this->isAuthorized(new \user\model\SimpleUser($post->getUserID(), $post->getUsername()));
 
 				$deletePostController = new \post\controller\DeletePost($this->postHandeler, $post, $project);
 
@@ -480,6 +489,25 @@ class Application {
 
 		});
 
+	}
+
+	private function collaboratorRoutes() {
+		$this->router->get('/project/:projectID/:projectName/collaborators', function($projectID, $projectName) {
+			try {
+				$project = $this->projectHandeler->getproject(+$projectID);
+				$collaborators = $this->collaboratorHandeler->getCollaborators($project);
+
+				$collaboratorsController = new \collaborator\controller\Collaborators($collaborators,
+																						$project,
+																						$this->collaboratorHandeler);
+
+				echo $this->page->getPage("collaborators", $collaboratorsController->showCollaborators());
+			}
+
+			catch (\Exception $e) {
+				var_dump($e->getMessage());
+			}
+		});
 	}
 
 	private function userRoutes() {

@@ -105,6 +105,10 @@ class Navigation {
 		return "/php-projekt/remove/project/$projectID";
 	}
 
+	public function getCollaboratorsSrc($projectID, $projectName) {
+		return "/php-projekt/project/$projectID/$projectName/collaborators";
+	}
+
 	/**
 	 * @param  int $projectID
 	 * @param  int $postID
