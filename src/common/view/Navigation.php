@@ -3,12 +3,6 @@
 namespace common\view;
 
 class Navigation {
-	public function compareParams($url, $param, $otherParam) {
-		if (\common\view\Filter::getCleanUrl($param) != $otherParam) {
-			header("Location: $url");
-		}
-	}
-
 	public function gotoFrontPage() {
 		header("Location: /php-projekt/");
 	}

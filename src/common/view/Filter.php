@@ -46,6 +46,11 @@ class Filter {
 		return \Date("Y-m-d H:i a", time($date));
 	}
 
+	/**
+	 * Turns \n into <p>
+	 * @param  string $input
+	 * @return string
+	 */
 	public static function newlineToParagraph($input) {
 		$ret = "";
 

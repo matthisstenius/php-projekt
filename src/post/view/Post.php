@@ -63,6 +63,10 @@ class Post {
 
 		$html = "<article class='post'>";
 
+		$backToProject = $this->navigationView->getProjectSrc($this->project->getProjectID(), $cleanProjectName);
+		
+		$html .= "<a href='$backToProject'>Back to project</a>";
+
 		$html .= "<header class='post-header'>";
 		$html .= "<div class='left'>";
 		$html .= "<h1 class='post-title title'>" . $this->post->getTitle() . "</h1>";
