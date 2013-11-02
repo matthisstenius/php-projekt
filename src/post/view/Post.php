@@ -148,17 +148,24 @@ class Post {
 			$html .= "<span class='created'>Posted by: " . $comment->getUsername() . " $commentDate</span>";
 			$html .= \common\view\Filter::newlineToParagraph($comment->getComment());
 
-			if ($this->loginHandeler->isSameUser(new \user\model\SimpleUser($comment->getUserID(), 
-																		$comment->getUsername()))) {
-				$html .= "<div class='btn-area'>";
+			$html .= "<div class='btn-area'>";
+
+			if ($this->loginHandeler->isSameUser(new \user\model\SimpleUser($comment->getUserID(), $comment->getUsername()))) {
 				$html .= "<a href='$editCommentSrc' class='btn btn-edit left'><span class='icon-pencil'></span>Edit Comment</a>";
 				$html .= "<form class='left' action='$deleteCommentSrc' method='POST'>
 							<input type='hidden' name='_method' value='delete'>
 							<button class='btn btn-remove'><span class='icon-remove'></span>Delete Comment</button>
 						</form>";
-				$html .= "</div>";
 			}
 
+			else if ($this->loginHandeler->isSameUser(new \user\model\SimpleUser($this->project->getUserID(), $this->project->getUsername()))) {
+				$html .= "<form class='left' action='$deleteCommentSrc' method='POST'>
+							<input type='hidden' name='_method' value='delete'>
+							<button class='btn btn-remove'><span class='icon-remove'></span>Delete Comment</button>
+						</form>";
+			}
+
+			$html .= "</div>";
 			$html .= $ribbon;
 			$html .= "</div>";
 		}

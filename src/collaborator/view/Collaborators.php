@@ -97,26 +97,24 @@ class Collaborators {
 	}
 
 	/**
-	 * @return string
+	 * @return user\model\User
 	 */
-	public function getCollaborator() {
+	private function getCollaborator() {
 		if (isset($_POST[self::$collaborator])) {
-			return \common\view\Filter::clean($_POST[self::$collaborator]);
-		}
+			$collaborator = \common\view\Filter::clean($_POST[self::$collaborator]);
 
-		return "";
+			foreach ($this->users as $user) {
+				if ($user->getUsername() == $collaborator) {
+					return $user;
+				}
+
+				return new \user\model\NullUser();
+			}
+		}
 	}
 
 	public function addCollaborator() {
-		foreach ($this->users as $user) {
-			if ($user->getUsername() == $this->getCollaborator()) {
-				$collaborator = $user;
-			}
-
-			else {
-				$collaborator = new \user\model\NullUser();
-			}
-		}
+		$collaborator = $this->getCollaborator();
 
 		try {
 			$newCollaborator = new \collaborator\model\Collaborator(0, $collaborator->getUserID(),

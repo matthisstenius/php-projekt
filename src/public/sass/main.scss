@@ -294,7 +294,8 @@
 		@include clearfix();
 		border-radius: 3px;
 		border: 1px solid #ddd;
-
+		margin-top: 20px;
+		
 		.btn:first-child {
 			margin-left: 0;
 		}
@@ -302,11 +303,7 @@
 
 	.author-comment {
 		background-color: $lightBlue;
-		float: right;
-		clear: right;
 		position: relative;
-
-		
 	}
 	
 	.ribbon-wrapper {
@@ -333,7 +330,7 @@
 	.ribbon:before {
 		@include triangle(24px, $grey, up-left);
 		bottom: -4px;
-		right: 74px;
+		right: 75px;
 	}
 	
 	.ribbon:after {

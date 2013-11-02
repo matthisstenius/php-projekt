@@ -66,6 +66,34 @@ class Login {
 		return false;
 	}
 
+	/**
+	 * @param  project\model\Project $project
+	 * @return boolean
+	 */
+	public function isAdmin(\project\model\Project $project) {
+		if ($project->getUserID() == $this->getLoggedInUser()->getUserID()) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param  array              	 $collaborators array of collaborator\model\Collaborator
+	 * @param  project\model\Project $project
+	 * @return boolean
+	 */
+	public function isCollaborator($collaborators, \project\model\Project $project) {
+		foreach ($collaborators as $collaborator) {
+			if ($collaborator->getProjectID() == $project->getProjectID() &&
+				$collaborator->getUserID() == $this->getLoggedInUser()->getUserID()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public function getLoggedInUser() {
 		if ($this->isUserLoggedIn()) {
 			return $_SESSION[self::$user];

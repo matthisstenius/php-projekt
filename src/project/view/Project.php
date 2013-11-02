@@ -62,7 +62,7 @@ class Project {
 
 		$html .= "<div class='btn-area right'>";
 
-		if ($this->loginHandeler->isSameUser(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()))) {
+		if ($this->loginHandeler->isAdmin($project)) {
 			$collaboratorsSrc = $this->navigationView->getCollaboratorsSrc($project->getProjectID(), $cleanProjectName);
 
 			$html .= "<a href='$collaboratorsSrc' class='btn btn-setting right'>Collaborators</a>";
@@ -83,7 +83,7 @@ class Project {
 					</form>";
 		}
 
-		else if ($project->isCollaborator($this->collaborators)) {
+		else if ($this->loginHandeler->isCollaborator($this->collaborators, $this->project)) {
 			$newPostSrc = $this->navigationView->getNewPostSrc($project->getProjectID(), $cleanProjectName);
 
 			$html .= "<a class='btn btn-setting right' href='$newPostSrc'>

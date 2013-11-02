@@ -41,7 +41,7 @@ class DeleteCollaborator {
 
 	public function deleteCollaborator() {
 		$this->collaboratorHandeler->deleteCollaborator($this->collaborator);
-		$this->navigationView->goToProject($this->project->getProjectID(),
+		$this->navigationView->gotoCollaborators($this->project->getProjectID(),
 											\common\view\Filter::getCleanUrl($this->project->getName()));
 	}
 }

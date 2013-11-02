@@ -120,7 +120,7 @@ class Application {
 				$project = $this->projectHandeler->getProject(+$projectID);
 				$collaborators = $this->collaboratorHandeler->getCollaborators($project);
 
-				if ($project->isPrivate() && !$project->isCollaborator($collaborators)) {	
+				if ($project->isPrivate() && !$this->loginHandeler->isCollaborator($collaborators, $project)) {	
 					$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
 				}
 
@@ -239,7 +239,7 @@ class Application {
 				$project = $this->projectHandeler->getProject(+$projectID);
 				$collaborators = $this->collaboratorHandeler->getCollaborators($project);
 
-				if ($project->isPrivate() && !$project->isCollaborator($collaborators)) {
+				if ($project->isPrivate() && !$this->loginHandeler->isCollaborator($collaborators, $project)) {
 					$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
 				}
 
@@ -277,7 +277,7 @@ class Application {
 				$project = $this->projectHandeler->getProject(+$projectID);
 				$collaborators = $this->collaboratorHandeler->getCollaborators($project);
 
-				if (!$project->isCollaborator($collaborators)) {
+				if (!$this->loginHandeler->isCollaborator($collaborators, $project)) {
 					$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
 				}
 
@@ -306,7 +306,7 @@ class Application {
 				$project = $this->projectHandeler->getProject(+$projectID);
 				$collaborators = $this->collaboratorHandeler->getCollaborators($project);
 
-				if (!$project->isCollaborator($collaborators)) {
+				if (!$this->loginHandeler->isCollaborator($collaborators, $project)) {
 					$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
 				}
 
@@ -475,7 +475,9 @@ class Application {
 				$post = $this->postHandeler->getPost(+$postID);
 				$comment = $this->commentHandeler->getComment(+$commentID);
 
-				$this->isAuthorized(new \user\model\SimpleUser($comment->getUserID(), $comment->getUsername()));
+				if (!$this->loginHandeler->isAdmin($project)) {
+					$this->isAuthorized(new \user\model\SimpleUser($comment->getUserID(), $comment->getUsername()));
+				}
 
 				$deleteCommentController = new \comment\controller\DeleteComment($comment, 
 																				 $this->commentHandeler,

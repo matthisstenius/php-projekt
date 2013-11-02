@@ -42,7 +42,7 @@ class CollaboratorHandeler {
 	 * @param  Collaborator   $collaborator
 	 * @return void
 	 */
-	public function deleteCollaboratorController(Collaborator $collaborator) {
+	public function deleteCollaborator(Collaborator $collaborator) {
 		$this->collaboratorDAL->deleteCollaborator($collaborator);
 	}
 }

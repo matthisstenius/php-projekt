@@ -138,14 +138,4 @@ class Project {
 	public function setProjectID($projectID) {
 		$this->projectID = $projectID;
 	}
-
-	public function isCollaborator($collaborators) {
-		foreach ($collaborators as $collaborator) {
-			if ($collaborator->getProjectID() == $this->getProjectID()) {
-				return true;
-			}
-		}
-
-		return false;
-	}
 }
