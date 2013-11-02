@@ -44,7 +44,11 @@ class Project {
 		$project = $this->project;
 		$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());
 
-		$html = "<header class='project-header'>";
+		$backToProjects = $this->navigationView->getProjectsSrc();
+		
+		$html = "<a class='btn btn-setting' href='$backToProjects'>Back To Projects</a>";
+
+		$html .= "<header class='project-header'>";
 
 		if ($project->isPrivate()) {
 			$lockIcon = "<span title='Private Project' class='private icon-locked'></span>";
@@ -84,7 +88,7 @@ class Project {
 						<span class='icon-plus'></span>Add new post</a>";
 		}
 		$html .= "</div>";
-		
+
 		$html .= "<div class='title-area'>";
 		$html .= "<h1 class='title'>$lockIcon" . $project->getName() . "</h1>";
 		$html .= "<span class='created'>Created by: " . $project->getUsername() . " " . 

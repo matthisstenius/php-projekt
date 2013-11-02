@@ -54,7 +54,13 @@ class Collaborators {
 	 * @return string HTML
 	 */
 	public function getCollaborators() {
-		$html = "<div class='centered'>";
+		$cleanProjectName = \common\view\Filter::getCleanUrl($this->project->getName());
+
+		$backToProject = $this->navigationView->getProjectSrc($this->project->getProjectID(), $cleanProjectName);
+		
+		$html = "<a class='btn btn-setting' href='$backToProject'>Back To Project</a>";
+
+		$html .= "<div class='centered'>";
 		$html .= "<h1>Collaborators</h1>";
 		$html .= "<div class='box pad'>";
 		$html .= $this->getNewCollaboratorForm();

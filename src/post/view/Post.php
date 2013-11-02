@@ -65,7 +65,7 @@ class Post {
 
 		$backToProject = $this->navigationView->getProjectSrc($this->project->getProjectID(), $cleanProjectName);
 		
-		$html .= "<a href='$backToProject'>Back to project</a>";
+		$html .= "<a class='btn btn-setting' href='$backToProject'>Back To Project</a>";
 
 		$html .= "<header class='post-header'>";
 
