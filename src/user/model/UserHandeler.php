@@ -23,7 +23,13 @@ class UserHandeler {
 		$users = array();
 
 		foreach ($rows as $row) {
-			$users[] = new User(+$row['userID'], $row['username'], $row['password'], $row['token'], +$row['tokenExpireDate']);
+			try {
+				$users[] = new User(+$row['userID'], $row['username'], $row['password'], $row['token'], +$row['tokenExpireDate']);
+			}
+
+			catch (\Exception $e) {
+
+			}
 		}
 
 		return $users;
@@ -35,7 +41,13 @@ class UserHandeler {
 	public function getUser(User $user) {
 		$row = $this->userDAL->getUser($user);
 
-		return new User(+$row['userID'], $row['username'], $row['password'], $row['token'], +$row['tokenExpireDate']);
+		try {
+			return new User(+$row['userID'], $row['username'], $row['password'], $row['token'], +$row['tokenExpireDate']);
+		}
+
+		catch (\Exception $e) {
+			
+		}
 	}
 
 	/**

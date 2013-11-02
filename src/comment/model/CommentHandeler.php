@@ -21,8 +21,13 @@ class CommentHandeler {
 	public function getComment($commentID) {
 		$row = $this->commentDAL->getComment($commentID);
 
-		$comment = new Comment(+$row['commentID'], $row['comment'], +$row['postID'], $row['added'], +$row['userID'], $row['username']);
+		try {
+			$comment = new Comment(+$row['commentID'], $row['comment'], +$row['postID'], $row['added'], +$row['userID'], $row['username']);
+		}
 		
+		catch (\Exception $e) {
+
+		}
 
 		return $comment;
 	}
@@ -35,7 +40,14 @@ class CommentHandeler {
 		$comments = array();
 
 		foreach ($rows as $row) {
-			$comments[] = new Comment(+$row['commentID'], $row['comment'], +$row['postID'], $row['added'], +$row['userID'], $row['username']);
+			try {
+				$comments[] = new Comment(+$row['commentID'], $row['comment'], +$row['postID'], $row['added'], 
+											+$row['userID'], $row['username']);
+			}
+
+			catch (\Exception $e) {
+
+			}
 		}
 
 		return $comments;

@@ -23,8 +23,14 @@ class ProjectHandeler {
 		$projects = array();
 
 		foreach ($this->projectDAL->getProjects($user) as $row) {
-			$projects[] = new Project(+$row['idProject'], $row['name'], $row['description'], 
-										Date($row['created']), $row['username'], +$row['userID'], (bool)$row['private']);
+			try {
+				$projects[] = new Project(+$row['idProject'], $row['name'], $row['description'], 
+										Date($row['created']), $row['username'], +$row['userID'], (bool)$row['private']);	
+			}
+
+			catch (\Exception $e) {
+
+			}
 		}
 		
 		return $projects;
@@ -36,12 +42,16 @@ class ProjectHandeler {
 	 * @throws Exception If no post is found
 	 */
 	public function getProject($id) {
-		if ($row = $this->projectDAL->getProject($id)) {
+		$row = $this->projectDAL->getProject($id);
+
+		try {
 			return new Project(+$row['idProject'], $row['name'], $row['description'], 
 								Date($row['created']), $row['username'], +$row['userID'], (bool)$row['private']);
 		}
-		
-		throw new \Exception("No project found");
+
+		catch (\Exception $e) {
+
+		}
 	}
 
 	/**

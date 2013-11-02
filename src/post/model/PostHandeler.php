@@ -22,8 +22,14 @@ class PostHandeler {
 		$posts = array();
 
 		foreach ($this->postDAL->getPosts($project) as $row) {
-			$posts[] = new Post(+$row['idPost'], $row['title'], $row['content'], +$row['userID'], $row['username'], Date($row['added']),
-								+$row['projectID']);
+			try {
+				$posts[] = new Post(+$row['idPost'], $row['title'], $row['content'], +$row['userID'], $row['username'], Date($row['added']),
+									+$row['projectID']);
+			}
+
+			catch (\Exception $e) {
+
+			}
 		}
 
 		return $posts;
@@ -35,12 +41,16 @@ class PostHandeler {
 	 * @throws Exception If no post is found
 	 */
 	public function getPost($postID) {
-		if ($row = $this->postDAL->getPost($postID)) {
+		$row = $this->postDAL->getPost($postID);
+
+		try {
 			return new Post(+$row['idPost'], $row['title'], $row['content'], +$row['userID'], $row['username'], Date($row['added']),
 							+$row['projectID']);
 		}
-		
-		throw new \Exception("No post found");			
+
+		catch (\Exception $e) {
+
+		}
 	}
 
 	/**

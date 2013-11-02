@@ -24,7 +24,13 @@ class CollaboratorHandeler {
 		$collaborators = array();
 
 		foreach ($rows as $row) {
-			$collaborators[] = new Collaborator(+$row['idCollaborator'], +$row['userID'], +$row['projectID'], $row['username']);
+			try {
+				$collaborators[] = new Collaborator(+$row['idCollaborator'], +$row['userID'], +$row['projectID'], $row['username']);
+			}
+
+			catch (\Exception $e) {
+				
+			}
 		}
 
 		return $collaborators;
