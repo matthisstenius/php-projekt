@@ -23,3 +23,6 @@ Poster is an application that makes it easy to create projectblogs.
 
 If you are using Grunt you can run `` grunt build `` to get a nice build folder with minimized, concatinated css, optimized images and sass compile
 
+## Till Daniel/Emil 
+
+Testdata finns i projektet "Demo projekt". Logga in med användarnamn: admin Lösenord: password
