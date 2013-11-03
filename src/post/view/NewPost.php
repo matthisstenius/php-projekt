@@ -145,15 +145,23 @@ class NewPost {
 		$errorMessage = "";
 
 		if ($this->getPostTitle() == "") {
-			$errorMessage .= "<p>Enter a post name</p>";
+			$errorMessage .= "<p>Enter a post name.</p>";
+		}
+
+		if (strlen($this->getPostTitle()) > 45) {
+			$errorMessage .= "<p>Post title to long. Max 45 charachters allowed.</p>";
 		}
 
 		if (preg_match('/[^\wåäöÅÄÖ\s()?!]+/', $this->getPostTitle())) {
 			$errorMessage .= "<p>Invalid charachters in post title. Only alphanumeric charachters and ()?! allowed.</p>";
 		}
 
+		if (strlen($this->getPostContent()) > 2000) {
+			$errorMessage .= "<p>Post content to long. Max 2000 charachters allowed.</p>";
+		}
+
 		if ($this->getPostContent() == "") {
-			$errorMessage .= "<p>Enter some content for your post</p>";
+			$errorMessage .= "<p>Enter some content for your post.</p>";
 		}
 
 		$_SESSION[self::$userInputFaultyMessage] = $errorMessage;

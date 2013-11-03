@@ -146,7 +146,11 @@ class NewProject {
 		$errorMessage = "";
 
 		if ($this->getProjectName() == "") {
-			$errorMessage .= "<p>Enter a project name</p>";
+			$errorMessage .= "<p>Enter a project name.</p>";
+		}
+
+		if (strlen($this->getProjectName()) > 45) {
+			$errorMessage .= "<p>Project name is to long. Max 45 charachters allowed.</p>";
 		}
 
 		if (preg_match('/[^\wåäöÅÄÖ\s()?!]+/', $this->getProjectName())) {
@@ -154,7 +158,11 @@ class NewProject {
 		}
 
 		if ($this->getProjectDescription() == "") {
-			$errorMessage .= "<p>Enter a description</p>";
+			$errorMessage .= "<p>Enter a description.</p>";
+		}
+
+		if (strlen($this->getProjectDescription()) > 500) {
+			$errorMessage .= "<p>Project decoration is to long. Max 500 charachters allowed.</p>";
 		}
 
 		$_SESSION[self::$inputFaultyMessage] = $errorMessage;

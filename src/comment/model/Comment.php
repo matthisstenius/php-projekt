@@ -46,7 +46,7 @@ class Comment {
 			throw new \Exception("Invalid commentID");
 		}
 
-		if (!is_string($comment) || $comment == "") {
+		if (!is_string($comment) || $comment == "" || strlen($comment) > 500) {
 			throw new \Exception("Invalid comment");
 		}
 

@@ -53,11 +53,11 @@ class Post {
 			throw new \Exception("invalid postID");
 		}
 
-		if (!is_string($title) || $title == "" || preg_match('/[^\wåäöÅÄÖ\s()?!]+/', $title)) {
+		if (!is_string($title) || $title == "" || preg_match('/[^\wåäöÅÄÖ\s()?!]+/', $title) || strlen($title) > 45) {
 			throw new \Exception("invalid title");
 		}
 
-		if (!is_string($content) || $content == "") {
+		if (!is_string($content) || $content == "" || strlen($content) > 2000) {
 			throw new \Exception("invalid content");
 		}
 

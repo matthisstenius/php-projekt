@@ -126,6 +126,16 @@ class NewComment {
 	}
 
 	private function inputFaulty() {
-		$_SESSION[self::$inputFaultyMessage] = "<p>Enter a comment</p>";
+		$errorMessage = "";
+
+		if ($this->getComment() == "") {
+			$errorMessage .= "<p>Enter a comment</p>";
+		}
+
+		if (strlen($this->getComment()) > 500) {
+			$errorMessage .= "<p>Comment to long. Max 500 characters allowed.</p>";
+		}
+
+		$_SESSION[self::$inputFaultyMessage] = $errorMessage;
 	}
 }

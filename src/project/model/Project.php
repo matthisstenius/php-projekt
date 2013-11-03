@@ -53,11 +53,11 @@ class Project {
 			throw new \Exception("invalid projectID");
 		}
 
-		if (!is_string($name) || $name == "" || preg_match('/[^\wåäöÅÄÖ\s()?!]+/', $name)) {
+		if (!is_string($name) || $name == "" || preg_match('/[^\wåäöÅÄÖ\s()?!]+/', $name) || strlen($name) > 45) {
 			throw new \Exception("invalid name");
 		}
 
-		if (!is_string($description) || $description == "") {
+		if (!is_string($description) || $description == "" || strlen($description) > 500) {
 			throw new \Exception("invalid description");
 		}
 

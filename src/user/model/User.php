@@ -40,12 +40,12 @@ class User {
 			throw new \Exception("Invalid userID");
 		}
 
-		if (!is_string($username) || $username == "") {
+		if (!is_string($username) || $username == "" || strlen($username) > 20) {
 			throw new \Exception("Invalid username");
 			
 		}
 
-		if (!is_string($password) || $password == "") {
+		if (!is_string($password) || $password == "" || strlen($password) > 45) {
 			throw new \Exception("Invalid password");
 		}
 

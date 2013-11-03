@@ -57,7 +57,7 @@ class EditPost {
 															$cleanTitle);
 
 		$backToPostSrc = $this->navigationView->getPostLink($this->project->getProjectID(), 
-															$this->project->getName(),
+															$cleanProjectName,
 															$this->post->getPostID(),
 															$cleanTitle);
 
@@ -150,8 +150,16 @@ class EditPost {
 			$errorMessage .= "<p>Enter a post name</p>";
 		}
 
+		if (strlen($this->getPostTitle()) > 45) {
+			$errorMessage .= "<p>Post title to long. Max 45 charachters allowed.</p>";
+		}
+
 		if (preg_match('/[^\wåäöÅÄÖ]+/', $this->getPostTitle())) {
 			$errorMessage .= "<p>Invalid charachters in post title. Only alphanumeric charachters allowed.</p>";
+		}
+		
+		if (strlen($this->getContent()) > 2000) {
+			$errorMessage .= "<p>Post title to long. Max 2000 charachters allowed.</p>";
 		}
 		
 		if ($this->getPostContent() == "") {

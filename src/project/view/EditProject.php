@@ -47,7 +47,7 @@ class EditProject {
 		$html = "<h1 class='new-title'>Edit " . $this->project->getName() . "</h1>";
 
 		if (isset($_SESSION[self::$errorMessage])) {
-			$html .= $this->userInputFaulty();
+			$html .= $_SESSION[self::$errorMessage];
 			unset($_SESSION[self::$errorMessage]);
 		}
 
@@ -137,23 +137,20 @@ class EditProject {
 		}
 
 		catch (\Exception $e) {
-			$this->setErrorMessageSession();
+			$this->userInputFaulty();
 			$this->navigationView->goToEditProject($this->project->getProjectID(), $this->project->getName());
 		}
 	}
 
-	private function setErrorMessageSession() {
-		$_SESSION[self::$errorMessage] = true;
-	}
-
-	/**
-	 * @return string HTML
-	 */
 	private function userInputFaulty() {
 		$errorMessage = "";
 
 		if ($this->getProjectName() == "") {
 			$errorMessage .= "<p>Enter a Project name</p>";
+		}
+
+		if (strlen($this->getProjectName()) > 45) {
+			$errorMessage .= "<p>Project name is to long. Max 45 charachters allowed.</p>";
 		}
 
 		if (preg_match('/[^\wåäöÅÄÖ]+/', $this->getProjectName())) {
@@ -164,6 +161,10 @@ class EditProject {
 			$errorMessage .= "<p>Enter a valid description</p>";
 		}
 
-		return $errorMessage;
+		if (strlen($this->getProjectDescription()) > 500) {
+			$errorMessage .= "<p>Project decoration is to long. Max 500 charachters allowed.</p>";
+		}
+
+		$_SESSION[self::$errorMessage] = $errorMessage;
 	}
 }
