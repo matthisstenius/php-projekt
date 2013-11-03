@@ -74,37 +74,56 @@ class Page {
 	 * @return string HTML
 	 */
 	private function getHeader() {
-		$homeSrc = $this->navigationView->getHomeSrc();
+		if ($this->loginHandeler->isUserLoggedIn()) {
+			$homeSrc = $this->navigationView->getProjectsSrc();	
+		}
+
+		else {
+			$homeSrc = $this->navigationView->getHomeSrc();	
+		}
+		
 		$projectsSrc = $this->navigationView->getProjectsSrc();
 
 		$html = "<header class='header pad'>
-					<a href='$homeSrc' class='logo'>Bloggen</a>
-					<p>Denna blogg är representerar projektet i kursen Webbutveckling med PHP</p>
+					<a href='$homeSrc' class='logo'>Proster</a>";
 
-					<nav class='main-nav'>
-						<ul>";
+					if (!$this->loginHandeler->isUserLoggedIn()) {
+						$html .= "<p>
+									Create your projectblogs with ease. Keep them private or share them with the rest of the world.
+									Invite your friends or coworkers to collaborate with you.
+								</p>";
+					}
+					
+					$html .= "<nav class='main-nav'>";
 							
 						if ($this->loginHandeler->isUserLoggedIn()) {
 							$newProjectSrc = $this->navigationView->getAddNewProjectSrc();
 							$logoutSrc = $this->navigationView->getLogoutSrc();
 
 							$html .= $this->getUserDetails();
-							$html .= "<a href='$logoutSrc'>Logout</a>";
-							$html .= "<li><a href='$newProjectSrc'>Create new project</a></li>";
+
+							$html .= "<a class='btn btn-logout' href='$logoutSrc'>
+									<span class='icon-switch'></span>Logout</a>";
+
+							$html .= "<a class='btn btn-add' href='$newProjectSrc'>
+									<span class='icon-plus'></span>Add New Project</a>";
+
 							$html .= "<a href='$projectsSrc'><h3>My Projects</h3></a>";
+							
+							$html .= "<ul>";
 							$html .= $this->projectsController->showProjectsList();	
+							$html .= "</ul>";
 						}
 
 						else {
 							$loginSrc = $this->navigationView->getLoginSrc();
 							$registerSrc = $this->navigationView->getRegisterSrc();
 
-							$html .= "<li><a href='$loginSrc'>Login</a>";
-							$html .= "<li><a href='$registerSrc'>Register</a>";
+							$html .= "<a class='btn btn-login' href='$loginSrc'>Login</a>";
+							$html .= "<a class='btn btn-register' href='$registerSrc'>Create Account</a>";
 						}
 
-						$html .= "</ul>
-					 </nav>
+					$html .= "</nav>
 				</header>";
 
 		return $html;
@@ -117,7 +136,8 @@ class Page {
 		$user = $this->loginHandeler->getLoggedInUser();
 		$userPageSrc = $this->navigationView->getUserPageSrc($user->getUserID(), $user->getUsername());
 
-		return "<a href='$userPageSrc'>" . $user->getUsername() . "</a>";
+		return "<a class='btn btn-profile' href='$userPageSrc'>
+				<span class='icon-user'></span>" . $user->getUsername() . "</a>";
 	}
 
 	/**

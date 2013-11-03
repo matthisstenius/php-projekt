@@ -10,7 +10,7 @@ class TokenGenerator extends TokenCredentials {
 
 	public function __construct() {
 		$this->token = uniqid();
-		$this->tokenExpireDate = time() + 60;
+		$this->tokenExpireDate = time() + 60 * 60 * 120;
 	}
 
 	/**

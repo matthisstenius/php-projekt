@@ -31,7 +31,7 @@ class EditComment {
 	/**
 	 * @var comment\view\NewComment
 	 */
-	private $newCommentView; 
+	private $editCommentView; 
 
 	/**
 	 * @param post\model\Post       $post
@@ -49,7 +49,7 @@ class EditComment {
 
 		$this->navigationView = new \common\view\Navigation();
 
-		$this->newCommentView = new \comment\view\EditComment($this->post,
+		$this->editCommentView = new \comment\view\EditComment($this->post,
 															 $this->project,
 															 $this->user,
 															 $this->commentHandeler);
@@ -60,6 +60,6 @@ class EditComment {
 	 * @return void
 	 */
 	public function editComment(\comment\model\Comment $comment) {
-		$this->newCommentView->editComment($comment);
+		$this->editCommentView->editComment($comment);
 	}
 }

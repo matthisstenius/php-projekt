@@ -97,13 +97,14 @@
 		bottom: 0;
 		width: 100%;
 		text-align: center;
-		color: white;
+		color: $darkGrey;
 		border-radius: 0 0 3px 3px;
 		padding: 10px 0;
-		background-color: $salmon;
+		@include linear-gradient(#FEFEFE, #F5F5F5);
+		border-top: 1px solid #ccc;
 
 		&:hover {
-			background-color: $red;
+			color: $salmon;
 		}
 	}
 	
@@ -132,11 +133,11 @@
 		background-color: $green;
 	}
 
-	.btn-edit {
+	.btn-edit, .btn-profile {
 		background-color: $blue;
 	}
 
-	.btn-remove {
+	.btn-remove, .btn-logout, .btn-register {
 		background-color: $red;
 	}
 
@@ -184,7 +185,10 @@
 		margin-bottom: 5px;
 		margin-top: 20px;
 	}
-
+	
+	.new-title {
+		margin-top: 0;
+	}
 /*
 ----------------------------------------
  * Forms
@@ -225,6 +229,10 @@
 			width: initial;
 		}
 	}
+
+	.make-project-private {
+		display: inline !important;
+	}
 /*
 ----------------------------------------
  * Header
@@ -241,6 +249,20 @@
 			color: $darkGrey;
 			text-shadow: none;
 		}	
+		
+		.logo {
+			margin-bottom: 20px;
+			display: block;
+		}
+
+		.btn {
+			margin: 10px 0;
+			display: block;
+		}
+		
+		.btn-add {
+			margin-top: 20px;
+		}
 
 		p {
 			color: #999;
@@ -254,6 +276,30 @@
 
 	.projects-list li {
 		margin: 5px 0;
+	}
+
+/*
+----------------------------------------
+ * Home
+----------------------------------------
+*/
+	.recent-projects {
+		ul {
+			margin: 0;
+		}
+
+		li {
+			border-bottom: 1px solid #ddd;
+			padding: 10px 5px;
+
+			&:last-of-type {
+				border-bottom: none;
+			}
+		}
+
+		span {
+			float: right;
+		}
 	}
 
 /*

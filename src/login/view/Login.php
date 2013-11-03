@@ -64,11 +64,10 @@ class Login {
 					<div class='pure-group'>
 						<input type='text' name='" . self::$username . "' placeholder='Username' value='$username'>
 						<input type='password' name='" . self::$password . "' placeholder='Password'>
-
-						<button class='btn btn-wide btn-login'>Log In</button>
-
+						
 						<label for='remember'>Remember Me</label>
 						<input id='" . self::$remember . "' type='checkbox' name='" . self::$remember . "'>
+						<button class='btn btn-wide btn-login'>Log In</button>
 					</div>
 				</form>";
 		$html .= "</div>";

@@ -28,7 +28,7 @@ class UserHandeler {
 			}
 
 			catch (\Exception $e) {
-
+				throw $e;
 			}
 		}
 
@@ -46,7 +46,7 @@ class UserHandeler {
 		}
 
 		catch (\Exception $e) {
-			
+			throw $e;
 		}
 	}
 

@@ -44,9 +44,13 @@ class Project {
 		$project = $this->project;
 		$cleanProjectName = \common\view\Filter::getCleanUrl($project->getName());
 
-		$backToProjects = $this->navigationView->getProjectsSrc();
+		$html = "";
+
+		if ($this->loginHandeler->isUserLoggedIn()) {
+			$backToProjects = $this->navigationView->getProjectsSrc();
 		
-		$html = "<a class='btn btn-setting' href='$backToProjects'>Back To Projects</a>";
+			$html .= "<a class='btn btn-setting' href='$backToProjects'>Back To Projects</a>";			
+		}
 
 		$html .= "<header class='project-header'>";
 
@@ -63,7 +67,8 @@ class Project {
 		if ($this->loginHandeler->isAdmin($project)) {
 			$collaboratorsSrc = $this->navigationView->getCollaboratorsSrc($project->getProjectID(), $cleanProjectName);
 
-			$html .= "<a href='$collaboratorsSrc' class='btn btn-setting right'>Collaborators</a>";
+			$html .= "<a href='$collaboratorsSrc' class='btn btn-setting right'>
+					<span class='icon-users'></span>Collaborators</a>";
 
 			$newPostSrc = $this->navigationView->getNewPostSrc($project->getProjectID(), $cleanProjectName);
 
@@ -132,7 +137,7 @@ class Project {
 		}
 
 		if (count($this->posts) == 0) {
-			$html .= "<p class='nothing-found'>No posts in this project</p>";
+			$html .= "<p class='nothing-found'>This project has no posts</p>";
 		}
 
 		$html .= "</div>";

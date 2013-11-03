@@ -4,6 +4,7 @@ namespace application\controller;
 
 require_once("src/common/view/Router.php");
 require_once("src/common/view/Navigation.php");
+require_once("src/application/controller/FrontPage.php");
 require_once("src/project/model/ProjectHandeler.php");
 require_once("src/post/model/PostHandeler.php");
 require_once("src/comment/model/CommentHandeler.php");
@@ -32,6 +33,7 @@ require_once("src/collaborator/controller/Collaborators.php");
 require_once("src/collaborator/controller/DeleteCollaborator.php");
 require_once("src/collaborator/model/SimpleCollaborator.php");
 
+
 class Application {
 	/**
 	 * @var \common\view\Router
@@ -57,6 +59,31 @@ class Application {
 	 * @var user\model\UserHandeler
 	 */
 	private $userHandeler;
+
+	/**
+	 * @var comment\model\CommentHandeler
+	 */
+	private $commentHandeler;
+
+	/**
+	 * @var login\model\Login
+	 */
+	private $loginHandeler;
+
+	/**
+	 * @var collaborator\model\CollaboratorHandleler
+	 */
+	private $collaboratorHandeler;
+
+	/**
+	 * @var user\model\User
+	 */
+	private $user;
+
+	/**
+	 * @var login\controller\Login
+	 */
+	private $loginController;
 
 	/**
 	 * @var project\controller\Projects
@@ -224,10 +251,17 @@ class Application {
 			try {
 				$project = $this->projectHandeler->getProject(+$projectID);
 
-				$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
+				if ($project != null) {
+					$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
 
-				$deleteProjectController = new \project\controller\DeleteProject($this->projectHandeler, $project);
-				$deleteProjectController->deleteProject();
+					$deleteProjectController = new \project\controller\DeleteProject($this->projectHandeler, $project);
+					$deleteProjectController->deleteProject();
+				}
+
+				else {
+					$this->navigationView->gotoProjects();
+				}
+				
 			}
 
 			catch (\Exception $e) {
@@ -389,11 +423,17 @@ class Application {
 				$project = $this->projectHandeler->getProject(+$projectID);
 				$post = $this->postHandeler->getPost(+$postID);
 
-				$this->isAuthorized(new \user\model\SimpleUser($post->getUserID(), $post->getUsername()));
+				if ($post != null) {
+					$this->isAuthorized(new \user\model\SimpleUser($post->getUserID(), $post->getUsername()));
 
-				$deletePostController = new \post\controller\DeletePost($this->postHandeler, $post, $project);
+					$deletePostController = new \post\controller\DeletePost($this->postHandeler, $post, $project);
 
-				$deletePostController->deletePost();
+					$deletePostController->deletePost();
+				}
+
+				else {
+					$this->navigationView->gotoErrorPage();
+				}
 			}
 
 			catch (\Exception $e) {
@@ -482,16 +522,22 @@ class Application {
 				$post = $this->postHandeler->getPost(+$postID);
 				$comment = $this->commentHandeler->getComment(+$commentID);
 
-				if (!$this->loginHandeler->isAdmin($project)) {
-					$this->isAuthorized(new \user\model\SimpleUser($comment->getUserID(), $comment->getUsername()));
+				if ($comment != null) {
+					if (!$this->loginHandeler->isAdmin($project)) {
+						$this->isAuthorized(new \user\model\SimpleUser($comment->getUserID(), $comment->getUsername()));
+					}
+
+					$deleteCommentController = new \comment\controller\DeleteComment($comment, 
+																				 	$this->commentHandeler,
+																				 	$project,
+																				 	$post);
+
+					$deleteCommentController->deleteComment();
 				}
 
-				$deleteCommentController = new \comment\controller\DeleteComment($comment, 
-																				 $this->commentHandeler,
-																				 $project,
-																				 $post);
-
-				$deleteCommentController->deleteComment();
+				else {
+					$this->navigationView->gotoErrorPage();
+				}
 			}
 
 			catch (\Exception $e) {
@@ -553,10 +599,18 @@ class Application {
 
 			$this->isAuthorized(new \user\model\SimpleUser($project->getUserID(), $project->getUsername()));
 
-			$deleteCollaboratorController = new \collaborator\controller\DeleteCollaborator($collaborator,
+			if ($collaborator != null) {
+
+
+				$deleteCollaboratorController = new \collaborator\controller\DeleteCollaborator($collaborator,
 																							$this->collaboratorHandeler,
 																							$project);
-			$deleteCollaboratorController->DeleteCollaborator();
+				$deleteCollaboratorController->DeleteCollaborator();
+			}
+
+			else {
+				$this->navigationView->gotoErrorPage();
+			}
 		});
 	}
 
@@ -623,7 +677,18 @@ class Application {
 	 	* GET FrontPage
 	 	*/
 		$this->router->get('/', function() {
-			echo $this->page->getPage("Hello Blog!", "<h1>Hello world</h1>");
+			try {
+				$projects = $this->projectHandeler->getPublicProjects(30);
+
+				$frontPageController = new \application\controller\FrontPage($projects);
+
+				echo $this->page->getPage("Hello Blog!", $frontPageController->showPublicProjects());	
+			}
+
+			catch (\Exception $e) {
+				var_dump($e->getMessage());
+			}
+			
 		});
 
 		/**

@@ -29,7 +29,7 @@ class CollaboratorHandeler {
 			}
 
 			catch (\Exception $e) {
-				
+				throw $e;
 			}
 		}
 

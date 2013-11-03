@@ -88,6 +88,11 @@ class Collaborators {
 		}
 
 		$html .= "</ul>";
+
+		if (count($this->collaborators) == 0) {
+			$html .= "<p>This project has no collaborators</p>";
+		}
+
 		$html .= "</div>";
 		$html .= "</div>";
 		return $html;
@@ -119,9 +124,9 @@ class Collaborators {
 				if ($user->getUsername() == $collaborator) {
 					return $user;
 				}
-
-				return new \user\model\NullUser();
 			}
+
+			return new \user\model\NullUser();
 		}
 	}
 

@@ -29,11 +29,32 @@ class ProjectHandeler {
 			}
 
 			catch (\Exception $e) {
-				
+				throw $e;
 			}
 		}
 		
 		return $projects;
+	}
+
+	/**
+	 * @param  int $limit
+	 * @return array        array of project\model\Project
+	 */
+	public function getPublicProjects($limit) {
+		$publicProjects = array();
+
+		foreach ($this->projectDAL->getPublicProjects($limit) as $row) {
+			try {
+				$publicProjects[] = new Project(+$row['idProject'], $row['name'], $row['description'], 
+										Date($row['created']), $row['username'], +$row['userID'], (bool)$row['private']);
+			}
+
+			catch (\Exception $e) {
+				throw $e;
+			}
+		}
+		
+		return $publicProjects;
 	}
 
 	/**
@@ -50,7 +71,7 @@ class ProjectHandeler {
 		}
 
 		catch (\Exception $e) {
-
+			throw $e;
 		}
 	}
 

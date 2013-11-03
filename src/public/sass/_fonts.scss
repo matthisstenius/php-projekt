@@ -20,7 +20,7 @@ $body:  ProximaNovaSoft-Regular, sans-serif;
 	font-variant: normal;
 	text-transform: none;
 	line-height: 1;
-	padding-right: 5px; 
+	padding-right: 5px;
 
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
@@ -44,6 +44,9 @@ $body:  ProximaNovaSoft-Regular, sans-serif;
 }
 .icon-switch:before {
 	content: "\e605";
+}
+.icon-users:before {
+	content: "\e609";
 }
 .icon-locked:before {
 	content: "\e606";

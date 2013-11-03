@@ -31,12 +31,11 @@ class EditProject {
 	 * @param common\view\Navigation $navigationView
 	 */
 	public function __construct(\project\model\ProjectHandeler $projectHandeler, 
-								\project\model\Project $project,
-								\common\view\Navigation $navigationView) {
+								\project\model\Project $project) {
 
 		$this->projectHandeler = $projectHandeler;
 		$this->project = $project;
-		$this->navigationView = $navigationView;
+		$this->navigationView = new \common\view\Navigation();
 	}
 
 	/**
@@ -45,7 +44,7 @@ class EditProject {
 	public function getEditProjectForm() {
 		$cleanUrl = \common\view\Filter::getCleanUrl($this->project->getName());
 
-		$html = "<h1>Edit " . $this->project->getName() . "</h1>";
+		$html = "<h1 class='new-title'>Edit " . $this->project->getName() . "</h1>";
 
 		if (isset($_SESSION[self::$errorMessage])) {
 			$html .= $this->userInputFaulty();
@@ -56,7 +55,7 @@ class EditProject {
 																	$cleanUrl);
 
 		$backToProjectSrc = $this->navigationView->getProjectSrc($this->project->getProjectID(), 
-																 $this->project->getName());
+																 $cleanUrl);
 		
 		$html .= "<form class='pure-form pure-form-stacked' action='$editProjectSrc' method='POST'>
 					<input type='hidden' name='_method' value='put'>
@@ -66,18 +65,20 @@ class EditProject {
 					<textarea class='input-wide input-content' 
 					name='". self::$projectDescription . "'>" . $this->project->getDescription() . "</textarea>
 					
-					<label for='" . self::$makePrivate . "'>Make this project private</label>";
+					<label class='make-project-private' for='" . self::$makePrivate . "'>Make this project private</label>";
 
 					if ($this->project->isPrivate()) {
-						$html .= "<input id='" . self::$makePrivate . "' type='checkbox' checked name='" . self::$makePrivate . "'>";
+						$html .= "<input class='make-project-private' id='" . self::$makePrivate . "' 
+								type='checkbox' checked name='" . self::$makePrivate . "'>";
 					}
 					
 					else {
-						$html .= "<input id='" . self::$makePrivate . "' type='checkbox' name='" . self::$makePrivate . "'>";
+						$html .= "<input class='make-project-private' id='" . self::$makePrivate . "' 
+								type='checkbox' name='" . self::$makePrivate . "'>";
 					}
 
-					$html .= "<button class='btn btn-add'>Save Project</button>
-					<a href='$backToProjectSrc' class='btn btn-remove'>Cancel</a>
+					$html .= "<p><button class='btn btn-add'>Save Project</button>
+					<a href='$backToProjectSrc' class='btn btn-remove'>Cancel</a></p>
 				</form>";
 
 		return $html;

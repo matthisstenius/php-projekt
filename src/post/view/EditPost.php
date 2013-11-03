@@ -35,14 +35,13 @@ class EditPost {
 	 */
 	public function __construct(\post\model\PostHandeler $postHandeler, 
 								\post\model\Post $post,
-								\common\view\Navigation $navigationView,
 								\project\model\Project $project) {
 		
 		$this->postHandeler = $postHandeler;
 		$this->post = $post;
 		$this->project = $project;
 
-		$this->navigationView = $navigationView;
+		$this->navigationView = new \common\view\Navigation();
 	}
 
 	/**
@@ -62,7 +61,7 @@ class EditPost {
 															$this->post->getPostID(),
 															$cleanTitle);
 
-		$html = "<h1>Edit ". $this->post->getTitle() .  "</h1>";
+		$html = "<h1 class='new-title'>Edit ". $this->post->getTitle() .  "</h1>";
 
 		if (isset($_SESSION[self::$errorMessage])) {
 			$html .= $this->userInputFaulty();

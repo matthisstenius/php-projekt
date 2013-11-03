@@ -21,11 +21,6 @@ class EditProject {
 	private $project;
 
 	/**
-	 * @var common\view\Navigation
-	 */
-	private $navigationView;
-
-	/**
 	 * @param project\model\ProjectHandeler $projectHandeler
 	 * @param project\model\Project $project
 	 */
@@ -33,10 +28,7 @@ class EditProject {
 		$this->projectHandeler = $projectHandeler;
 		$this->project = $project;
 
-		$this->navigationView = new \common\view\Navigation();
-
-		$this->editProjectView = new \project\view\EditProject($this->projectHandeler, $this->project,
-																$this->navigationView);		
+		$this->editProjectView = new \project\view\EditProject($this->projectHandeler, $this->project);		
 	}
 
 	/**

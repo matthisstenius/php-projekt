@@ -32,11 +32,8 @@ class EditPost {
 		$this->post = $post;
 		$this->project = $project;
 
-		$this->navigationView = new \common\view\Navigation();
-
 		$this->editPostView = new \post\view\EditPost($this->postHandeler, 
 														$this->post,
-														$this->navigationView,
 														$this->project);
 	}
 

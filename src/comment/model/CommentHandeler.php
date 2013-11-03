@@ -23,13 +23,12 @@ class CommentHandeler {
 
 		try {
 			$comment = new Comment(+$row['commentID'], $row['comment'], +$row['postID'], $row['added'], +$row['userID'], $row['username']);
+			return $comment;
 		}
 		
 		catch (\Exception $e) {
-
+			throw $e;
 		}
-
-		return $comment;
 	}
 
 	/**
@@ -46,7 +45,7 @@ class CommentHandeler {
 			}
 
 			catch (\Exception $e) {
-
+				throw $e;
 			}
 		}
 

@@ -31,6 +31,33 @@ class ProjectDAL extends \common\model\DALBase {
 	}
 
 	/**
+	 * @param int $limit
+	 * @return array
+	 */
+	public function getPublicProjects($limit) {
+		$result = array();
+
+		$stm = self::getDBConnection()->prepare("SELECT idProject, name, description, created, User.username, 
+												idUser_User AS userID, private FROM Project
+												INNER JOIN User ON User.idUser = idUser_User
+												WHERE private = 0
+												ORDER BY idProject
+												DESC LIMIT :amount");
+
+
+		$stm->bindParam(':amount', $limit, \PDO::PARAM_INT);
+
+		$stm->execute();
+
+		while ($row = $stm->fetch(\PDO::FETCH_ASSOC)) {
+			$result[] = $row;
+		}
+
+		return $result;
+	}
+
+
+	/**
 	 * @param  int $id
 	 * @return array 
 	 */

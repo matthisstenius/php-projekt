@@ -28,7 +28,7 @@ class PostHandeler {
 			}
 
 			catch (\Exception $e) {
-
+				throw $e;
 			}
 		}
 
@@ -49,7 +49,7 @@ class PostHandeler {
 		}
 
 		catch (\Exception $e) {
-
+			throw $e;
 		}
 	}
 

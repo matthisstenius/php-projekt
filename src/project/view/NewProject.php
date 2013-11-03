@@ -41,7 +41,7 @@ class NewProject {
 	 * @return string HTML
 	 */
 	public function getNewprojectForm() {
-		$html = "<h1>Add new project</h1>";
+		$html = "<h1 class='new-title'>Add new project</h1>";
 
 		if (isset($_SESSION[self::$inputFaultyMessage])) {
 			$html .= $_SESSION[self::$inputFaultyMessage];
@@ -65,11 +65,13 @@ class NewProject {
 					<textarea class='input-wide input-content' 
 					name='". self::$projectDescription . "' placeholder='Project description'></textarea>
 					
-					<label for='" . self::$makePrivate . "'>Make this project private</label>
-					<input id='" . self::$makePrivate . "' type='checkbox' name='" . self::$makePrivate . "'>
-
+					<label class='make-project-private' for='" . self::$makePrivate . "'>Make this project private</label>
+					<input class='make-project-private' id='" . self::$makePrivate . "' 
+					type='checkbox' name='" . self::$makePrivate . "'>
+					<p>
 					<button class='btn btn-add'>Create Project</button>
 					<a href='$backToProjects' class='btn btn-remove'>Cancel</a>
+					</p>
 				</form>";
 
 		return $html;
