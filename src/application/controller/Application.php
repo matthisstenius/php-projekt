@@ -133,11 +133,15 @@ class Application {
 	}
 
 	private function projectRoutes() {
+		/**
+		 * GET Projects
+		 */
 		$this->router->get('/projects', function() {
 			$this->isAuthorized();
 
 			try {
-				echo $this->page->getPage("Projects", $this->projectsController->showProjects());	
+				$pageTitle = $this->user->getUsername() - "'s Projects";
+				echo $this->page->getPage($pageTitle, $this->projectsController->showProjects());	
 			}
 
 			catch (\Exception $e) {
@@ -168,7 +172,8 @@ class Application {
 
 				$projectController = new \project\controller\Project($project, $posts, $this->user, $collaborators);
 
-				echo $this->page->getPage("Project title", $projectController->showProject());	
+				$pageTitle = $project->getName();
+				echo $this->page->getPage($pageTitle, $projectController->showProject());	
 			}
 
 			catch (\Exception $e) {
@@ -215,7 +220,8 @@ class Application {
 
 				$editProjectController = new \project\controller\EditProject($this->projectHandeler, $project);
 
-				echo $this->page->getPage("Edit $projectName", $editProjectController->showEditProjectForm());	
+				$pageTitle = "Edit - " . $project->getName();
+				echo $this->page->getPage($pageTitle, $editProjectController->showEditProjectForm());	
 			}
 
 			catch (\Exception $e) {
@@ -300,8 +306,9 @@ class Application {
 															$this->user,
 															$comments);
 
-
-				echo $this->page->getPage("Post tile", $postController->showPost());	
+				
+				$pageTitle = $post->getTitle();
+				echo $this->page->getPage($pageTitle, $postController->showPost());	
 			}
 
 			catch (\Exception $e) {
@@ -330,7 +337,8 @@ class Application {
 
 				$newPostController = new \post\controller\NewPost($this->postHandeler, $project, $this->user);
 
-				echo $this->page->getPage("Add new post", $newPostController->showNewPostForm());
+				$pageTitle = "Add new post - " . $project->getName();
+				echo $this->page->getPage($pageTitle, $newPostController->showNewPostForm());
 			}
 
 			catch (\Exception $e) {
@@ -382,7 +390,9 @@ class Application {
 				}
 
 				$editPostController = new \post\controller\EditPost($this->postHandeler, $post, $project);
-				echo $this->page->getPage("Edit post", $editPostController->showEditPostForm());
+
+				$pageTitle = "Edit - " . $post->getTitle();
+				echo $this->page->getPage($pageTitle, $editPostController->showEditPostForm());
 			}
 
 			catch (\Exception $e) {
@@ -444,6 +454,9 @@ class Application {
 	}
 
 	private function commentRoutes() {
+		/**
+		 * POST Add new comment
+		 */
 		$this->router->post('/project/:projectID/:projectName/post/:postID/:postName/comment', function($projectID, 
 																										$projectName,
 																										$postID,
@@ -465,6 +478,9 @@ class Application {
 			}
 		});
 
+		/**
+		 * GET Edit comment
+		 */
 		$this->router->get("project/:projectID/:projectName/post/:postID/:postName/edit/comment/:commentID", 
 							function($projectID, $projectName, $postID, $postName, $commentID) {
 
@@ -482,6 +498,7 @@ class Application {
 															$this->user,
 															$comments);
 
+
 				echo $this->page->getPage("Edit comment", $postController->showPostWithEditComment($comment));
 			}
 
@@ -491,6 +508,9 @@ class Application {
 
 		});
 
+		/**
+		 * PUT Edit comment
+		 */
 		$this->router->put("project/:projectID/:projectName/post/:postID/:postName/edit/comment/:commentID", 
 							function($projectID, $projectName, $postID, $postName, $commentID) {
 
@@ -513,6 +533,9 @@ class Application {
 
 		});
 
+		/**
+		 * DELETE comment
+		 */
 		$this->router->delete("project/:projectID/:projectName/post/:postID/:postName/comment/:commentID", 
 							function($projectID, $projectName, $postID, $postName, $commentID) {
 
@@ -549,6 +572,9 @@ class Application {
 	}
 
 	private function collaboratorRoutes() {
+		/**
+		 * GET Collaborators
+		 */
 		$this->router->get('/project/:projectID/:projectName/collaborators', function($projectID, $projectName) {
 			try {
 				$project = $this->projectHandeler->getproject(+$projectID);
@@ -561,8 +587,8 @@ class Application {
 																						$project,
 																						$this->collaboratorHandeler,
 																						$users);
-
-				echo $this->page->getPage("collaborators", $collaboratorsController->showCollaborators());
+				$pageTitle = "Collaborators - " . $project->getName();
+				echo $this->page->getPage($pageTitle, $collaboratorsController->showCollaborators());
 			}
 
 			catch (\Exception $e) {
@@ -570,6 +596,9 @@ class Application {
 			}
 		});
 
+		/**
+		 * POST Add collaborator
+		 */
 		$this->router->post('/project/:projectID/:projectName/collaborators', function($projectID, $projectName) {
 			try {
 				$project = $this->projectHandeler->getproject(+$projectID);
@@ -590,6 +619,9 @@ class Application {
 			}
 		});
 
+		/**
+		 * DELETE collaborator
+		 */
 		$this->router->delete('/project/:projectID/:projectName/remove/collaborator/:collaboratorID', function($projectID,
 																												$projectName,
 																												$collaboratorID) {
@@ -615,6 +647,9 @@ class Application {
 	}
 
 	private function userRoutes() {
+		/**
+		 * GET User
+		 */
 		$this->router->get('/user/:userID/:username', function($userID, $username) {
 			$this->isAuthorized();
 
@@ -622,6 +657,9 @@ class Application {
 			echo $this->page->getPage("$username 's profile", $userprofileController->showUserProfile());
 		});
 
+		/**
+		 * DELETE User
+		 */
 		$this->router->delete('/remove/user/:userID/:username', function($userID, $username) {
 			$deleteUserContoller = new \user\controller\DeleteUser($this->user, $this->loginHandeler);
 			$deleteUserContoller->deleteUser();
@@ -682,7 +720,7 @@ class Application {
 
 				$frontPageController = new \application\controller\FrontPage($projects);
 
-				echo $this->page->getPage("Hello Blog!", $frontPageController->showPublicProjects());	
+				echo $this->page->getPage("Welcome to Poster", $frontPageController->showPublicProjects());	
 			}
 
 			catch (\Exception $e) {
@@ -696,7 +734,7 @@ class Application {
 	 	* @todo Fix propper 404 page
 	 	*/
 		$this->router->notFound("/404", function() {
-			echo  $this->page->getPage("404", "<h1>404 page not found</h1>");
+			echo  $this->page->getPage("Error - 404", "<h1>404 page not found</h1>");
 		});
 
 		/**
@@ -704,7 +742,7 @@ class Application {
 	 	* @todo Fix propper 404 page
 	 	*/
 		$this->router->get("/500", function() {
-			echo  $this->page->getPage("500", "<h1>Error 500 something went terrebly wrong!</h1>");
+			echo  $this->page->getPage("Error - 500", "<h1>Error 500 something went terrebly wrong!</h1>");
 		});
 	}
 
