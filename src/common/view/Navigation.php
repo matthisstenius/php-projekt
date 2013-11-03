@@ -3,6 +3,11 @@
 namespace common\view;
 
 class Navigation {
+	/**
+	 * Chnage this to correspond the the basepath on your server. Usually /
+	 */
+	private static $basepath = "/php-projekt/";
+
 	public function gotoFrontPage() {
 		header("Location: /php-projekt/");
 	}
@@ -14,7 +19,7 @@ class Navigation {
 	 * @return void
 	 */
 	public function goToPost($projectID, $projectName, $postID, $title) {
-		header("Location: /php-projekt/project/$projectID/$projectName/post/$postID/$title");
+		header("Location: " . self::$basepath . "project/$projectID/$projectName/post/$postID/$title");
 	}
 
 	/**
@@ -23,11 +28,11 @@ class Navigation {
 	 * @return void
 	 */
 	public function gotoNewPost($projectID, $projectName) {
-		header("Location: /php-projekt/project/$projectID/$projectName/new/post");
+		header("Location: " . self::$basepath . "project/$projectID/$projectName/new/post");
 	}
 
 	public function gotoProjects() {
-		header("Location: /php-projekt/projects");
+		header("Location: " . self::$basepath . "projects");
 	}
 
 	/**
@@ -36,11 +41,11 @@ class Navigation {
 	 * @return void
 	 */
 	public function goToProject($projectID, $name) {
-		header("Location: /php-projekt/project/$projectID/$name");
+		header("Location: " . self::$basepath . "project/$projectID/$name");
 	}
 
 	public function gotoNewProject() {
-		header("Location: /php-projekt/new/project");
+		header("Location: " . self::$basepath . "new/project");
 	}
 
 	/**
@@ -49,7 +54,7 @@ class Navigation {
 	 * @param  string $projectName
 	 */
 	public function gotoEditProject($projectID, $projectName) {
-		header("Location: /php-projekt/edit/project/$projectID/$projectName");
+		header("Location: " . self::$basepath . "edit/project/$projectID/$projectName");
 	}
 	
 	/**
@@ -60,7 +65,7 @@ class Navigation {
 	 * @param  string $postName
 	 */
 	public function gotoEditPost($projectID, $projectName, $postID, $postName) {
-		header("Location: /php-projekt/project/$projectID/$projectName/edit/post/$postID/$postName");
+		header("Location: " . self::$basepath . "project/$projectID/$projectName/edit/post/$postID/$postName");
 	}
 
 	/**
@@ -69,49 +74,49 @@ class Navigation {
 	 * @param  string $projectName 
 	 */
 	public function gotoCollaborators($projectID, $projectName) {
-		header("Location: /php-projekt/project/$projectID/$projectName/collaborators");
+		header("Location: " . self::$basepath . "project/$projectID/$projectName/collaborators");
 	}
 
 	/**
 	 * Redirect to loginpage
 	 */
 	public function gotoLoginPage() {
-		header("Location: /php-projekt/login");
+		header("Location: " . self::$basepath . "login");
 	}
 
 	/**
 	 * Redirect registerpage
 	 */
 	public function gotoRegisterPage() {
-		header("Location: /php-projekt/register");
+		header("Location: " . self::$basepath . "register");
 	}
 
 	/**
 	 * Redirect to error page
 	 */
 	public function gotoErrorPage() {
-		header("Location: /php-projekt/500");
+		header("Location: " . self::$basepath . "500");
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getHomeSrc() {
-		return "/php-projekt";
+		return self::$basepath;
 	}
 
 	/**
 	 * @return string abslolute path to current project
 	 */
 	public function getProjectShareLink($projectID, $projectName) {
-		return "http://" . $_SERVER['HTTP_HOST'] . "/php-projekt/project/$projectID/$projectName";
+		return "http://" . $_SERVER['HTTP_HOST'] .  self::$basepath . "project/$projectID/$projectName";
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getProjectsSrc() {
-		return "/php-projekt/projects";
+		return self::$basepath . "projects";
 	}
 	
 	/**
@@ -120,7 +125,7 @@ class Navigation {
 	 * @return string
 	 */
 	public function getProjectSrc($projectID, $cleanName) {
-		return "/php-projekt/project/$projectID/$cleanName";
+		return self::$basepath . "project/$projectID/$cleanName";
 	}
 
 	/**
@@ -129,7 +134,7 @@ class Navigation {
 	 * @return string
 	 */
 	public function getEditProjectSrc($projectID, $projectName) {
-		return "/php-projekt/edit/project/$projectID/$projectName";
+		return self::$basepath . "edit/project/$projectID/$projectName";
 	}
 
 	/**
@@ -137,7 +142,7 @@ class Navigation {
 	 * @return string
 	 */
 	public function getDeleteProjectSrc($projectID) {
-		return "/php-projekt/remove/project/$projectID";
+		return self::$basepath . "remove/project/$projectID";
 	}
 
 	/**
@@ -146,7 +151,7 @@ class Navigation {
 	 * @return string
 	 */
 	public function getCollaboratorsSrc($projectID, $projectName) {
-		return "/php-projekt/project/$projectID/$projectName/collaborators";
+		return self::$basepath . "project/$projectID/$projectName/collaborators";
 	}
 
 	/**
@@ -156,7 +161,7 @@ class Navigation {
 	 * @return string
 	 */
 	public function getRemoveCollaboratorSrc($projectID, $projectName, $collaboratorID) {
-		return "/php-projekt/project/$projectID/$projectName/remove/collaborator/$collaboratorID";
+		return self::$basepath . "project/$projectID/$projectName/remove/collaborator/$collaboratorID";
 	}
 
 	/**
@@ -166,14 +171,14 @@ class Navigation {
 	 * @return string 
 	 */
 	public function getPostLink($projectID, $projectName, $postID, $postName) {
-		return "/php-projekt/project/$projectID/$projectName/post/$postID/$postName";
+		return self::$basepath . "project/$projectID/$projectName/post/$postID/$postName";
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getAddNewProjectSrc() {
-		return "/php-projekt/new/project";
+		return self::$basepath . "new/project";
 	}
 
 	/**
@@ -182,7 +187,7 @@ class Navigation {
 	 * @return string
 	 */
 	public function getNewPostSrc($projectID, $projectName) {
-		return "/php-projekt/project/$projectID/$projectName/new/post";
+		return self::$basepath . "project/$projectID/$projectName/new/post";
 	}
 
 	/**
@@ -193,7 +198,7 @@ class Navigation {
 	 * @return string
 	 */
 	public function getEditPostSrc($projectID, $projectName, $postID, $postName) {
-		return "/php-projekt/project/$projectID/$projectName/edit/post/$postID/$postName";
+		return self::$basepath . "project/$projectID/$projectName/edit/post/$postID/$postName";
 	}
 
 	/**
@@ -203,7 +208,7 @@ class Navigation {
 	 * @return string
 	 */
 	public function getDeletePostSrc($projectID, $projectName, $postID) {
-		return "/php-projekt/project/$projectID/$projectName/remove/post/$postID";
+		return self::$basepath . "project/$projectID/$projectName/remove/post/$postID";
 	}
 
 	/**
@@ -214,7 +219,7 @@ class Navigation {
 	 * @return string
 	 */
 	public function getCommentSrc($projectID, $projectName, $postID, $postName) {
-		return "/php-projekt/project/$projectID/$projectName/post/$postID/$postName/comment";
+		return self::$basepath . "project/$projectID/$projectName/post/$postID/$postName/comment";
 	}
 
 	/**
@@ -226,7 +231,7 @@ class Navigation {
 	 * @return string
 	 */
 	public function getEditCommentSrc($projectID, $projectName, $postID, $postName, $commentID) {
-		return "/php-projekt/project/$projectID/$projectName/post/$postID/$postName/edit/comment/$commentID";
+		return self::$basepath . "project/$projectID/$projectName/post/$postID/$postName/edit/comment/$commentID";
 	}
 
 	/**
@@ -238,28 +243,28 @@ class Navigation {
 	 * @return string
 	 */
 	public function getDeleteCommentSrc($projectID, $projectName, $postID, $postName, $commentID) {
-		return "/php-projekt/project/$projectID/$projectName/post/$postID/$postName/comment/$commentID";
+		return self::$basepath . "project/$projectID/$projectName/post/$postID/$postName/comment/$commentID";
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getLoginSrc() {
-		return "/php-projekt/login";
+		return self::$basepath . "login";
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getLogoutSrc() {
-		return "/php-projekt/logout";
+		return self::$basepath . "logout";
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getRegisterSrc() {
-		return "/php-projekt/register";
+		return self::$basepath . "register";
 	}
 
 	/**
@@ -268,7 +273,7 @@ class Navigation {
 	 * @return string
 	 */
 	public function getUserPageSrc($userID, $username) {
-		return "/php-projekt/user/$userID/$username";
+		return self::$basepath . "user/$userID/$username";
 	}
 
 	/**
@@ -277,6 +282,6 @@ class Navigation {
 	 * @return string
 	 */
 	public function getDeleteAccountSrc($userID, $username) {
-		return "/php-projekt/remove/user/$userID/$username";
+		return self::$basepath . "remove/user/$userID/$username";
 	}
 }
