@@ -72,7 +72,8 @@ class Collaborators {
 
 		$html .= "<ul class='collaborators-list'>";
 
-		$projectLink = $this->navigationView->getProjectShareLink();
+		$projectLink = $this->navigationView->getProjectShareLink($this->project->getProjectID(),
+																	\common\view\Filter::getCleanUrl($this->project->getName()));
 
 		foreach ($this->collaborators as $collaborator) {
 			$removeCollaboratorSrc = $this->navigationView->getRemoveCollaboratorSrc($this->project->getProjectID(),

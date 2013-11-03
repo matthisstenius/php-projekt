@@ -103,8 +103,8 @@ class Navigation {
 	/**
 	 * @return string abslolute path to current project
 	 */
-	public function getProjectShareLink() {
-		return "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	public function getProjectShareLink($projectID, $projectName) {
+		return "http://" . $_SERVER['HTTP_HOST'] . "/php-projekt/project/$projectID/$projectName";
 	}
 
 	/**
