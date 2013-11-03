@@ -77,7 +77,7 @@ class Projects {
 
 			$html .= "<span class='created'>Added by: " . $project->getUsername() . " " . $project->getDateCreated() . "</span>";
 			$html .= "<p class='post-excerpt'>$projectExcerpt</p>";
-			$html .= "<a class='btn-attention' href='$projectSrc'>Read More</a>";
+			$html .= "<a class='btn-attention' href='$projectSrc'>Open Project</a>";
 			$html .= "</div>";
 		}
 

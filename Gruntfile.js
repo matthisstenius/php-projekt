@@ -6,6 +6,13 @@ module.exports = function(grunt) {
 				cwd: 'src',
 				src: ['**', '!public/**', '../index.php'],
 				dest: 'build/php-projekt/src'
+			},
+
+			copyFont: {
+				expand: true,
+				cwd: 'src',
+				src: ['/font/**'],
+				dest: 'build/php-projekt/src/public/'
 			}
 		},
 
@@ -53,9 +60,10 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-imagemin');
 
-	grunt.registerTask('build', ['copy', 'minifyCSS', 'minifyImg']);
+	grunt.registerTask('build', ['copy', 'minifyCSS', 'minifyImg', 'copyFont']);
 	grunt.registerTask('minifyCSS', ['cssmin']);
 	grunt.registerTask('minifyImg', ['imagemin']);
 	grunt.registerTask('compileSass', ['sass']);
+	grunt.registerTask('copyFont', ['copy']);
 	grunt.registerTask('default', 'Watches the project for changes', ['watch']);
 };
