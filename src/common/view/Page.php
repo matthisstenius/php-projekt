@@ -64,10 +64,10 @@ class Page {
 	 */
 	private function getStylesheet() {
 		return "<link href='/php-projekt/src/public/css/main.css' rel='stylesheet' type='text/css'>
-				<link href='http://fnt.webink.com/wfs/webink.css/?project=32484cd2-12cb-4f4f-8e39-262d03e82d1c&fonts=
-				A5D15588-A18E-DC95-62EC-9A4E98DE136A:f=MuseoSans-300,E10DC5A5-6E69-88A0-32FF-0256CBA64855:
-				f=ProximaNovaSoft-Regular,0D47B8E9-3C6E-CE3D-89C8-57E788336980:f=RooneyWeb-Regular' rel='stylesheet' 
-				type='text/css'/>";
+				<link href='http://fnt.webink.com/wfs/webink.css/?project=32484cd2-12cb-4f4f-8e39-26
+				2d03e82d1c&fonts=BE8D3979-1915-4052-1CA9-A6705FF0D750:f=LonghandLPRegular,A5D15588-A18
+				E-DC95-62EC-9A4E98DE136A:f=MuseoSans-300,E10DC5A5-6E69-88A0-32FF-0256CBA64855:f=ProximaNo
+				vaSoft-Regular,0D47B8E9-3C6E-CE3D-89C8-57E788336980:f=RooneyWeb-Regular' rel='stylesheet' type='text/css'/>";
 	}
 
 	/**

@@ -189,6 +189,13 @@
 	.new-title {
 		margin-top: 0;
 	}
+
+	.nothing-found {
+		font-family: $errorMessages;
+		font-size: 3em;
+		text-align: center;
+		 margin-top: 100px;
+	}
 /*
 ----------------------------------------
  * Forms
@@ -349,6 +356,10 @@
 	
 	.private {
 		color: $gold;
+	}
+	
+	.projects-header {
+		@include clearfix();
 	}
 
 	.projects-header .btn {
