@@ -158,10 +158,10 @@ class EditPost {
 			$errorMessage .= "<p>Invalid charachters in post title. Only alphanumeric charachters allowed.</p>";
 		}
 		
-		if (strlen($this->getContent()) > 2000) {
+		if (strlen($this->getPostContent()) > 2000) {
 			$errorMessage .= "<p>Post title to long. Max 2000 charachters allowed.</p>";
 		}
-		
+
 		if ($this->getPostContent() == "") {
 			$errorMessage .= "<p>Enter some content for your post</p>";
 		}
