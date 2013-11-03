@@ -101,6 +101,13 @@ class Navigation {
 	}
 
 	/**
+	 * @return string abslolute path to current project
+	 */
+	public function getProjectShareLink() {
+		return "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getProjectsSrc() {

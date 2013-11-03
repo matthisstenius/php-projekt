@@ -72,6 +72,8 @@ class Collaborators {
 
 		$html .= "<ul class='collaborators-list'>";
 
+		$projectLink = $this->navigationView->getProjectShareLink();
+
 		foreach ($this->collaborators as $collaborator) {
 			$removeCollaboratorSrc = $this->navigationView->getRemoveCollaboratorSrc($this->project->getProjectID(),
 																					\common\view\Filter::getCleanUrl($this->project->getName()),
@@ -85,6 +87,8 @@ class Collaborators {
 						<button class='btn-empty'>(remove)</button>
 					</form>";
 			$html .= "</li>";
+			$html .= "<li><p>Share this link with your collaborators.</p>
+					<input class='share-link' type='text' readonly value='$projectLink'></li>";
 		}
 
 		$html .= "</ul>";
