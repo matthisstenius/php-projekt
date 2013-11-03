@@ -15,7 +15,8 @@ class ProjectDAL extends \common\model\DALBase {
 		$stm = self::getDBConnection()->prepare("SELECT idProject, name, description, created, User.username, 
 												idUser_User AS userID, private FROM Project
 												INNER JOIN User ON User.idUser = idUser_User
-												WHERE idUser_User = :userID");
+												WHERE idUser_User = :userID
+												ORDER BY created DESC");
 
 		$userID = $user->getUserID();
 
@@ -41,7 +42,7 @@ class ProjectDAL extends \common\model\DALBase {
 												idUser_User AS userID, private FROM Project
 												INNER JOIN User ON User.idUser = idUser_User
 												WHERE private = 0
-												ORDER BY idProject
+												ORDER BY created
 												DESC LIMIT :amount");
 
 

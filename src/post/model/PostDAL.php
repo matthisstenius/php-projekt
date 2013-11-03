@@ -16,7 +16,8 @@ class PostDAL extends \common\model\DALBase {
 		$stm = self::getDBConnection()->prepare("SELECT idPost, title, content, User_idUser AS userID, User.username, added,
 												 projectID_Project AS projectID FROM Post
 												 INNER JOIN User ON User.idUser = User_idUser
-												 WHERE projectID_Project=:projectID");
+												 WHERE projectID_Project=:projectID
+												 ORDER BY added DESC");
 
 		$projectID = $project->getProjectID();
 
