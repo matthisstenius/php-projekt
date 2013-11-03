@@ -6,11 +6,11 @@ Poster is an application that makes it easy to create projectblogs.
 
 ## Features
 
-. Create private projects. 
-. Add collaborators to your projects.
-. Add posts to your project.
-. Comment on posts. 
-. Watch others public projects and comment on their work.
+* Create private projects. 
+* Add collaborators to your projects.
+* Add posts to your project.
+* Comment on posts. 
+* Watch others public projects and comment on their work.
 
 ## Instalation 
 
@@ -21,5 +21,5 @@ Poster is an application that makes it easy to create projectblogs.
 
 ##Note 
 
-If you are using Grunt you can run <grunt build> to get a nice build folder with minimized concatinated css, optimized images and sass compile
+If you are using Grunt you can run `` grunt build `` to get a nice build folder with minimized, concatinated css, optimized images and sass compile
 
