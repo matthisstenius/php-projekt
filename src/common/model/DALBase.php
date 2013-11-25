@@ -5,14 +5,12 @@ namespace common\model;
 class DALBase {
 	private static $dbName = "Blog1";
 	private static $host = "127.0.0.1";
-	private static $username = "root";
-	private static $password = "";
+	private static $username = "YOUR-USERNAME";
+	private static $password = "YOUR-PASSWORD";
 	private static $charset = "utf8";
 
 	public function __construct() {
-		if ($_SERVER['SERVER_NAME'] == 'localhost') {
-			self::$password = '7scTt8MB';
-		}
+	
 	}
 	
 	/**
